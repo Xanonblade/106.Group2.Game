@@ -19,7 +19,7 @@ namespace DIY_Boss_Rush_Game
         // Temporary button Sprite
         private Texture2D buttonSprite;
 
-        // Hold Menu button
+        // Hold menuPlay button
         private Button menuButton;
 
         // Hold increase & decrease buttons for customize state
@@ -34,6 +34,9 @@ namespace DIY_Boss_Rush_Game
 
         // Hold previousMouse state to enable single click
         private MouseState previousMouseState;
+
+        // Hold customizeContinue button
+        private Button customizeContinue;
 
         public Game1()
         {
@@ -69,6 +72,9 @@ namespace DIY_Boss_Rush_Game
             // Create increase & decrease button
             increaseButton = new Button(new Rectangle(0, 0, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
             decreaseButton = new Button(new Rectangle(0, 50, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
+
+            // Create "continue" button
+            customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
         }
 
         protected override void Update(GameTime gameTime)
@@ -98,6 +104,13 @@ namespace DIY_Boss_Rush_Game
                 {
                     // Update text
                     stat--;
+                }
+
+                // Continue button
+                if (customizeContinue.SingleClick(previousMouseState))
+                {
+                    // Move GameState
+                    gameState = GameState.Game;
                 }
             }
             else if (gameState == GameState.Game)
@@ -136,10 +149,13 @@ namespace DIY_Boss_Rush_Game
 
                 // Draw stat number
                 _spriteBatch.DrawString(font, stat + "", new Vector2(100, 100), Color.Red);
+
+                // Draw customizeContinue button
+                _spriteBatch.Draw(buttonSprite, customizeContinue.Rect, Color.White);
             }
             else if (gameState == GameState.Game)
             {
-
+                
             }
             else if (gameState == GameState.GameOver)
             {
