@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 
 // Enum for each of the GameStates
@@ -38,6 +39,9 @@ namespace DIY_Boss_Rush_Game
         // Hold customizeContinue button
         private Button customizeContinue;
 
+        // Array to read in external files
+        private Texture2D[,] tiles;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -52,6 +56,9 @@ namespace DIY_Boss_Rush_Game
 
             // Temporary stat is 0
             stat = 0;
+
+            // Read in arena file
+            
 
             base.Initialize();
         }
