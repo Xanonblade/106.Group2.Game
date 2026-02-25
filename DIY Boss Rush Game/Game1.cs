@@ -2,6 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
+// Enum for each of the GameStates
+enum GameState { Menu, Customize, Game, GameOver }
+
 namespace DIY_Boss_Rush_Game
 {
     public class Game1 : Game
@@ -35,7 +39,8 @@ namespace DIY_Boss_Rush_Game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // Check GameState
+            
 
             base.Update(gameTime);
         }
