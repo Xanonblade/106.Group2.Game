@@ -22,6 +22,19 @@ namespace DIY_Boss_Rush_Game
         // Hold Menu button
         private Button menuButton;
 
+        // Hold increase & decrease buttons for customize state
+        private Button increaseButton;
+        private Button decreaseButton;
+
+        // Placeholder for stats
+        private int stat;
+
+        // Temporary text
+        private SpriteFont font;
+
+        // Hold previousMouse state to enable single click
+        private MouseState previousMouseState;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -34,6 +47,9 @@ namespace DIY_Boss_Rush_Game
             // Menu is default state
             gameState = GameState.Menu;
 
+            // Temporary stat is 0
+            stat = 0;
+
             base.Initialize();
         }
 
@@ -41,11 +57,18 @@ namespace DIY_Boss_Rush_Game
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Load temporary font
+            font = Content.Load<SpriteFont>("Arial");
+
             // Load temporary button sprite
             buttonSprite = Content.Load<Texture2D>("tempButton");
 
-            // Create button
+            // Create menu button
             menuButton = new Button(new Rectangle(100, 100, buttonSprite.Width/4, buttonSprite.Height/4), "Play", buttonSprite);
+
+            // Create increase & decrease button
+            increaseButton = new Button(new Rectangle(0, 0, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
+            decreaseButton = new Button(new Rectangle(0, 50, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
         }
 
         protected override void Update(GameTime gameTime)
@@ -57,7 +80,7 @@ namespace DIY_Boss_Rush_Game
             if (gameState == GameState.Menu)
             {
                 // Create Menu button to play
-                if (menuButton.Click())
+                if (menuButton.SingleClick(previousMouseState))
                 {
                     gameState = GameState.Customize;
                 }
@@ -65,7 +88,17 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Customize)
             {
-
+                // Check if either button was pressed
+                if (increaseButton.SingleClick(previousMouseState))
+                {
+                    // Update text
+                    stat++;
+                }
+                else if (decreaseButton.SingleClick(previousMouseState)) 
+                {
+                    // Update text
+                    stat--;
+                }
             }
             else if (gameState == GameState.Game)
             {
@@ -76,6 +109,8 @@ namespace DIY_Boss_Rush_Game
 
             }
 
+            // Collect previous mouseState
+            previousMouseState = Mouse.GetState();
 
                 base.Update(gameTime);
         }
@@ -95,7 +130,12 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Customize)
             {
+                // Draw increase and decrease buttons
+                _spriteBatch.Draw(buttonSprite, increaseButton.Rect, Color.Red);
+                _spriteBatch.Draw(buttonSprite, decreaseButton.Rect, Color.Blue);
 
+                // Draw stat number
+                _spriteBatch.DrawString(font, stat + "", new Vector2(100, 100), Color.Red);
             }
             else if (gameState == GameState.Game)
             {

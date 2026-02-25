@@ -54,13 +54,13 @@ namespace DIY_Boss_Rush_Game
         /// Checks the mouse position and state with the button
         /// </summary>
         /// <returns></returns>
-        public bool Click()
+        public bool SingleClick(MouseState previousState)
         {
             // Get Mouse state
             MouseState ms = Mouse.GetState();
 
             // Check if the mouse was left clicked
-            if (ms.LeftButton == ButtonState.Pressed)
+            if (ms.LeftButton == ButtonState.Pressed && previousState.LeftButton != ButtonState.Pressed)
             {
                 // Check if the mouse is over the button
                 if (ms.X >= rect.X && ms.X <= rect.X + rect.Width && ms.Y >= rect.Y && ms.Y <= rect.Y + rect.Width)
