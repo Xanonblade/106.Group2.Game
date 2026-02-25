@@ -74,6 +74,7 @@
             tileGray.Size = new Size(62, 62);
             tileGray.TabIndex = 5;
             tileGray.TabStop = false;
+            tileGray.Tag = "5";
             tileGray.Click += TileSelect_Click;
             // 
             // tileBrown
@@ -84,16 +85,19 @@
             tileBrown.Size = new Size(62, 62);
             tileBrown.TabIndex = 4;
             tileBrown.TabStop = false;
+            tileBrown.Tag = "3";
             tileBrown.Click += TileSelect_Click;
             // 
             // tileBlue
             // 
-            tileBlue.BackColor = Color.SteelBlue;
+            tileBlue.BackColor = Color.Transparent;
+            tileBlue.BackgroundImage = Properties.Resources.Ritchie;
             tileBlue.Location = new Point(79, 27);
             tileBlue.Name = "tileBlue";
             tileBlue.Size = new Size(62, 62);
             tileBlue.TabIndex = 3;
             tileBlue.TabStop = false;
+            tileBlue.Tag = "1";
             tileBlue.Click += TileSelect_Click;
             // 
             // tileGreen
@@ -104,26 +108,31 @@
             tileGreen.Size = new Size(62, 62);
             tileGreen.TabIndex = 2;
             tileGreen.TabStop = false;
+            tileGreen.Tag = "4";
             tileGreen.Click += TileSelect_Click;
             // 
             // tileTan
             // 
-            tileTan.BackColor = Color.Khaki;
+            tileTan.BackColor = Color.Transparent;
+            tileTan.BackgroundImage = Properties.Resources.Mario;
             tileTan.Location = new Point(11, 95);
             tileTan.Name = "tileTan";
             tileTan.Size = new Size(62, 62);
             tileTan.TabIndex = 1;
             tileTan.TabStop = false;
+            tileTan.Tag = "2";
             tileTan.Click += TileSelect_Click;
             // 
             // tileRed
             // 
-            tileRed.BackColor = Color.Firebrick;
+            tileRed.BackColor = Color.Transparent;
+            tileRed.BackgroundImage = Properties.Resources.coin;
             tileRed.Location = new Point(11, 27);
             tileRed.Name = "tileRed";
             tileRed.Size = new Size(62, 62);
             tileRed.TabIndex = 0;
             tileRed.TabStop = false;
+            tileRed.Tag = "0";
             tileRed.Click += TileSelect_Click;
             // 
             // groupBox2

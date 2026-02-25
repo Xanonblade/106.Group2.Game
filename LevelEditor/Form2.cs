@@ -75,10 +75,12 @@ namespace HW2_LevelEditor
                     if ((j + i) % 2 == 0)
                     {
                         tempTile.BackColor = Color.White;
+                        tempTile.Tag = "-1";
                     }
                     else
                     {
                         tempTile.BackColor = Color.LightGray;
+                        tempTile.Tag = "-2";
                     }
 
                     //Adding tile to groupBox and list
@@ -106,7 +108,8 @@ namespace HW2_LevelEditor
                 this.Text += "*";
             }
 
-            tile.BackColor = tileCurrent.BackColor;
+            tile.Tag = tileCurrent.Tag;
+            tile.BackgroundImage = tileCurrent.BackgroundImage;
         }
 
         /// <summary>
@@ -116,7 +119,8 @@ namespace HW2_LevelEditor
         {
             PictureBox tile = (PictureBox)sender;
 
-            tileCurrent.BackColor = tile.BackColor;
+            tileCurrent.Tag = tile.Tag;
+            tileCurrent.BackgroundImage = tile.BackgroundImage;
         }
 
         /// <summary>
@@ -148,7 +152,9 @@ namespace HW2_LevelEditor
                     //Loop through list and write all colors, one per line
                     for (int i = 0; i < _tileList!.Count; i++)
                     {
-                        output.WriteLine(_tileList[i].BackColor.ToArgb());
+                        PictureBox currentBox = _tileList[i];
+
+                        output.WriteLine(currentBox.Tag);
                     }
 
                     //Success message
@@ -212,7 +218,19 @@ namespace HW2_LevelEditor
                 //Loop and paint
                 for (int i = 0; i < _tileList!.Count; i++)
                 {
-                    _tileList[i].BackColor = Color.FromArgb(int.Parse(input.ReadLine()!));
+                    if (input.ReadLine()! == "0")
+                    {
+                        _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.coin,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                        _tileList[i].Tag = "0";
+                    }
+                    else
+                    {
+                        _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.Mario,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                        _tileList[i].Tag = "2";
+                    }
+                        
                 }
 
                 //Success message
