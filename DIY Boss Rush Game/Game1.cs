@@ -13,6 +13,15 @@ namespace DIY_Boss_Rush_Game
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        // Holds the gameState, defaults to Menu State
+        private GameState gameState;
+
+        // Temporary button Sprite
+        private Texture2D buttonSprite;
+
+        // Hold Menu button
+        private Button menuButton;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -22,7 +31,8 @@ namespace DIY_Boss_Rush_Game
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Menu is default state
+            gameState = GameState.Menu;
 
             base.Initialize();
         }
@@ -31,7 +41,11 @@ namespace DIY_Boss_Rush_Game
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // Load temporary button sprite
+            buttonSprite = Content.Load<Texture2D>("tempButton");
+
+            // Create button
+            menuButton = new Button(new Rectangle(100, 100, buttonSprite.Width/4, buttonSprite.Height/4), "Play", buttonSprite);
         }
 
         protected override void Update(GameTime gameTime)
@@ -39,17 +53,60 @@ namespace DIY_Boss_Rush_Game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // Check GameState
-            
+            // Finite State Machine
+            if (gameState == GameState.Menu)
+            {
+                // Create Menu button to play
+                if (menuButton.Click())
+                {
+                    gameState = GameState.Customize;
+                }
+                
+            }
+            else if (gameState == GameState.Customize)
+            {
 
-            base.Update(gameTime);
+            }
+            else if (gameState == GameState.Game)
+            {
+
+            }
+            else if (gameState == GameState.GameOver)
+            {
+
+            }
+
+
+                base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+            // Finite State Machine for Draw Method
+            // Finite State Machine
+            if (gameState == GameState.Menu)
+            {
+                // Draw menu button
+                _spriteBatch.Draw(buttonSprite, menuButton.Rect, Color.White);
+            }
+            else if (gameState == GameState.Customize)
+            {
+
+            }
+            else if (gameState == GameState.Game)
+            {
+
+            }
+            else if (gameState == GameState.GameOver)
+            {
+
+            }
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

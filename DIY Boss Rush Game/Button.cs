@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +22,9 @@ namespace DIY_Boss_Rush_Game
 
         // Holds the button sprite
         private Texture2D sprite;
+        private Microsoft.Xna.Framework.Rectangle rectangle;
+        private string v;
+        private Texture2D buttonSprite;
 
         // Properties
 
@@ -57,7 +60,7 @@ namespace DIY_Boss_Rush_Game
             MouseState ms = Mouse.GetState();
 
             // Check if the mouse was left clicked
-            if (ms.Equals(ButtonState.Pressed))
+            if (ms.LeftButton == ButtonState.Pressed)
             {
                 // Check if the mouse is over the button
                 if (ms.X >= rect.X && ms.X <= rect.X + rect.Width && ms.Y >= rect.Y && ms.Y <= rect.Y + rect.Width)
