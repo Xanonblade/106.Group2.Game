@@ -69,7 +69,7 @@ namespace HW2_LevelEditor
 
                     //Rescale window based on width
                     groupBoxMap.Width = tempTile.Width * _width + 28;
-                    this.Width = 202 + groupBoxMap.Width;
+                    this.Width = 280 + groupBoxMap.Width;
 
                     //Default colors
                     if ((j + i) % 2 == 0)
@@ -109,7 +109,8 @@ namespace HW2_LevelEditor
             }
 
             tile.Tag = tileCurrent.Tag;
-            tile.BackgroundImage = tileCurrent.BackgroundImage;
+            tile.BackgroundImage = new Bitmap(tileCurrent.BackgroundImage!,
+                new Size(tile.Width, tile.Height));
         }
 
         /// <summary>
@@ -120,7 +121,8 @@ namespace HW2_LevelEditor
             PictureBox tile = (PictureBox)sender;
 
             tileCurrent.Tag = tile.Tag;
-            tileCurrent.BackgroundImage = tile.BackgroundImage;
+            tileCurrent.BackgroundImage = new Bitmap(tile.BackgroundImage!,
+                new Size(tile.Width, tile.Height));
         }
 
         /// <summary>
@@ -218,19 +220,95 @@ namespace HW2_LevelEditor
                 //Loop and paint
                 for (int i = 0; i < _tileList!.Count; i++)
                 {
-                    if (input.ReadLine()! == "0")
+                    string readInput = input.ReadLine()!;
+                    switch (readInput)
                     {
-                        _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.coin,
+                        case "0":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
-                        _tileList[i].Tag = "0";
-                    }
-                    else
-                    {
-                        _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.Mario,
+                            _tileList[i].Tag = "0";
+                            break;
+                        case "1":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test1,
                             new Size(_tileList[i].Width, _tileList[i].Height));
-                        _tileList[i].Tag = "2";
-                    }
-                        
+                            _tileList[i].Tag = "1";
+                            break;
+                        case "2":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test2,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "2";
+                            break;
+                        case "3":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test3,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "3";
+                            break;
+                        case "4":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test4,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "4";
+                            break;
+                        case "5":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test5,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "5";
+                            break;
+                        case "6":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test6,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "6";
+                            break;
+                        case "7":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test7,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "7";
+                            break;
+                        case "8":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test8,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "8";
+                            break;
+                        case "9":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test9,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "9";
+                            break;
+                        case "10":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test10,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "10";
+                            break;
+                        case "11":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test11,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "11";
+                            break;
+                        case "12":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test12,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "12";
+                            break;
+                        case "13":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test13,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "13";
+                            break;
+                        case "14":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test14,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "14";
+                            break;
+                        case "15":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test15,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "15";
+                            break;
+                        case "16":
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.groundV1,
+                            new Size(_tileList[i].Width, _tileList[i].Height));
+                            _tileList[i].Tag = "16";
+                            break;
+                    }  
                 }
 
                 //Success message
