@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -14,8 +15,6 @@ namespace DIY_Boss_Rush_Game
     /// </summary>
     internal class Player : Character
     {
-        public static Vector2 pos;
-
         private readonly int speedMultiplier = 1; // Helps scale movement
         private readonly int attackMultiplier = 1; // Helps scale attack
 
@@ -25,9 +24,9 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         /// <param name="pos"></param>
         /// <param name="tex"></param>
-        public Player(Vector2 pos, Texture2D tex) : base(new Rectangle(0, 0, 50, 50), tex, 10, 10, 5, 5)
+        public Player(Vector2 pos, Texture2D tex) : base(new Rectangle(0, 0, 50, 50), pos, tex, 10, 10, 5, 5)
         {
-            Player.pos = pos;
+
         }
 
         /// <summary>
@@ -62,7 +61,7 @@ namespace DIY_Boss_Rush_Game
             if (movement != Vector2.Zero)
                 movement.Normalize(); // Normalize to prevent faster diagonal movement
             movement *= SpeedStat * speedMultiplier; // Scale movement by speed stat and multiplier
-            pos += movement; // Update player position
+            pos += movement; // Update player Position
 
             // Attacking
             MouseState mouseState = Mouse.GetState();

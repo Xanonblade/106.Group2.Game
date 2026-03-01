@@ -1,0 +1,153 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
+namespace DIY_Boss_Rush_Game
+{
+    /// <summary>
+    /// Class to keep track of bullets and limit collisions
+    /// </summary>
+    internal class BulletManager
+    {
+        private static BulletManager instance;
+        private List<Bullet> playerBullets;
+        private List<Bullet> enemyBullets;
+        private Boss boss;
+        private Player player;
+
+        /// <summary>
+        /// Private constructor for singleton
+        /// </summary>
+        private BulletManager() {
+        // set lists
+        }
+
+        /// <summary>
+        /// Property to get the singleton instance of BulletManager. If it doesn't exist, it creates one. This ensures that there is only one instance of BulletManager throughout the game, which is important for managing bullets and their collisions consistently.
+        /// </summary>
+        public static BulletManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new BulletManager();
+                }
+                return instance;
+            }
+        }
+
+
+        /// <summary>
+        /// Creates a new bullet and adds it to the appropriate list based on whether it's from the player or an enemy.
+        /// </summary>
+        /// <param name="speed"></param>
+        /// <param name="damage"></param>
+        /// <param name="attackTex"></param>
+        /// <param name="widthHeightRect"></param>
+        /// <param name="unitDir"></param>
+        /// <param name="pos"></param>
+        /// <param name="radius"></param>
+        /// <param name="fromPlayer"></param>
+        public void CreateBullet(float speed, int damage, Texture2D attackTex, Rectangle widthHeightRect, Vector2 unitDir, Vector2 pos, int radius, bool fromPlayer)
+        {
+            Bullet newBullet = new Bullet(speed, damage, attackTex, widthHeightRect, unitDir, pos, radius);
+
+            if (fromPlayer)
+            {
+                playerBullets.Add(newBullet);
+            }
+            else
+            {
+                enemyBullets.Add(newBullet);
+            }
+        }
+
+        /// <summary>
+        /// Removes a bullet for being out of bounds or colliding with something
+        /// </summary>
+        /// <param name="bullet"></param>
+        public void RemoveBullet(Bullet bullet)
+        {
+            playerBullets.Remove(bullet);
+            enemyBullets.Remove(bullet);
+        }
+
+        /// <summary>
+        /// Call all bullets update, and also check for collisions here
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void UpdateAllBullets(GameTime gameTime)
+        {
+            // Player bullets
+            for (int i = 0; i < playerBullets.Count; i++)
+            {
+                Bullet bullet = playerBullets[i];
+                bullet.Update(gameTime);
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.position, Boss.rect))
+                {
+                    boss.TakeDamage(bullet.Damage);
+                    RemoveBullet(bullet);
+                    i--; // Decrement index to account for removed bullet
+                }
+            }
+
+            // Enemy bullets
+            for (int i = 0; i < enemyBullets.Count; i++)
+            {
+                Bullet bullet = enemyBullets[i];
+                bullet.Update(gameTime);
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.rect))
+                {
+                    player.TakeDamage(bullet.Damage);
+                    RemoveBullet(bullet);
+                    i--; // Decrement index to account for removed bullet
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks collisions between a circle and rectangle
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
+        /// <param name="rectTopLeft"></param>
+        /// <param name="widthHeightRectangle">Doesn't need position</param>
+        /// <returns></returns>
+        private bool CheckCircleRectCollision(Vector2 center, int radius, Vector2 rectTopLeft, Rectangle widthHeightRectangle)
+        {
+            // Find the closest point on the rectangle to the circle's center
+            float closestX = Math.Clamp(center.X, rectTopLeft.X, rectTopLeft.X + widthHeightRectangle.Width);
+            float closestY = Math.Clamp(center.Y, rectTopLeft.Y, rectTopLeft.Y + widthHeightRectangle.Height);
+
+            Vector2 closestPoint = new Vector2(closestX, closestY);
+
+            // Calculate the distance squared between the closest point and the circle's center
+            float distance = Vector2.DistanceSquared(center, closestPoint);
+
+            // If the distance squared is less than the circle's radius squared, there is a collision
+            return distance < radius * radius;
+        }
+
+        /// <summary>
+        /// Draws all bullets to display
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void DrawAllBulllets(SpriteBatch spriteBatch)
+        {
+            foreach (Bullet bullet in playerBullets)
+            {
+                bullet.Draw(spriteBatch, true);
+            }
+            foreach (Bullet bullet in enemyBullets)
+            {
+                bullet.Draw(spriteBatch, false);
+            }
+        }
+    }
+}
