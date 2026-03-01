@@ -22,7 +22,6 @@ namespace DIY_Boss_Rush_Game
     /// </summary>
     internal class Boss : Character
     {
-        public static Vector2 position;
 
         // Fields for the boss's actions
         private List<Queue<Action>> sequences;
@@ -30,25 +29,36 @@ namespace DIY_Boss_Rush_Game
         private Action currentAction;
         private bool isActionFinished;
 
-        // 
+        // Useful fields
         private GameTime gameTime;
         private Random random;
+        private BulletManager bulletManager;
 
+        // Fields used by actions
         private float waitTime;
         private Vector2 selectedMovePos;
         private Vector2 playerPos;
 
+        // Constructor for the boss
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
-            base(rect, texture, healthStat, damageStat, speedStat, critStat)
+            base(rect, Vector2.Zero, texture, healthStat, damageStat, speedStat, critStat)
         {
             sequences = new List<Queue<Action>>();
+
+            // Reads in all of the possile sequences the boss can do
             ReadSequences("BossSequences.txt");
 
+            // Set initial values
             waitTime = 0;
             isActionFinished = true;
             random = new Random();
+            bulletManager = BulletManager.Instance;
         }
 
+        /// <summary>
+        /// Updates the game state and determines the next action if the previous action is finished.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -66,8 +76,12 @@ namespace DIY_Boss_Rush_Game
             base.Draw(sb);
         }
 
+        /// <summary>
+        /// Chooses a new action from the current action sequence and sets movement variables
+        /// </summary>
         private void DetermineAction()
         {
+            // If the current action sequence is empty/completed, choose a new one
             if (currentSequence == null || currentSequence.Count <= 0)
             {
                 currentSequence = sequences[random.Next(0, sequences.Count)];
@@ -78,24 +92,30 @@ namespace DIY_Boss_Rush_Game
             isActionFinished = false;
             waitTime = 0;
 
-
+            // Used for determining where the boss will move 
+            // Play screen's width and height
             int width = 1920;
             int height = 1080;
+            // How many pixels the boss will stay away from the edge of the screen 
+            // when determining movement
             int buffer = 50;
 
             playerPos = Player.pos;
 
             if (currentAction == Action.Move)
             {
+                // Choose a random position on the screen to move to
                 selectedMovePos = new Vector2(random.Next(buffer, width - buffer), 
                     random.Next(buffer, height - buffer));
             }
             else if (currentAction == Action.Retreat)
             {
-                Vector2 awayDirection = Vector2.Normalize(position - playerPos);
+                // Get the direction away from the player
+                Vector2 awayDirection = Vector2.Normalize(pos - playerPos);
 
+                // Find the position a distance away from the player in the correct direction
                 float retreatDistance = 300f;
-                Vector2 targetRetreatPos = position + (awayDirection * retreatDistance);
+                Vector2 targetRetreatPos = pos + (awayDirection * retreatDistance);
                 
                 // Clamp position to stay within bounds
                 selectedMovePos = new Vector2(
@@ -105,6 +125,9 @@ namespace DIY_Boss_Rush_Game
             }
         }
 
+        /// <summary>
+        /// Performs the current action based on the value of currentAction.
+        /// </summary>
         private void DoAction()
         {
             switch (currentAction)
@@ -127,13 +150,22 @@ namespace DIY_Boss_Rush_Game
             }
         }
 
+        /// <summary>
+        /// Moves the entity toward the specified destination at a speed modified by the given multiplier.
+        /// </summary>
+        /// <param name="destination">The target position to move toward.</param>
+        /// <param name="speedMult">The multiplier applied to the movement speed. Defaults to 1.</param>
         private void Move(Vector2 destination, float speedMult = 1)
         {
-            Vector2 direction = Vector2.Normalize(destination - position);
+            // Find the direction to move in
+            Vector2 direction = Vector2.Normalize(destination - pos);
+            // Move a small amount towards the move position based on the speedMult and SpeedStat
             Vector2 movement = direction * speedMult * SpeedStat * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position += movement;
+            // Add the movement vector to the boss's position
+            pos += movement;
 
-            if (Vector2.DistanceSquared(position, destination) <= 25f)
+            // If the distance to the destination is less than 5, end the action
+            if (Vector2.DistanceSquared(pos, destination) <= 25f)
             {
                 isActionFinished = true;
             }
@@ -141,33 +173,53 @@ namespace DIY_Boss_Rush_Game
 
         private void Attack()
         {
+            // Get the direction towards the player
+            Vector2 direction = Vector2.Normalize(pos + playerPos);
+            float bulletSpeed = 1f;
+            int bulletRadius = 3;
 
+            bulletManager.CreateBullet(bulletSpeed, DamageStat, null, Rectangle.Empty, direction, pos, bulletRadius, false);
         }
 
+        /// <summary>
+        /// Waits a number of seconds before continuing 
+        /// </summary>
+        /// <param name="timeToWait">Time in seconds to wait</param>
         private void Wait(float timeToWait)
         {
+            // Add time since last frame to waitTime
             waitTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (waitTime >= 3f)
+            // End the action if enough time has passed
+            if (waitTime >= timeToWait)
             {
                 isActionFinished = true;
             }
         }
 
+        /// <summary>
+        /// Reads action sequences from a file and populates the sequences collection.
+        /// </summary>
+        /// <param name="fileName">The name of the file containing action sequences.</param>
         private void ReadSequences(string fileName)
         {
+            // Creates a stream reader to read the file
             StreamReader sr = new StreamReader("../../../" + fileName);
-
+            
+            // Clear all sequences
             sequences.Clear();
 
             string line = "";
 
+            // Read all lines of the file
             while ((line = sr.ReadLine()) != null)
             {
                 string[] seq = line.Split(',');
 
+                // Add a new sequence
                 sequences.Add(new Queue<Action>());
 
+                // Fill the last sequence with actions
                 for (int i = 0; i < seq.Length; i++)
                 {
                     sequences[^1].Enqueue(Action.Parse<Action>(seq[i]));
