@@ -32,6 +32,7 @@ namespace DIY_Boss_Rush_Game
         // Useful fields
         private GameTime gameTime;
         private Random random;
+        private BulletManager bulletManager;
 
         // Fields used by actions
         private float waitTime;
@@ -51,6 +52,7 @@ namespace DIY_Boss_Rush_Game
             waitTime = 0;
             isActionFinished = true;
             random = new Random();
+            bulletManager = BulletManager.Instance;
         }
 
         /// <summary>
@@ -171,7 +173,12 @@ namespace DIY_Boss_Rush_Game
 
         private void Attack()
         {
-            // TODO: Implement
+            // Get the direction towards the player
+            Vector2 direction = Vector2.Normalize(pos + playerPos);
+            float bulletSpeed = 1f;
+            int bulletRadius = 3;
+
+            bulletManager.CreateBullet(bulletSpeed, DamageStat, null, Rectangle.Empty, direction, pos, bulletRadius, false);
         }
 
         /// <summary>
