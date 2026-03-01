@@ -13,11 +13,8 @@ namespace DIY_Boss_Rush_Game
     /// </summary>
     internal class Character
     {
-        //private Rectangle rect;
-        //public Rectangle Rect { get => rect; }
-        public static Rectangle rect;
         public static Vector2 pos;
-        private Texture2D texture;
+        public static Texture2D texture;
         private int currHealth;
         //private Weapon[] currWeapons;
 
@@ -37,9 +34,8 @@ namespace DIY_Boss_Rush_Game
         /// <param name="damageStat"></param>
         /// <param name="speedStat"></param>
         /// <param name="critStat"></param>
-        public Character(Rectangle rect, Vector2 pos, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat)
+        public Character(Vector2 pos, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat)
         {
-            Character.rect = rect;
             Character.pos = pos;
             this.texture = texture;
             this.HealthStat = healthStat;
@@ -77,7 +73,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, rect.Width, rect.Height), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
         }
 
         /// <summary>

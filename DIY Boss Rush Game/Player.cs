@@ -24,7 +24,7 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         /// <param name="pos"></param>
         /// <param name="tex"></param>
-        public Player(Vector2 pos, Texture2D tex) : base(new Rectangle(0, 0, 50, 50), pos, tex, 10, 10, 5, 5)
+        public Player(Vector2 pos, Texture2D tex) : base(pos, tex, 10, 10, 5, 5)
         {
 
         }
