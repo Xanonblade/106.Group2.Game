@@ -93,6 +93,7 @@ namespace DIY_Boss_Rush_Game
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("test17"));
             boss = new Boss[1];
             boss[0] = new Boss(new Rectangle(300, 300, 50, 50), Content.Load<Texture2D>("test17"), 10, 10, 5, 5);
+            
 
             base.Initialize();
         }
@@ -175,11 +176,14 @@ namespace DIY_Boss_Rush_Game
                 {
                     // Move GameState
                     gameState = GameState.Game;
+
+
                 }
             }
             else if (gameState == GameState.Game)
             {
-
+                // Update player stats based on stat variable, for now just speed
+                player.Update(gameTime);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -221,6 +225,10 @@ namespace DIY_Boss_Rush_Game
             {
                 // Draw arena
                 DrawArena(_spriteBatch);
+
+                // Draw player and boss
+                player.Draw(_spriteBatch);
+                boss[0].Draw(_spriteBatch);
             }
             else if (gameState == GameState.GameOver)
             {
