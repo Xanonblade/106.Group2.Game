@@ -138,7 +138,7 @@ namespace DIY_Boss_Rush_Game
 
 
             // Read in arena file
-            LoadArena("D:\\Profiles\\lhk4290\\Documents\\GitHub\\106.Group2.Game\\DIY Boss Rush Game\\Content\\ArenaV1.level");
+            LoadArena("Content/ArenaV1.level");
         }
 
         protected override void Update(GameTime gameTime)
