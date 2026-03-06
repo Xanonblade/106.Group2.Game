@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.IO;
 
 
@@ -42,11 +43,42 @@ namespace DIY_Boss_Rush_Game
         // Array to read in external files
         private Texture2D[,] tiles;
 
+        // Textures for background tiles to hold
+        private Texture2D wallN0;
+        private Texture2D wallN1;
+        private Texture2D wallN2;
+        private Texture2D wallE0;
+        private Texture2D wallE1;
+        private Texture2D wallE2;
+        private Texture2D wallS0;
+        private Texture2D wallS1;
+        private Texture2D wallS2;
+        private Texture2D wallW0;
+        private Texture2D wallW1;
+        private Texture2D wallW2;
+        private Texture2D cornerNW;
+        private Texture2D cornerNE;
+        private Texture2D cornerSW;
+        private Texture2D cornerSE;
+        private Texture2D ground;
+
+        // Hold player and boss objects
+        private Player player;
+        private Boss[] boss;
+
+        // Hold bullet manager
+        private BulletManager bulletManager;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            // change graphics settings here
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.IsFullScreen = true;
         }
 
         protected override void Initialize()
@@ -57,8 +89,10 @@ namespace DIY_Boss_Rush_Game
             // Temporary stat is 0
             stat = 0;
 
-            // Read in arena file
-            
+            // Initialize boss & player
+            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("test17"));
+            boss = new Boss[1];
+            boss[0] = new Boss(new Rectangle(300, 300, 50, 50), Content.Load<Texture2D>("test17"), 10, 10, 5, 5);
 
             base.Initialize();
         }
@@ -82,6 +116,29 @@ namespace DIY_Boss_Rush_Game
 
             // Create "continue" button
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
+
+            // Load in textures for arena
+            wallN0 = Content.Load<Texture2D>("test0");
+            wallN1 = Content.Load<Texture2D>("test1");
+            wallN2 = Content.Load<Texture2D>("test2");
+            wallE0 = Content.Load<Texture2D>("test3");
+            wallE1 = Content.Load<Texture2D>("test4");
+            wallE2 = Content.Load<Texture2D>("test5");
+            wallS0 = Content.Load<Texture2D>("test6");
+            wallS1 = Content.Load<Texture2D>("test7");
+            wallS2 = Content.Load<Texture2D>("test8");
+            wallW0 = Content.Load<Texture2D>("test9");
+            wallW1 = Content.Load<Texture2D>("test10");
+            wallW2 = Content.Load<Texture2D>("test11");
+            cornerNW = Content.Load<Texture2D>("test12");
+            cornerNE = Content.Load<Texture2D>("test13");
+            cornerSW = Content.Load<Texture2D>("test14");
+            cornerSE = Content.Load<Texture2D>("test15");
+            ground = Content.Load<Texture2D>("test16");
+
+
+            // Read in arena file
+            LoadArena("D:\\Profiles\\lhk4290\\Documents\\GitHub\\106.Group2.Game\\DIY Boss Rush Game\\Content\\ArenaV1.level");
         }
 
         protected override void Update(GameTime gameTime)
@@ -137,7 +194,7 @@ namespace DIY_Boss_Rush_Game
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin();
 
@@ -162,7 +219,8 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Game)
             {
-                
+                // Draw arena
+                DrawArena(_spriteBatch);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -172,6 +230,111 @@ namespace DIY_Boss_Rush_Game
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        // Method to read in arena files
+        public void LoadArena(string file)
+        {
+            // Open stream reader
+            StreamReader reader = new StreamReader(file);
+
+            // try/catch for file reading
+            try
+            {
+                // Determine height and width of the arena
+                int width = int.Parse(reader.ReadLine());
+                int height = int.Parse(reader.ReadLine());
+
+                // Initialize tiles array
+                tiles = new Texture2D[width, height];
+
+                // Loop through each line of the file and read in the tile types
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 0; j < height; j++)
+                    {
+                        // Read in tile type
+                        int tileType = int.Parse(reader.ReadLine());
+
+                        // Assign tile type to the correct texture
+                        switch (tileType)
+                        {
+                            case 0:
+                                tiles[i, j] = wallN0;
+                                break;
+                            case 1:
+                                tiles[i, j] = wallN1;
+                                break;
+                            case 2:
+                                tiles[i, j] = wallN2;
+                                break;
+                            case 3:
+                                tiles[i, j] = wallE0;
+                                break;
+                            case 4:
+                                tiles[i, j] = wallE1;
+                                break;
+                            case 5:
+                                tiles[i, j] = wallE2;
+                                break;
+                            case 6:
+                                tiles[i, j] = wallS0;
+                                break;
+                            case 7:
+                                tiles[i, j] = wallS1;
+                                break;
+                            case 8:
+                                tiles[i, j] = wallS2;
+                                break;
+                            case 9:
+                                tiles[i, j] = wallW0;
+                                break;
+                            case 10:
+                                tiles[i, j] = wallW1;
+                                break;
+                            case 11:
+                                tiles[i, j] = wallW2;
+                                break;
+                            case 12:
+                                tiles[i, j] = cornerNW;
+                                break;
+                            case 13:
+                                tiles[i, j] = cornerNE;
+                                break;
+                            case 14:
+                                tiles[i, j] = cornerSW;
+                                break;
+                            case 15:
+                                tiles[i, j] = cornerSE;
+                                break;
+                            case 16:
+                                tiles[i, j] = ground;
+                                break;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                // Do something here with the exception
+                
+            }
+
+            // Close reader
+            reader.Close();
+
+        }
+
+        // Method to draw arena
+        public void DrawArena(SpriteBatch sb)
+        {
+            for (int i = 0; i < tiles.GetLength(1); i++)
+            {
+                for (int j = 0; j < tiles.GetLength(0); j++)
+                {
+                    sb.Draw(tiles[j, i], new Vector2(j * 64, i * 64), Color.White);
+                }
+            }
         }
     }
 }
