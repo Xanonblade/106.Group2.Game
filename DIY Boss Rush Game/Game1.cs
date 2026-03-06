@@ -90,9 +90,9 @@ namespace DIY_Boss_Rush_Game
             stat = 0;
 
             // Initialize boss & player
-            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("test17"));
+            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("test11"));
             boss = new Boss[1];
-            boss[0] = new Boss(new Rectangle(300, 300, 50, 50), Content.Load<Texture2D>("test17"), 10, 10, 5, 5);
+            boss[0] = new Boss(new Rectangle(300, 300, 100, 100), Content.Load<Texture2D>("test17"), 10, 10, 5, 5);
             
 
             base.Initialize();
@@ -182,7 +182,6 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Game)
             {
-                // Update player stats based on stat variable, for now just speed
                 player.Update(gameTime);
             }
             else if (gameState == GameState.GameOver)
