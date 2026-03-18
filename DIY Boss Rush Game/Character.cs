@@ -68,7 +68,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
+            
         }
 
     }

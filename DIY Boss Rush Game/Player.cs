@@ -41,7 +41,7 @@ namespace DIY_Boss_Rush_Game
             float bulletSpeed = 1f;
             int bulletRadius = 3;
 
-            bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, pos, bulletRadius, true);
+            //BulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, pos, bulletRadius, true);
         }
 
         /// <summary>
@@ -92,6 +92,11 @@ namespace DIY_Boss_Rush_Game
                 // Attack in the direction of the mouse cursor with the player's current position
                 Attack(dirAim);
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
         }
     }
 }

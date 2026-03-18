@@ -41,7 +41,7 @@ namespace DIY_Boss_Rush_Game
                 if (instance == null || !instance.isInitialized)
                 {
                     // Throw exception if instance is accessed before being configured to ensure proper initialization
-                    throw new InvalidOperationException("BulletManager is not configured. Call Configure() with the necessary parameters before accessing the instance.");
+                    //throw new InvalidOperationException("BulletManager is not configured. Call Configure() with the necessary parameters before accessing the instance.");
                     // Without parameterization, we could just create the instance here without needing to check for initialization, but since we need parameters, we want to ensure that it's properly set up before use.
                 }
                 return instance;

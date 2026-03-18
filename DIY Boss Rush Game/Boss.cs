@@ -75,7 +75,7 @@ namespace DIY_Boss_Rush_Game
 
         public override void Draw(SpriteBatch sb)
         {
-            base.Draw(sb);
+            sb.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace DIY_Boss_Rush_Game
             float bulletSpeed = 1f;
             int bulletRadius = 3;
 
-            bulletManager.CreateBullet(bulletSpeed, DamageStat, Character.BulletTexture, direction, pos, bulletRadius, false);
+            //bulletManager.CreateBullet(bulletSpeed, DamageStat, Character.BulletTexture, direction, pos, bulletRadius, false);
         }
 
         /// <summary>
