@@ -24,6 +24,8 @@ namespace DIY_Boss_Rush_Game
         public int SpeedStat { get; private set; }
         public int CritStat { get; private set; }
 
+        public BulletManager bulletManager { get; set; }
+
         /// <summary>
         /// Sets defaults mostly based on what player chooses in the picker
         /// </summary>
