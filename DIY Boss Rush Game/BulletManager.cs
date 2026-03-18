@@ -108,7 +108,7 @@ namespace DIY_Boss_Rush_Game
         /// Call all bullets update, and also check for collisions here
         /// </summary>
         /// <param name="gameTime"></param>
-        public void UpdateAllBullets(GameTime gameTime)
+        /*public void UpdateAllBullets(GameTime gameTime)
         {
             // Player bullets
             for (int i = 0; i < playerBullets.Count; i++)
@@ -117,7 +117,7 @@ namespace DIY_Boss_Rush_Game
                 bullet.Update(gameTime);
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.tex))
                 {
-                    boss.TakeDamage(bullet.Damage);
+                    //Boss.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }
@@ -130,12 +130,12 @@ namespace DIY_Boss_Rush_Game
                 bullet.Update(gameTime);
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.texture))
                 {
-                    player.TakeDamage(bullet.Damage);
+                    //Player.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }
             }
-        }
+        }*/
 
         /// <summary>
         /// Checks collisions between a circle and rectangle

@@ -15,8 +15,12 @@ namespace DIY_Boss_Rush_Game
     /// </summary>
     internal class Player : Character
     {
+        public static Vector2 pos;
+        public static Texture2D texture;
         private readonly int speedMultiplier = 1; // Helps scale movement
         private readonly int attackMultiplier = 1; // Helps scale attack
+
+        private BulletManager bulletManager;
 
         /// <summary>
         /// Sets player specifics (static pos) and calls base constructor for character stats and texture and rectangle
@@ -24,9 +28,20 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         /// <param name="pos"></param>
         /// <param name="tex"></param>
-        public Player(Vector2 pos, Texture2D tex) : base(pos, tex, 10, 10, 5, 5)
+        public Player(Vector2 pos, Texture2D tex) : base(10, 10, 5, 5)
         {
+            Player.pos = pos;
+            Player.texture = tex;
 
+            bulletManager = BulletManager.Instance;
+        }
+        private void Attack(Vector2 dir)
+        {
+           
+            float bulletSpeed = 1f;
+            int bulletRadius = 3;
+
+            bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, pos, bulletRadius, true);
         }
 
         /// <summary>
@@ -75,7 +90,7 @@ namespace DIY_Boss_Rush_Game
                     dirAim.Normalize(); // Normalize to get direction only
 
                 // Attack in the direction of the mouse cursor with the player's current position
-                base.Attack(attackMultiplier, dirAim, pos);
+                Attack(dirAim);
             }
         }
     }
