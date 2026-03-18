@@ -22,6 +22,8 @@ namespace DIY_Boss_Rush_Game
     /// </summary>
     internal class Boss : Character
     {
+        public static Vector2 pos;
+        public static Texture2D texture;
 
         // Fields for the boss's actions
         private List<Queue<Action>> sequences;
@@ -41,7 +43,7 @@ namespace DIY_Boss_Rush_Game
 
         // Constructor for the boss
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
-            base(rect, Vector2.Zero, texture, healthStat, damageStat, speedStat, critStat)
+            base(healthStat, damageStat, speedStat, critStat)
         {
             sequences = new List<Queue<Action>>();
 
@@ -73,7 +75,7 @@ namespace DIY_Boss_Rush_Game
 
         public override void Draw(SpriteBatch sb)
         {
-            base.Draw(sb);
+            sb.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
         }
 
         /// <summary>
@@ -178,7 +180,7 @@ namespace DIY_Boss_Rush_Game
             float bulletSpeed = 1f;
             int bulletRadius = 3;
 
-            bulletManager.CreateBullet(bulletSpeed, DamageStat, null, Rectangle.Empty, direction, pos, bulletRadius, false);
+            //bulletManager.CreateBullet(bulletSpeed, DamageStat, Character.BulletTexture, direction, pos, bulletRadius, false);
         }
 
         /// <summary>
