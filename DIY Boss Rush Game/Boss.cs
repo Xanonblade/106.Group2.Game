@@ -54,7 +54,7 @@ namespace DIY_Boss_Rush_Game
             waitTime = 0;
             isActionFinished = true;
             random = new Random();
-            bulletManager = BulletManager.Instance;
+            //bulletManager = BulletManager.Instance;
         }
 
         /// <summary>

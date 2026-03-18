@@ -22,6 +22,10 @@ namespace DIY_Boss_Rush_Game
         private Texture2D bulletTexture;
         private bool isInitialized = false;
 
+        // Need instances to have them take damage
+        private Player player;
+        private Boss boss;
+
         /// <summary>
         /// Private constructor for singleton
         /// </summary>
@@ -40,8 +44,10 @@ namespace DIY_Boss_Rush_Game
             {
                 if (instance == null || !instance.isInitialized)
                 {
+                    if (instance.isInitialized) // This is saying object reference not set to an instance of an object
+                        throw new Exception("variable not set to initialized");
                     // Throw exception if instance is accessed before being configured to ensure proper initialization
-                    //throw new InvalidOperationException("BulletManager is not configured. Call Configure() with the necessary parameters before accessing the instance.");
+                    throw new InvalidOperationException("BulletManager is not configured. Call Configure() with the necessary parameters before accessing the instance.");
                     // Without parameterization, we could just create the instance here without needing to check for initialization, but since we need parameters, we want to ensure that it's properly set up before use.
                 }
                 return instance;
@@ -53,13 +59,15 @@ namespace DIY_Boss_Rush_Game
         /// Remove if no longer needing a parameter
         /// </summary>
         /// <param name="bulletTexture"></param>
-        public static void Configure(Texture2D bulletTexture)
+        public static void Configure(Texture2D bulletTexture, Player player, Boss boss)
         {
             
             if (instance == null)
             {
                 instance = new BulletManager();
                 instance.bulletTexture = bulletTexture;
+                instance.player = player;
+                instance.boss = boss;
                 instance.isInitialized = true;
             }
             else
@@ -108,14 +116,14 @@ namespace DIY_Boss_Rush_Game
         /// Call all bullets update, and also check for collisions here
         /// </summary>
         /// <param name="gameTime"></param>
-        /*public void UpdateAllBullets(GameTime gameTime)
+        public void UpdateAllBullets(GameTime gameTime)
         {
             // Player bullets
             for (int i = 0; i < playerBullets.Count; i++)
             {
                 Bullet bullet = playerBullets[i];
                 bullet.Update(gameTime);
-                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.tex))
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.texture))
                 {
                     //Boss.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
@@ -135,7 +143,7 @@ namespace DIY_Boss_Rush_Game
                     i--; // Decrement index to account for removed bullet
                 }
             }
-        }*/
+        }
 
         /// <summary>
         /// Checks collisions between a circle and rectangle
@@ -145,11 +153,11 @@ namespace DIY_Boss_Rush_Game
         /// <param name="rectTopLeft"></param>
         /// <param name="widthHeightRectangle">Doesn't need position</param>
         /// <returns></returns>
-        private bool CheckCircleRectCollision(Vector2 center, int radius, Vector2 rectTopLeft, Rectangle widthHeightRectangle)
+        private bool CheckCircleRectCollision(Vector2 center, int radius, Vector2 rectTopLeft, Texture2D texture)
         {
             // Find the closest point on the rectangle to the circle's center
-            float closestX = Math.Clamp(center.X, rectTopLeft.X, rectTopLeft.X + widthHeightRectangle.Width);
-            float closestY = Math.Clamp(center.Y, rectTopLeft.Y, rectTopLeft.Y + widthHeightRectangle.Height);
+            float closestX = Math.Clamp(center.X, rectTopLeft.X, rectTopLeft.X + texture.Width);
+            float closestY = Math.Clamp(center.Y, rectTopLeft.Y, rectTopLeft.Y + texture.Height);
 
             Vector2 closestPoint = new Vector2(closestX, closestY);
 

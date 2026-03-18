@@ -144,8 +144,13 @@ namespace DIY_Boss_Rush_Game
 
 
             // Bullet
-            //bulletManager = new BulletManager();
-            //BulletManager.Configure(wallN2);
+            BulletManager.Configure(wallN2, player, boss[0]);
+            bulletManager = BulletManager.Instance;
+
+            // Call this right after configuring BulletManager, basically need to start bulletManager for characters once configured
+            player.bulletManager = bulletManager;
+            boss[0].bulletManager = bulletManager;
+
         }
 
         protected override void Update(GameTime gameTime)

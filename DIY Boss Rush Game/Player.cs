@@ -20,8 +20,6 @@ namespace DIY_Boss_Rush_Game
         private readonly int speedMultiplier = 1; // Helps scale movement
         private readonly int attackMultiplier = 1; // Helps scale attack
 
-        private BulletManager bulletManager;
-
         /// <summary>
         /// Sets player specifics (static pos) and calls base constructor for character stats and texture and rectangle
         /// Most of the player constructor arguments should be set in picker instead of here once picker is done
@@ -32,8 +30,6 @@ namespace DIY_Boss_Rush_Game
         {
             Player.pos = pos;
             Player.texture = tex;
-
-            bulletManager = BulletManager.Instance;
         }
         private void Attack(Vector2 dir)
         {
