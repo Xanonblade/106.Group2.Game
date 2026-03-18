@@ -182,7 +182,8 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Game)
             {
-                player.Update(gameTime);
+                //player.Update(gameTime);
+                //boss[0].Update(gameTime, player);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -226,7 +227,7 @@ namespace DIY_Boss_Rush_Game
                 DrawArena(_spriteBatch);
 
                 // Draw player and boss
-                player.Draw(_spriteBatch);
+                //player.Draw(_spriteBatch);
                 boss[0].Draw(_spriteBatch);
             }
             else if (gameState == GameState.GameOver)
