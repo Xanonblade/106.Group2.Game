@@ -89,7 +89,7 @@ namespace DIY_Boss_Rush_Game
             {
                 Bullet bullet = playerBullets[i];
                 bullet.Update(gameTime);
-                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.position, Boss.rect))
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.rect))
                 {
                     boss.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
