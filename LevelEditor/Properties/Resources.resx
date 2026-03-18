@@ -119,11 +119,10 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="groundV0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\OfficialSprites\groundV0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-    <comment>16</comment>
+    <value>..\Resources\groundV0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="groundV1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\OfficialSprites\groundV1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\groundV1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>16</comment>
   </data>
   <data name="test0" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -197,5 +196,37 @@
   <data name="test17" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\TestSprites\test17.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>17</comment>
+  </data>
+  <data name="wallE0V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallE0V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>3</comment>
+  </data>
+  <data name="wallE1V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallE1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>4</comment>
+  </data>
+  <data name="wallN0V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallN0V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>0</comment>
+  </data>
+  <data name="wallN1V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallN1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>1</comment>
+  </data>
+  <data name="wallS0V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallS0V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>6</comment>
+  </data>
+  <data name="wallS1V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallS1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>7</comment>
+  </data>
+  <data name="wallW0V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallW0V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>9</comment>
+  </data>
+  <data name="wallW1V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallW1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>10</comment>
   </data>
 </root>
