@@ -1,0 +1,6 @@
+Charge,Attack,Wait,Retreat
+Attack,Wait
+Charge,Retreat,Charge
+Move,Attack,Retreat
+Wait
+Move,Wait,Move
