@@ -234,7 +234,7 @@ namespace HW2_LevelEditor
                             _tileList[i].Tag = "1";
                             break;
                         case "2":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test2,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.wallN2V0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "2";
                             break;
@@ -249,7 +249,7 @@ namespace HW2_LevelEditor
                             _tileList[i].Tag = "4";
                             break;
                         case "5":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test5,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.wallE2V0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "5";
                             break;
@@ -264,7 +264,7 @@ namespace HW2_LevelEditor
                             _tileList[i].Tag = "7";
                             break;
                         case "8":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test8,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.wallS2V0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "8";
                             break;
@@ -279,27 +279,27 @@ namespace HW2_LevelEditor
                             _tileList[i].Tag = "10";
                             break;
                         case "11":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test11,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.wallW2V0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "11";
                             break;
                         case "12":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test12,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.cornerNWV0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "12";
                             break;
                         case "13":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test13,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.cornerNEV0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "13";
                             break;
                         case "14":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test14,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.cornerSWV2,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "14";
                             break;
                         case "15":
-                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.test15,
+                            _tileList[i].BackgroundImage = new Bitmap(Properties.Resources.cornerSEV0,
                             new Size(_tileList[i].Width, _tileList[i].Height));
                             _tileList[i].Tag = "15";
                             break;
