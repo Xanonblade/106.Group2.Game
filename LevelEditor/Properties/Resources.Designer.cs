@@ -63,6 +63,66 @@ namespace HW2_LevelEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cornerNEV0 {
+            get {
+                object obj = ResourceManager.GetObject("cornerNEV0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cornerNWV0 {
+            get {
+                object obj = ResourceManager.GetObject("cornerNWV0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cornerSEV0 {
+            get {
+                object obj = ResourceManager.GetObject("cornerSEV0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cornerSWV0 {
+            get {
+                object obj = ResourceManager.GetObject("cornerSWV0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cornerSWV1 {
+            get {
+                object obj = ResourceManager.GetObject("cornerSWV1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cornerSWV2 {
+            get {
+                object obj = ResourceManager.GetObject("cornerSWV2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap groundV0 {
             get {
                 object obj = ResourceManager.GetObject("groundV0", resourceCulture);
@@ -283,6 +343,16 @@ namespace HW2_LevelEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap wallE2V0 {
+            get {
+                object obj = ResourceManager.GetObject("wallE2V0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap wallN0V0 {
             get {
                 object obj = ResourceManager.GetObject("wallN0V0", resourceCulture);
@@ -296,6 +366,16 @@ namespace HW2_LevelEditor.Properties {
         internal static System.Drawing.Bitmap wallN1V0 {
             get {
                 object obj = ResourceManager.GetObject("wallN1V0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wallN2V0 {
+            get {
+                object obj = ResourceManager.GetObject("wallN2V0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -323,6 +403,16 @@ namespace HW2_LevelEditor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap wallS2V0 {
+            get {
+                object obj = ResourceManager.GetObject("wallS2V0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap wallW0V0 {
             get {
                 object obj = ResourceManager.GetObject("wallW0V0", resourceCulture);
@@ -336,6 +426,16 @@ namespace HW2_LevelEditor.Properties {
         internal static System.Drawing.Bitmap wallW1V0 {
             get {
                 object obj = ResourceManager.GetObject("wallW1V0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wallW2V0 {
+            get {
+                object obj = ResourceManager.GetObject("wallW2V0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

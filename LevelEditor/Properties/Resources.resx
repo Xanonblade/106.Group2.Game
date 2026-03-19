@@ -118,6 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cornerNWV0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cornerNEV0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>12</comment>
+  </data>
+  <data name="cornerNEV0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cornerNWV0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>13</comment>
+  </data>
+  <data name="cornerSEV0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cornerSEV0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>15</comment>
+  </data>
+  <data name="cornerSWV0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\OfficialSprites\Tiles\cornerSWV0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>14</comment>
+  </data>
+  <data name="cornerSWV1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cornerSWV1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>14</comment>
+  </data>
+  <data name="cornerSWV2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cornerSWV2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>14</comment>
+  </data>
   <data name="groundV0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\groundV0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -205,6 +229,10 @@
     <value>..\Resources\wallE1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>4</comment>
   </data>
+  <data name="wallE2V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallE2V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>5</comment>
+  </data>
   <data name="wallN0V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wallN0V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>0</comment>
@@ -212,6 +240,10 @@
   <data name="wallN1V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wallN1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>1</comment>
+  </data>
+  <data name="wallN2V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallN2V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>2</comment>
   </data>
   <data name="wallS0V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wallS0V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -221,6 +253,10 @@
     <value>..\Resources\wallS1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>7</comment>
   </data>
+  <data name="wallS2V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallS2V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>8</comment>
+  </data>
   <data name="wallW0V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wallW0V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>9</comment>
@@ -228,5 +264,9 @@
   <data name="wallW1V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wallW1V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>10</comment>
+  </data>
+  <data name="wallW2V0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wallW2V0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>11</comment>
   </data>
 </root>
