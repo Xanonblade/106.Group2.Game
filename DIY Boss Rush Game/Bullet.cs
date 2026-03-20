@@ -15,7 +15,6 @@ namespace DIY_Boss_Rush_Game
     internal class Bullet
     {
         private Texture2D texture;
-        private Rectangle widthHeightRect;
         private float speed;
         public int Damage { get; private set; }
         public Vector2 UnitDir { get; private set; }
@@ -32,11 +31,10 @@ namespace DIY_Boss_Rush_Game
         /// <param name="unitDir"></param>
         /// <param name="pos"></param>
         /// <param name="radius"></param>
-        public Bullet(float speed, int damage, Texture2D attackTex, Rectangle widthHeightRect, Vector2 unitDir, Vector2 pos, int radius)
+        public Bullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, int radius)
         {
             this.Damage = damage;
             this.texture = attackTex;
-            this.widthHeightRect = widthHeightRect;
             this.speed = speed;
             this.UnitDir = unitDir;
             this.Pos = pos;
@@ -70,9 +68,9 @@ namespace DIY_Boss_Rush_Game
         public void Draw(SpriteBatch spriteBatch, bool isPlayers)
         {
             if (isPlayers)
-                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), widthHeightRect.Width, widthHeightRect.Height), Color.Purple);
+                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Purple);
             else
-                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), widthHeightRect.Width, widthHeightRect.Height), Color.LightYellow);
+                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.LightYellow);
         }
     }
 }

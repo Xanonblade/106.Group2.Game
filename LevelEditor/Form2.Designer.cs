@@ -115,7 +115,7 @@
             // pictureBox3
             // 
             pictureBox3.BackColor = Color.Transparent;
-            pictureBox3.BackgroundImage = Properties.Resources.test15;
+            pictureBox3.BackgroundImage = Properties.Resources.cornerSEV0;
             pictureBox3.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox3.Location = new Point(174, 193);
             pictureBox3.Name = "pictureBox3";
@@ -128,7 +128,7 @@
             // pictureBox4
             // 
             pictureBox4.BackColor = Color.Transparent;
-            pictureBox4.BackgroundImage = Properties.Resources.test14;
+            pictureBox4.BackgroundImage = Properties.Resources.cornerSWV2;
             pictureBox4.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox4.Location = new Point(118, 193);
             pictureBox4.Name = "pictureBox4";
@@ -141,7 +141,7 @@
             // pictureBox5
             // 
             pictureBox5.BackColor = Color.Transparent;
-            pictureBox5.BackgroundImage = Properties.Resources.test13;
+            pictureBox5.BackgroundImage = Properties.Resources.cornerNEV0;
             pictureBox5.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox5.Location = new Point(62, 193);
             pictureBox5.Name = "pictureBox5";
@@ -154,7 +154,7 @@
             // pictureBox6
             // 
             pictureBox6.BackColor = Color.Transparent;
-            pictureBox6.BackgroundImage = Properties.Resources.test11;
+            pictureBox6.BackgroundImage = Properties.Resources.wallW2V0;
             pictureBox6.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox6.Location = new Point(173, 137);
             pictureBox6.Name = "pictureBox6";
@@ -167,7 +167,7 @@
             // pictureBox7
             // 
             pictureBox7.BackColor = Color.Transparent;
-            pictureBox7.BackgroundImage = Properties.Resources.test9;
+            pictureBox7.BackgroundImage = Properties.Resources.wallW0V0;
             pictureBox7.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox7.Location = new Point(62, 137);
             pictureBox7.Name = "pictureBox7";
@@ -180,7 +180,7 @@
             // pictureBox8
             // 
             pictureBox8.BackColor = Color.Transparent;
-            pictureBox8.BackgroundImage = Properties.Resources.test12;
+            pictureBox8.BackgroundImage = Properties.Resources.cornerNWV0;
             pictureBox8.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox8.Location = new Point(6, 193);
             pictureBox8.Name = "pictureBox8";
@@ -193,7 +193,7 @@
             // pictureBox9
             // 
             pictureBox9.BackColor = Color.Transparent;
-            pictureBox9.BackgroundImage = Properties.Resources.test10;
+            pictureBox9.BackgroundImage = Properties.Resources.wallW1V0;
             pictureBox9.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox9.Location = new Point(118, 137);
             pictureBox9.Name = "pictureBox9";
@@ -206,7 +206,7 @@
             // pictureBox10
             // 
             pictureBox10.BackColor = Color.Transparent;
-            pictureBox10.BackgroundImage = Properties.Resources.test8;
+            pictureBox10.BackgroundImage = Properties.Resources.wallS2V0;
             pictureBox10.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox10.Location = new Point(6, 137);
             pictureBox10.Name = "pictureBox10";
@@ -219,7 +219,7 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.Transparent;
-            pictureBox1.BackgroundImage = Properties.Resources.test7;
+            pictureBox1.BackgroundImage = Properties.Resources.wallS1V0;
             pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox1.Location = new Point(174, 81);
             pictureBox1.Name = "pictureBox1";
@@ -232,7 +232,7 @@
             // pictureBox2
             // 
             pictureBox2.BackColor = Color.Transparent;
-            pictureBox2.BackgroundImage = Properties.Resources.test6;
+            pictureBox2.BackgroundImage = Properties.Resources.wallS0V0;
             pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
             pictureBox2.Location = new Point(118, 81);
             pictureBox2.Name = "pictureBox2";
@@ -245,7 +245,7 @@
             // tileGray
             // 
             tileGray.BackColor = Color.Transparent;
-            tileGray.BackgroundImage = Properties.Resources.test5;
+            tileGray.BackgroundImage = Properties.Resources.wallE2V0;
             tileGray.BackgroundImageLayout = ImageLayout.Zoom;
             tileGray.Location = new Point(62, 81);
             tileGray.Name = "tileGray";
@@ -258,7 +258,7 @@
             // tileBrown
             // 
             tileBrown.BackColor = Color.Transparent;
-            tileBrown.BackgroundImage = Properties.Resources.test3;
+            tileBrown.BackgroundImage = Properties.Resources.wallE0V0;
             tileBrown.BackgroundImageLayout = ImageLayout.Zoom;
             tileBrown.Location = new Point(173, 25);
             tileBrown.Name = "tileBrown";
@@ -271,7 +271,7 @@
             // tileBlue
             // 
             tileBlue.BackColor = Color.Transparent;
-            tileBlue.BackgroundImage = Properties.Resources.test1;
+            tileBlue.BackgroundImage = Properties.Resources.wallN1V0;
             tileBlue.BackgroundImageLayout = ImageLayout.Zoom;
             tileBlue.Location = new Point(62, 25);
             tileBlue.Name = "tileBlue";
@@ -284,7 +284,7 @@
             // tileGreen
             // 
             tileGreen.BackColor = Color.Transparent;
-            tileGreen.BackgroundImage = Properties.Resources.test4;
+            tileGreen.BackgroundImage = Properties.Resources.wallE1V0;
             tileGreen.BackgroundImageLayout = ImageLayout.Zoom;
             tileGreen.Location = new Point(6, 81);
             tileGreen.Name = "tileGreen";
@@ -297,7 +297,7 @@
             // tileTan
             // 
             tileTan.BackColor = Color.Transparent;
-            tileTan.BackgroundImage = Properties.Resources.test2;
+            tileTan.BackgroundImage = Properties.Resources.wallN2V0;
             tileTan.BackgroundImageLayout = ImageLayout.Zoom;
             tileTan.Location = new Point(118, 25);
             tileTan.Name = "tileTan";
@@ -310,7 +310,7 @@
             // tileRed
             // 
             tileRed.BackColor = Color.Transparent;
-            tileRed.BackgroundImage = Properties.Resources.test0;
+            tileRed.BackgroundImage = Properties.Resources.wallN0V0;
             tileRed.BackgroundImageLayout = ImageLayout.Zoom;
             tileRed.Location = new Point(6, 25);
             tileRed.Name = "tileRed";

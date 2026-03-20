@@ -93,7 +93,6 @@ namespace DIY_Boss_Rush_Game
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("test11"));
             boss = new Boss[1];
             boss[0] = new Boss(new Rectangle(300, 300, 100, 100), Content.Load<Texture2D>("test17"), 10, 10, 5, 5);
-            
 
             base.Initialize();
         }
@@ -140,6 +139,18 @@ namespace DIY_Boss_Rush_Game
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
+
+            Boss.texture = wallE0;
+
+
+            // Bullet
+            BulletManager.Configure(wallN2, player, boss[0]);
+            bulletManager = BulletManager.Instance;
+
+            // Call this right after configuring BulletManager, basically need to start bulletManager for characters once configured
+            player.bulletManager = bulletManager;
+            boss[0].bulletManager = bulletManager;
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -182,8 +193,8 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Game)
             {
-                //player.Update(gameTime);
-                //boss[0].Update(gameTime, player);
+                player.Update(gameTime);
+                boss[0].Update(gameTime);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -227,7 +238,7 @@ namespace DIY_Boss_Rush_Game
                 DrawArena(_spriteBatch);
 
                 // Draw player and boss
-                //player.Draw(_spriteBatch);
+                player.Draw(_spriteBatch);
                 boss[0].Draw(_spriteBatch);
             }
             else if (gameState == GameState.GameOver)

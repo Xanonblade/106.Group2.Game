@@ -11,20 +11,28 @@ namespace DIY_Boss_Rush_Game
 {
     /// <summary>
     /// Class to keep track of bullets and limit collisions
+    /// For setup, call Configure() with necessary parameters before accessing the instance. This allows for lazy initialization of the singleton, ensuring that it is only created when needed and with the correct parameters.
     /// </summary>
     internal class BulletManager
     {
         private static BulletManager instance;
         private List<Bullet> playerBullets;
         private List<Bullet> enemyBullets;
-        private Boss boss;
+
+        private Texture2D bulletTexture;
+        private bool isInitialized = false;
+
+        // Need instances to have them take damage
         private Player player;
+        private Boss boss;
 
         /// <summary>
         /// Private constructor for singleton
         /// </summary>
         private BulletManager() {
-        // set lists
+            // Initialize bullet lists
+            playerBullets = new List<Bullet>();
+            enemyBullets = new List<Bullet>();
         }
 
         /// <summary>
@@ -34,14 +42,40 @@ namespace DIY_Boss_Rush_Game
         {
             get
             {
-                if (instance == null)
+                if (instance == null || !instance.isInitialized)
                 {
-                    instance = new BulletManager();
+                    if (instance.isInitialized) // This is saying object reference not set to an instance of an object
+                        throw new Exception("variable not set to initialized");
+                    // Throw exception if instance is accessed before being configured to ensure proper initialization
+                    throw new InvalidOperationException("BulletManager is not configured. Call Configure() with the necessary parameters before accessing the instance.");
+                    // Without parameterization, we could just create the instance here without needing to check for initialization, but since we need parameters, we want to ensure that it's properly set up before use.
                 }
                 return instance;
             }
         }
 
+        /// <summary>
+        /// Initializes the singleton with parameter texture.
+        /// Remove if no longer needing a parameter
+        /// </summary>
+        /// <param name="bulletTexture"></param>
+        public static void Configure(Texture2D bulletTexture, Player player, Boss boss)
+        {
+            
+            if (instance == null)
+            {
+                instance = new BulletManager();
+                instance.bulletTexture = bulletTexture;
+                instance.player = player;
+                instance.boss = boss;
+                instance.isInitialized = true;
+            }
+            else
+            {
+                // Optional: handle re-initialization attempts
+                Console.WriteLine("Singleton already configured. Ignoring new parameters.");
+            }
+        }
 
         /// <summary>
         /// Creates a new bullet and adds it to the appropriate list based on whether it's from the player or an enemy.
@@ -54,9 +88,9 @@ namespace DIY_Boss_Rush_Game
         /// <param name="pos"></param>
         /// <param name="radius"></param>
         /// <param name="fromPlayer"></param>
-        public void CreateBullet(float speed, int damage, Texture2D attackTex, Rectangle widthHeightRect, Vector2 unitDir, Vector2 pos, int radius, bool fromPlayer)
+        public void CreateBullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, int radius, bool fromPlayer)
         {
-            Bullet newBullet = new Bullet(speed, damage, attackTex, widthHeightRect, unitDir, pos, radius);
+            Bullet newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius);
 
             if (fromPlayer)
             {
@@ -89,9 +123,9 @@ namespace DIY_Boss_Rush_Game
             {
                 Bullet bullet = playerBullets[i];
                 bullet.Update(gameTime);
-                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.rect))
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.texture))
                 {
-                    boss.TakeDamage(bullet.Damage);
+                    //Boss.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }
@@ -102,9 +136,9 @@ namespace DIY_Boss_Rush_Game
             {
                 Bullet bullet = enemyBullets[i];
                 bullet.Update(gameTime);
-                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.rect))
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.texture))
                 {
-                    player.TakeDamage(bullet.Damage);
+                    //Player.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }
@@ -119,11 +153,11 @@ namespace DIY_Boss_Rush_Game
         /// <param name="rectTopLeft"></param>
         /// <param name="widthHeightRectangle">Doesn't need position</param>
         /// <returns></returns>
-        private bool CheckCircleRectCollision(Vector2 center, int radius, Vector2 rectTopLeft, Rectangle widthHeightRectangle)
+        private bool CheckCircleRectCollision(Vector2 center, int radius, Vector2 rectTopLeft, Texture2D texture)
         {
             // Find the closest point on the rectangle to the circle's center
-            float closestX = Math.Clamp(center.X, rectTopLeft.X, rectTopLeft.X + widthHeightRectangle.Width);
-            float closestY = Math.Clamp(center.Y, rectTopLeft.Y, rectTopLeft.Y + widthHeightRectangle.Height);
+            float closestX = Math.Clamp(center.X, rectTopLeft.X, rectTopLeft.X + texture.Width);
+            float closestY = Math.Clamp(center.Y, rectTopLeft.Y, rectTopLeft.Y + texture.Height);
 
             Vector2 closestPoint = new Vector2(closestX, closestY);
 
