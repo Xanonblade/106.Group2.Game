@@ -90,9 +90,9 @@ namespace DIY_Boss_Rush_Game
             stat = 0;
 
             // Initialize boss & player
-            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("test11"));
+            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("PlayerUC"));
             boss = new Boss[1];
-            boss[0] = new Boss(new Rectangle(300, 300, 100, 100), Content.Load<Texture2D>("test17"), 10, 10, 5, 5);
+            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossUC"), 10, 10, 5, 5);
 
             base.Initialize();
         }
@@ -118,29 +118,29 @@ namespace DIY_Boss_Rush_Game
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
 
             // Load in textures for arena
-            wallN0 = Content.Load<Texture2D>("test0");
-            wallN1 = Content.Load<Texture2D>("test1");
-            wallN2 = Content.Load<Texture2D>("test2");
-            wallE0 = Content.Load<Texture2D>("test3");
-            wallE1 = Content.Load<Texture2D>("test4");
-            wallE2 = Content.Load<Texture2D>("test5");
-            wallS0 = Content.Load<Texture2D>("test6");
-            wallS1 = Content.Load<Texture2D>("test7");
-            wallS2 = Content.Load<Texture2D>("test8");
-            wallW0 = Content.Load<Texture2D>("test9");
-            wallW1 = Content.Load<Texture2D>("test10");
-            wallW2 = Content.Load<Texture2D>("test11");
-            cornerNW = Content.Load<Texture2D>("test12");
-            cornerNE = Content.Load<Texture2D>("test13");
-            cornerSW = Content.Load<Texture2D>("test14");
-            cornerSE = Content.Load<Texture2D>("test15");
-            ground = Content.Load<Texture2D>("test16");
+            wallN0 = Content.Load<Texture2D>("wallN0V0");
+            wallN1 = Content.Load<Texture2D>("wallN1V0");
+            wallN2 = Content.Load<Texture2D>("wallN2V0");
+            wallE0 = Content.Load<Texture2D>("wallE0V0");
+            wallE1 = Content.Load<Texture2D>("wallE1V0");
+            wallE2 = Content.Load<Texture2D>("wallE2V0");
+            wallS0 = Content.Load<Texture2D>("wallS0V0");
+            wallS1 = Content.Load<Texture2D>("wallS1V0");
+            wallS2 = Content.Load<Texture2D>("wallS2V0");
+            wallW0 = Content.Load<Texture2D>("wallW0V0");
+            wallW1 = Content.Load<Texture2D>("wallW1V0");
+            wallW2 = Content.Load<Texture2D>("wallW2V0");
+            cornerNW = Content.Load<Texture2D>("cornerNWV0");
+            cornerNE = Content.Load<Texture2D>("cornerNEV0");
+            cornerSW = Content.Load<Texture2D>("cornerSWV0");
+            cornerSE = Content.Load<Texture2D>("cornerSEV0");
+            ground = Content.Load<Texture2D>("groundV0");
 
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
 
-            Boss.texture = wallE0;
+            Boss.texture = Content.Load<Texture2D>("bossUC");
 
 
             // Bullet
