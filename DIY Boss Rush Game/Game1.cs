@@ -132,15 +132,15 @@ namespace DIY_Boss_Rush_Game
             wallW2 = Content.Load<Texture2D>("wallW2V0");
             cornerNW = Content.Load<Texture2D>("cornerNWV0");
             cornerNE = Content.Load<Texture2D>("cornerNEV0");
-            cornerSW = Content.Load<Texture2D>("cornerSWV0");
+            cornerSW = Content.Load<Texture2D>("cornerSWV2");
             cornerSE = Content.Load<Texture2D>("cornerSEV0");
-            ground = Content.Load<Texture2D>("groundV0");
+            ground = Content.Load<Texture2D>("groundV1");
 
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
 
-            Boss.texture = Content.Load<Texture2D>("bossUC");
+            Boss.texture = Content.Load<Texture2D>("bossC2x");
 
 
             // Bullet
