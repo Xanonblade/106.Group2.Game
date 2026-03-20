@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
+using System.Linq.Expressions;
 
 
 // Enum for each of the GameStates
@@ -27,6 +28,9 @@ namespace DIY_Boss_Rush_Game
         // Hold increase & decrease buttons for customize state
         private Button increaseButton;
         private Button decreaseButton;
+
+        // Hold playAgain button for game over state
+        private Button playAgain;
 
         // Placeholder for stats
         private int stat;
@@ -69,6 +73,21 @@ namespace DIY_Boss_Rush_Game
         // Hold bullet manager
         private BulletManager bulletManager;
 
+        // Hold a copy of all the boss stat's here to reference when resetting
+        // the stats
+        private int bossHealthStat;
+        private int bossDamageStat;
+        private int bossSpeedStat;
+        private int bossCritStat;
+
+        // Hold a copy of all the player stat's here to reference when resetting 
+        // the stats
+        private int playerHealthStat;
+        private int playerDamageStat;
+        private int playerSpeedStat;
+        private int playerCritStat;
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -89,10 +108,24 @@ namespace DIY_Boss_Rush_Game
             // Temporary stat is 0
             stat = 0;
 
-            // Initialize boss & player
+            // Initialize player
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("PlayerUC"));
+
+            // Store initial player stats for reset purposes
+            playerHealthStat = player.HealthStat;
+            playerDamageStat = player.DamageStat;
+            playerSpeedStat = player.SpeedStat;
+            playerCritStat = player.CritStat;
+
+            // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
             boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossUC"), 10, 10, 5, 5);
+
+            // Store initial boss stats for reset purposes
+            bossHealthStat = boss[0].HealthStat;
+            bossDamageStat = boss[0].DamageStat;
+            bossSpeedStat = boss[0].SpeedStat;
+            bossCritStat = boss[0].CritStat;
 
             base.Initialize();
         }
@@ -108,7 +141,7 @@ namespace DIY_Boss_Rush_Game
             buttonSprite = Content.Load<Texture2D>("tempButton");
 
             // Create menu button
-            menuButton = new Button(new Rectangle(100, 100, buttonSprite.Width/4, buttonSprite.Height/4), "Play", buttonSprite);
+            menuButton = new Button(new Rectangle(100, 100, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
 
             // Create increase & decrease button
             increaseButton = new Button(new Rectangle(0, 0, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
@@ -116,6 +149,9 @@ namespace DIY_Boss_Rush_Game
 
             // Create "continue" button
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
+
+            // Create play again button
+            playAgain = new Button(new Rectangle(1256, 940, buttonSprite.Width / 4, buttonSprite.Height / 4), "", buttonSprite);
 
             // Load in textures for arena
             wallN0 = Content.Load<Texture2D>("wallN0V0");
@@ -151,6 +187,10 @@ namespace DIY_Boss_Rush_Game
             player.bulletManager = bulletManager;
             boss[0].bulletManager = bulletManager;
 
+
+
+
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -166,7 +206,7 @@ namespace DIY_Boss_Rush_Game
                 {
                     gameState = GameState.Customize;
                 }
-                
+
             }
             else if (gameState == GameState.Customize)
             {
@@ -176,7 +216,7 @@ namespace DIY_Boss_Rush_Game
                     // Update text
                     stat++;
                 }
-                else if (decreaseButton.SingleClick(previousMouseState)) 
+                else if (decreaseButton.SingleClick(previousMouseState))
                 {
                     // Update text
                     stat--;
@@ -195,16 +235,28 @@ namespace DIY_Boss_Rush_Game
             {
                 player.Update(gameTime);
                 boss[0].Update(gameTime);
+
+                // Check if the player has 0 health to test GameOver state
+                if (player.HealthStat <= 0)
+                    gameState = GameState.GameOver;
+
             }
             else if (gameState == GameState.GameOver)
             {
+                // Check if play again button was clicked
+                if (playAgain.SingleClick(previousMouseState))
+                {
+                    // Reset player and boss stats here
 
+                    // Move gameState back to the customize state
+                    gameState = GameState.Customize;
+                }
             }
 
             // Collect previous mouseState
             previousMouseState = Mouse.GetState();
 
-                base.Update(gameTime);
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -243,7 +295,8 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.GameOver)
             {
-
+                // Draw play again button
+                _spriteBatch.Draw(buttonSprite, playAgain.Rect, Color.White);
             }
 
             _spriteBatch.End();
@@ -336,7 +389,7 @@ namespace DIY_Boss_Rush_Game
             catch (Exception e)
             {
                 // Do something here with the exception
-                
+
             }
 
             // Close reader
@@ -344,7 +397,10 @@ namespace DIY_Boss_Rush_Game
 
         }
 
-        // Method to draw arena
+        /// <summary>
+        /// Method to draw arena
+        /// </summary>
+        /// <param name="sb"></param>
         public void DrawArena(SpriteBatch sb)
         {
             for (int i = 0; i < tiles.GetLength(1); i++)
@@ -354,6 +410,14 @@ namespace DIY_Boss_Rush_Game
                     sb.Draw(tiles[j, i], new Vector2(j * 64, i * 64), Color.White);
                 }
             }
+        }
+
+        /// <summary>
+        /// Reset the stats of the player and boss to their initial values when the player clicks the play again button on the game over screen
+        /// </summary>
+        public void ResetPlayerAndBoss()
+        {
+
         }
     }
 }
