@@ -17,6 +17,15 @@ namespace DIY_Boss_Rush_Game
         Attack,
         Wait
     }
+    
+    public enum AttackType
+    {
+        Shotgun,
+        Single,
+        Circle,
+        Random
+    }
+
     /// <summary>
     /// Holds all of the boss's information and handles its AI
     /// </summary>
@@ -26,7 +35,7 @@ namespace DIY_Boss_Rush_Game
         public static Texture2D texture;
 
         // Fields for the boss's actions
-        private List<Queue<Action>> sequences;
+        private List<List<Action>> sequences;
         private Queue<Action> currentSequence;
         private Action currentAction;
         private bool isActionFinished;
@@ -45,7 +54,7 @@ namespace DIY_Boss_Rush_Game
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
             base(healthStat, damageStat, speedStat, critStat)
         {
-            sequences = new List<Queue<Action>>();
+            sequences = new List<List<Action>>();
 
             // Reads in all of the possile sequences the boss can do
             ReadSequences("BossSequences.txt");
@@ -54,6 +63,7 @@ namespace DIY_Boss_Rush_Game
             waitTime = 0;
             isActionFinished = true;
             random = new Random();
+            pos = new Vector2(400, 400);
             //bulletManager = BulletManager.Instance;
         }
 
@@ -86,7 +96,16 @@ namespace DIY_Boss_Rush_Game
             // If the current action sequence is empty/completed, choose a new one
             if (currentSequence == null || currentSequence.Count <= 0)
             {
-                currentSequence = sequences[random.Next(0, sequences.Count)];
+                List<Action> actions = sequences[random.Next(0, sequences.Count)];
+
+                currentSequence = new Queue<Action>();
+
+                for (int i = 0; i < actions.Count; i++)
+                {
+                    currentSequence.Enqueue(actions[i]);
+                }
+
+                
             }
 
             currentAction = currentSequence.Dequeue();
@@ -97,10 +116,10 @@ namespace DIY_Boss_Rush_Game
             // Used for determining where the boss will move 
             // Play screen's width and height
             int width = 1920;
-            int height = 1080;
+            int height = 1024;
             // How many pixels the boss will stay away from the edge of the screen 
             // when determining movement
-            int buffer = 50;
+            int buffer = 64 + Math.Max(texture.Width, texture.Height);
 
             playerPos = Player.pos;
 
@@ -125,6 +144,20 @@ namespace DIY_Boss_Rush_Game
                     Math.Clamp(targetRetreatPos.Y, buffer, height - buffer)
                 );
             }
+            else if (currentAction == Action.Charge)
+            {
+                Vector2 towardsDirection = Vector2.Normalize(playerPos - pos);
+
+                // Find the position a distance away from the player in the correct direction
+                float chargeDistance = 2000;
+                Vector2 targetRetreatPos = pos + (towardsDirection * chargeDistance);
+
+                // Clamp position to stay within bounds
+                selectedMovePos = new Vector2(
+                    Math.Clamp(targetRetreatPos.X, buffer, width - buffer),
+                    Math.Clamp(targetRetreatPos.Y, buffer, height - buffer)
+                );
+            }
         }
 
         /// <summary>
@@ -138,7 +171,7 @@ namespace DIY_Boss_Rush_Game
                     Move(selectedMovePos, 1);
                     break;
                 case Action.Charge:
-                    Move(playerPos, 1.5f);
+                    Move(selectedMovePos, 4f);
                     break;
                 case Action.Retreat:
                     Move(selectedMovePos, 1);
@@ -161,8 +194,11 @@ namespace DIY_Boss_Rush_Game
         {
             // Find the direction to move in
             Vector2 direction = Vector2.Normalize(destination - pos);
+
+            float moveSpeed = 20f;
+
             // Move a small amount towards the move position based on the speedMult and SpeedStat
-            Vector2 movement = direction * speedMult * SpeedStat * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Vector2 movement = direction * speedMult * SpeedStat * moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             // Add the movement vector to the boss's position
             pos += movement;
 
@@ -176,10 +212,38 @@ namespace DIY_Boss_Rush_Game
         private void Attack()
         {
             // Get the direction towards the player
-            Vector2 direction = Vector2.Normalize(pos + playerPos);
+            Vector2 playerDirection = Vector2.Normalize(pos + playerPos);
             float bulletSpeed = 1f;
             int bulletRadius = 3;
 
+            Random random = new Random();
+
+            AttackType attackType = (AttackType)(random.Next(0, 4));
+
+            switch (attackType)
+            {
+                case AttackType.Shotgun:
+                    // Shoot one bullet at the player with two bullets on either side of it
+                    break;
+                case AttackType.Single:
+                    // Shoot a single bullet at the player
+                    AddBullet(bulletSpeed, bulletRadius, playerDirection);
+                    break;
+                case AttackType.Circle:
+                    // Shoot (12)? bullets in a circle around the boss
+                    break;
+                case AttackType.Random:
+                    // Shoot (12)? bullets in random directions
+                    break;
+            }
+
+            isActionFinished = true;
+
+            //bulletManager.CreateBullet(bulletSpeed, DamageStat, Character.BulletTexture, direction, pos, bulletRadius, false);
+        }
+
+        private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
+        {
             //bulletManager.CreateBullet(bulletSpeed, DamageStat, Character.BulletTexture, direction, pos, bulletRadius, false);
         }
 
@@ -219,12 +283,12 @@ namespace DIY_Boss_Rush_Game
                 string[] seq = line.Split(',');
 
                 // Add a new sequence
-                sequences.Add(new Queue<Action>());
+                sequences.Add(new List<Action>());
 
                 // Fill the last sequence with actions
                 for (int i = 0; i < seq.Length; i++)
                 {
-                    sequences[^1].Enqueue(Action.Parse<Action>(seq[i]));
+                    sequences[^1].Add(Action.Parse<Action>(seq[i]));
                 }
             }
 
