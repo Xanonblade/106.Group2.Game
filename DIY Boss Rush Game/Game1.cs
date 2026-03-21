@@ -247,7 +247,7 @@ namespace DIY_Boss_Rush_Game
                 if (playAgain.SingleClick(previousMouseState))
                 {
                     // Reset player and boss stats here
-
+                    ResetPlayerAndBoss();
                     // Move gameState back to the customize state
                     gameState = GameState.Customize;
                 }
@@ -417,7 +417,17 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public void ResetPlayerAndBoss()
         {
+            // Reset the player's stats
+            player.HealthStat = playerHealthStat;
+            player.DamageStat = playerDamageStat;
+            player.SpeedStat = playerSpeedStat;
+            player.CritStat = playerCritStat;
 
+            // Reset the boss's stats
+            boss[0].HealthStat = bossHealthStat;
+            boss[0].DamageStat = bossDamageStat;
+            boss[0].SpeedStat = bossSpeedStat;
+            boss[0].CritStat = bossCritStat;
         }
     }
 }

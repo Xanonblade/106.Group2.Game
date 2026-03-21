@@ -18,11 +18,11 @@ namespace DIY_Boss_Rush_Game
         //private Weapon[] currWeapons;
 
         // Stats set by picker
-        public int HealthStat { get; private set; }
-        public int DamageStat { get; private set; }
+        public int HealthStat { get; set; }
+        public int DamageStat { get; set; }
 
-        public int SpeedStat { get; private set; }
-        public int CritStat { get; private set; }
+        public int SpeedStat { get; set; }
+        public int CritStat { get; set; }
 
         public BulletManager bulletManager { get; set; }
 
