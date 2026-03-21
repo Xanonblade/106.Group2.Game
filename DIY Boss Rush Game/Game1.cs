@@ -109,7 +109,7 @@ namespace DIY_Boss_Rush_Game
             stat = 0;
 
             // Initialize player
-            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("PlayerUC"));
+            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"));
 
             // Store initial player stats for reset purposes
             playerHealthStat = player.HealthStat;
