@@ -19,7 +19,7 @@ namespace DIY_Boss_Rush_Game
         public int Damage { get; private set; }
         public Vector2 UnitDir { get; private set; }
         public Vector2 Pos { get; private set; }
-        public int Radius { get; private set; }
+        public float Radius { get; private set; }
 
         /// <summary>
         /// Sets every field
@@ -31,7 +31,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="unitDir"></param>
         /// <param name="pos"></param>
         /// <param name="radius"></param>
-        public Bullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, int radius)
+        public Bullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius)
         {
             this.Damage = damage;
             this.texture = attackTex;
@@ -53,7 +53,8 @@ namespace DIY_Boss_Rush_Game
             Pos += UnitDir * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Check out of bounds
-            if (Pos.X < -Radius || Pos.X > 800 + Radius || Pos.Y < -Radius || Pos.Y > 600 + Radius)
+            // 64 border but 0 to 1920, 0 to 1024
+            if (Pos.X < -Radius + 64 || Pos.X > 1920 + Radius - 64 || Pos.Y < -Radius + 64 || Pos.Y > 1024 + Radius - 64)
             {
                 // Remove from bulletManager's list
                 BulletManager.Instance.RemoveBullet(this);

@@ -19,6 +19,8 @@ namespace DIY_Boss_Rush_Game
         public static Texture2D texture;
         private readonly int speedMultiplier = 1; // Helps scale movement
         private readonly int attackMultiplier = 1; // Helps scale attack
+        private readonly float attackSpeedDelay = 0.5f; // Helps set attack speed
+        private float timeSinceAttacked = 0.0f;
 
         /// <summary>
         /// Sets player specifics (static pos) and calls base constructor for character stats and texture and rectangle
@@ -35,9 +37,10 @@ namespace DIY_Boss_Rush_Game
         {
            
             float bulletSpeed = 1000f;
-            int bulletRadius = 2;
+            float bulletRadius = 0.3f;
 
-            base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
+            // The "15"s are just hardcoded magic numbers, I don't quite understand why those values work
+            base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2 - 15, pos.Y + texture.Height/2 - 15), bulletRadius, true);
         }
 
         /// <summary>
@@ -74,11 +77,16 @@ namespace DIY_Boss_Rush_Game
             movement *= SpeedStat * speedMultiplier; // Scale movement by speed stat and multiplier
             pos += movement; // Update player Position
 
-            // Attacking
+            // Update timer
+            timeSinceAttacked += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Attack if timer available
             MouseState mouseState = Mouse.GetState();
-            // Add single click or reload functionality later, for now just hold left click to attack
-            if (mouseState.LeftButton == ButtonState.Pressed)
+            if (timeSinceAttacked > attackSpeedDelay && mouseState.LeftButton == ButtonState.Pressed)
             {
+                // Reset timeSinceAttacked
+                timeSinceAttacked -= attackSpeedDelay;
+
                 // Get direction from player to mouse cursor
                 Vector2 mousePos = new Vector2(mouseState.X, mouseState.Y);
                 Vector2 dirAim = mousePos - pos;
