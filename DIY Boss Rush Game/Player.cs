@@ -34,10 +34,10 @@ namespace DIY_Boss_Rush_Game
         private void Attack(Vector2 dir)
         {
            
-            float bulletSpeed = 1f;
-            int bulletRadius = 3;
+            float bulletSpeed = 1000f;
+            int bulletRadius = 2;
 
-            //BulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, pos, bulletRadius, true);
+            base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
         }
 
         /// <summary>
