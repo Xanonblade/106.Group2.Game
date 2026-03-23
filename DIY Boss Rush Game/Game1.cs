@@ -87,6 +87,9 @@ namespace DIY_Boss_Rush_Game
         private int playerSpeedStat;
         private int playerCritStat;
 
+        // Bullet texture
+        private Texture2D bulletTexture;
+
 
         public Game1()
         {
@@ -187,9 +190,9 @@ namespace DIY_Boss_Rush_Game
             player.bulletManager = bulletManager;
             boss[0].bulletManager = bulletManager;
 
-
-
-
+            // Load bullet texture and put it into character class
+            bulletTexture = Content.Load<Texture2D>("bullet1");
+            Character.BulletTexture = bulletTexture;
 
         }
 
