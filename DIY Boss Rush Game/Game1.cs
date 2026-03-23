@@ -238,6 +238,7 @@ namespace DIY_Boss_Rush_Game
             {
                 player.Update(gameTime);
                 boss[0].Update(gameTime);
+                bulletManager.UpdateAllBullets(gameTime);
 
                 // Check if the player has 0 health to test GameOver state
                 if (player.HealthStat <= 0)
@@ -295,6 +296,7 @@ namespace DIY_Boss_Rush_Game
                 // Draw player and boss
                 player.Draw(_spriteBatch);
                 boss[0].Draw(_spriteBatch);
+                bulletManager.DrawAllBulllets(_spriteBatch);
             }
             else if (gameState == GameState.GameOver)
             {
