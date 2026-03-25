@@ -72,10 +72,6 @@ namespace DIY_Boss_Rush_Game
             movement *= SpeedStat * speedMultiplier; // Scale movement by speed stat and multiplier
             pos += movement; // Update player Position
 
-            // Update timer
-            timeSinceAttacked += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // Attack if timer available
             // Screen size - wall size
             int screenWidth = 1920 - 64;
             int screenHeight = 1024 - 64;
@@ -86,6 +82,12 @@ namespace DIY_Boss_Rush_Game
 
             // Attacking
             MouseState mouseState = Mouse.GetState();
+
+            // Update timer if less than ready
+            if (timeSinceAttacked < attackSpeedDelay)
+                timeSinceAttacked += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Able to attack
             if (timeSinceAttacked > attackSpeedDelay && mouseState.LeftButton == ButtonState.Pressed)
             {
                 // Reset timeSinceAttacked
