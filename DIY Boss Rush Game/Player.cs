@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace DIY_Boss_Rush_Game
 {
@@ -34,10 +29,10 @@ namespace DIY_Boss_Rush_Game
         private void Attack(Vector2 dir)
         {
            
-            float bulletSpeed = 1f;
-            int bulletRadius = 3;
+            float bulletSpeed = 1000f;
+            int bulletRadius = 2;
 
-            //BulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, pos, bulletRadius, true);
+            base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
         }
 
         /// <summary>
@@ -73,6 +68,14 @@ namespace DIY_Boss_Rush_Game
                 movement.Normalize(); // Normalize to prevent faster diagonal movement
             movement *= SpeedStat * speedMultiplier; // Scale movement by speed stat and multiplier
             pos += movement; // Update player Position
+
+            // Screen size - wall size
+            int screenWidth = 1920 - 64;
+            int screenHeight = 1024 - 64;
+
+            // Clamp the player's position so it can't move outside of the screen
+            pos.X = Math.Clamp(pos.X, 64, screenWidth - texture.Width);
+            pos.Y = Math.Clamp(pos.Y, 64, screenHeight - texture.Height);
 
             // Attacking
             MouseState mouseState = Mouse.GetState();

@@ -97,6 +97,9 @@ namespace DIY_Boss_Rush_Game
         private int playerSpeedStat;
         private int playerCritStat;
 
+        // Bullet texture
+        private Texture2D bulletTexture;
+
 
         public Game1()
         {
@@ -206,9 +209,9 @@ namespace DIY_Boss_Rush_Game
             player.bulletManager = bulletManager;
             boss[0].bulletManager = bulletManager;
 
-
-
-
+            // Load bullet texture and put it into character class
+            bulletTexture = Content.Load<Texture2D>("bullet1");
+            Character.BulletTexture = bulletTexture;
 
         }
 
@@ -254,6 +257,7 @@ namespace DIY_Boss_Rush_Game
             {
                 player.Update(gameTime);
                 boss[0].Update(gameTime);
+                bulletManager.UpdateAllBullets(gameTime);
 
                 // Check if the player has 0 health to test GameOver state
                 if (player.HealthStat <= 0)
@@ -311,6 +315,8 @@ namespace DIY_Boss_Rush_Game
                 // Draw player and boss
                 player.Draw(_spriteBatch);
                 boss[0].Draw(_spriteBatch);
+                
+                bulletManager.DrawAllBulllets(_spriteBatch);
 
                 //Draw battle UI - INCOMPLETE
                 _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
@@ -319,6 +325,8 @@ namespace DIY_Boss_Rush_Game
 
                 _spriteBatch.Draw(uiPlayerTop, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
+                
+                
             }
             else if (gameState == GameState.GameOver)
             {
