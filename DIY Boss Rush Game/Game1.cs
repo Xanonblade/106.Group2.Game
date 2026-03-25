@@ -29,6 +29,9 @@ namespace DIY_Boss_Rush_Game
         private Button increaseButton;
         private Button decreaseButton;
 
+        // Stat rectangle
+        private Rectangle healthRectangle;
+
         // Hold button to switch between boss and player customization
         private Button switchToBossCustomization;
         private Button switchToPlayerCustomization;
@@ -174,6 +177,9 @@ namespace DIY_Boss_Rush_Game
             // Create play again button
             playAgain = new Button(new Rectangle(1256, 940, buttonSprite.Width / 4, buttonSprite.Height / 4), "", buttonSprite);
 
+            // Create stat button for health
+            healthRectangle = new Rectangle(100, 100, buttonSprite.Width, buttonSprite.Height / 4);
+
             // Load in textures for arena
             wallN0 = Content.Load<Texture2D>("wallN0V0");
             wallN1 = Content.Load<Texture2D>("wallN1V0");
@@ -245,11 +251,17 @@ namespace DIY_Boss_Rush_Game
                 {
                     // Update text
                     stat++;
+
+                    // Decrease/increase health width based on stat variable
+                    healthRectangle.Width += 100;
                 }
                 else if (decreaseButton.SingleClick(previousMouseState))
                 {
                     // Update text
                     stat--;
+
+                    // Decrease/increase health width based on stat variable
+                    healthRectangle.Width -= 100;
                 }
 
                 // Continue button
@@ -258,6 +270,8 @@ namespace DIY_Boss_Rush_Game
                     // Move GameState
                     gameState = GameState.Game;
                 }
+
+
 
                 // Switch to boss customization button
                 if (switchToBossCustomization.SingleClick(previousMouseState))
@@ -329,6 +343,8 @@ namespace DIY_Boss_Rush_Game
 
                 // Draw the switch to boss customization button
                 _spriteBatch.Draw(buttonSprite, switchToBossCustomization.Rect, Color.White);
+
+                _spriteBatch.Draw(ground, healthRectangle, Color.White);
 
             }
             else if (gameState == GameState.CustomizeBoss)
