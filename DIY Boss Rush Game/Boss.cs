@@ -223,7 +223,17 @@ namespace DIY_Boss_Rush_Game
             switch (attackType)
             {
                 case AttackType.Shotgun:
-                    // Shoot one bullet at the player with two bullets on either side of it
+                    // Shoot one bullet at the player with one bullets on either side of it
+
+                    float spreadAngle = MathHelper.Pi / 12; // 15 degrees in radians
+                    Vector2 mainDir = Vector2.Normalize(playerPos - pos);
+                    Vector2 leftDir = Vector2.Transform(mainDir, Matrix.CreateRotationZ(-spreadAngle));
+                    Vector2 rightDir = Vector2.Transform(mainDir, Matrix.CreateRotationZ(spreadAngle));
+
+                    AddBullet(bulletSpeed, bulletRadius, leftDir);
+                    AddBullet(bulletSpeed, bulletRadius, mainDir);
+                    AddBullet(bulletSpeed, bulletRadius, rightDir);
+
                     break;
                 case AttackType.Single:
                     // Shoot a single bullet at the player
@@ -231,9 +241,29 @@ namespace DIY_Boss_Rush_Game
                     break;
                 case AttackType.Circle:
                     // Shoot (12)? bullets in a circle around the boss
+                    int bulletNumCircle = 12;
+                    float angleStep = MathHelper.TwoPi / bulletNumCircle;
+
+                    for (int i = 0; i < bulletNumCircle; i++)
+                    {
+                        float angle = i * angleStep;
+                        Vector2 direction = Vector2.Transform(Vector2.UnitX, Matrix.CreateRotationZ(angle));
+
+                        AddBullet(bulletSpeed, bulletRadius, direction);
+                    }
+
                     break;
                 case AttackType.Random:
                     // Shoot (12)? bullets in random directions
+                    int bulletNumRandom = 12;
+
+                    for (int i = 0; i < bulletNumRandom; i++)
+                    {
+                        double angle = random.NextDouble() * MathHelper.TwoPi;
+                        Vector2 direction = Vector2.Transform(Vector2.UnitX, Matrix.CreateRotationZ((float)angle));
+
+                        AddBullet(bulletSpeed, bulletRadius, direction);
+                    }
                     break;
             }
 

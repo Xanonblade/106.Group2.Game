@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace DIY_Boss_Rush_Game
 {
@@ -81,6 +76,15 @@ namespace DIY_Boss_Rush_Game
             timeSinceAttacked += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Attack if timer available
+            // Screen size - wall size
+            int screenWidth = 1920 - 64;
+            int screenHeight = 1024 - 64;
+
+            // Clamp the player's position so it can't move outside of the screen
+            pos.X = Math.Clamp(pos.X, 64, screenWidth - texture.Width);
+            pos.Y = Math.Clamp(pos.Y, 64, screenHeight - texture.Height);
+
+            // Attacking
             MouseState mouseState = Mouse.GetState();
             if (timeSinceAttacked > attackSpeedDelay && mouseState.LeftButton == ButtonState.Pressed)
             {
