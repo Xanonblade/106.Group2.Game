@@ -88,7 +88,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="pos"></param>
         /// <param name="radius"></param>
         /// <param name="fromPlayer"></param>
-        public void CreateBullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, int radius, bool fromPlayer)
+        public void CreateBullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius, bool fromPlayer)
         {
             Bullet newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius);
 
@@ -153,7 +153,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="rectTopLeft"></param>
         /// <param name="widthHeightRectangle">Doesn't need position</param>
         /// <returns></returns>
-        private bool CheckCircleRectCollision(Vector2 center, int radius, Vector2 rectTopLeft, Texture2D texture)
+        private bool CheckCircleRectCollision(Vector2 center, float radius, Vector2 rectTopLeft, Texture2D texture)
         {
             // Find the closest point on the rectangle to the circle's center
             float closestX = Math.Clamp(center.X, rectTopLeft.X, rectTopLeft.X + texture.Width);
