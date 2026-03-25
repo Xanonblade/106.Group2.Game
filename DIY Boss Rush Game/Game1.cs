@@ -99,7 +99,7 @@ namespace DIY_Boss_Rush_Game
 
         // Hold a copy of all the player stat's here to reference when resetting 
         // the stats
-        private int playerHealthStat;
+        private int playerMaxHealthStat;
         private int playerDamageStat;
         private int playerSpeedStat;
         private int playerCritStat;
@@ -131,8 +131,10 @@ namespace DIY_Boss_Rush_Game
             // Initialize player
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"));
 
+            player.HealthStat = 10;
+
             // Store initial player stats for reset purposes
-            playerHealthStat = player.HealthStat;
+            playerMaxHealthStat = player.HealthStat;
             playerDamageStat = player.DamageStat;
             playerSpeedStat = player.SpeedStat;
             playerCritStat = player.CritStat;
@@ -498,7 +500,7 @@ namespace DIY_Boss_Rush_Game
         public void ResetPlayerAndBoss()
         {
             // Reset the player's stats
-            player.HealthStat = playerHealthStat;
+            player.HealthStat = playerMaxHealthStat;
             player.DamageStat = playerDamageStat;
             player.SpeedStat = playerSpeedStat;
             player.CritStat = playerCritStat;
