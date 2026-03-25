@@ -32,10 +32,10 @@ namespace DIY_Boss_Rush_Game
         {
            
             float bulletSpeed = 1000f;
-            float bulletRadius = 0.3f;
+            float bulletRadius = Character.BulletTexture.Width / 2;
 
             // The "15"s are just hardcoded magic numbers, I don't quite understand why those values work
-            base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2 - 15, pos.Y + texture.Height/2 - 15), bulletRadius, true);
+            base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
         }
 
         /// <summary>

@@ -19,6 +19,7 @@ namespace DIY_Boss_Rush_Game
         public int Damage { get; private set; }
         public Vector2 UnitDir { get; private set; }
         public Vector2 Pos { get; private set; }
+        // This doesn't change texture, and needs to be set manually to reflect textures width and height
         public float Radius { get; private set; }
 
         /// <summary>
