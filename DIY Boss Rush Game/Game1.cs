@@ -66,6 +66,16 @@ namespace DIY_Boss_Rush_Game
         private Texture2D cornerSE;
         private Texture2D ground;
 
+        //Textures for battle UI
+        private Texture2D uiBossMain;
+        private Texture2D uiBossTop;
+        private Texture2D uiBossNub;
+        private Texture2D uiBossBar;
+        private Texture2D uiPlayerMain;
+        private Texture2D uiPlayerTop;
+        private Texture2D uiPlayerNub;
+        private Texture2D uiPlayerBar;
+
         // Hold player and boss objects
         private Player player;
         private Boss[] boss;
@@ -172,6 +182,15 @@ namespace DIY_Boss_Rush_Game
             cornerSE = Content.Load<Texture2D>("cornerSEV0");
             ground = Content.Load<Texture2D>("groundV1");
 
+            //Load textures for battle UI
+            uiBossMain = Content.Load<Texture2D>("uiBossMain");
+            uiBossTop = Content.Load<Texture2D>("uiBossTop");
+            uiBossNub = Content.Load<Texture2D>("uiBossHealthNub");
+            uiBossBar = Content.Load<Texture2D>("uiBossBar");
+            uiPlayerMain = Content.Load<Texture2D>("uiPlayerMain");
+            uiPlayerTop = Content.Load<Texture2D>("uiPlayerTop");
+            uiPlayerNub = Content.Load<Texture2D>("uiPlayerHealthNub");
+            uiPlayerBar = Content.Load<Texture2D>("uiPlayerBar");
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
@@ -292,6 +311,14 @@ namespace DIY_Boss_Rush_Game
                 // Draw player and boss
                 player.Draw(_spriteBatch);
                 boss[0].Draw(_spriteBatch);
+
+                //Draw battle UI - INCOMPLETE
+                _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(uiBossMain, new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(uiPlayerBar, new Vector2(0, 0), new Rectangle(0, 0, (int)(143 + 285 * (double)(player.HealthStat / 10.0)), 1080), Color.White);
+
+                _spriteBatch.Draw(uiPlayerTop, new Vector2(0, 0), Color.White);
+                _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
             }
             else if (gameState == GameState.GameOver)
             {
