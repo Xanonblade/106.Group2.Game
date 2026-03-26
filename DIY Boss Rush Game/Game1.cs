@@ -323,8 +323,11 @@ namespace DIY_Boss_Rush_Game
                 _spriteBatch.Draw(uiBossMain, new Vector2(0, 0), Color.White);
 
                 //REPLACEMENTS: player.HealthStat = player.CurrHealth || 10.0 = player.MaxHealth
-                _spriteBatch.Draw(uiPlayerBar, new Vector2(0), new Rectangle(0, 0, (int)(143 + 285 * (double)(player.HealthStat / 10.0)), 1080), Color.White);
-                _spriteBatch.Draw(uiPlayerNub, new Vector2(0), new Rectangle(0 + (int)(285 - 285 * (double)(player.HealthStat / 10.0)),0,1920,1080), Color.White);
+                _spriteBatch.Draw(uiPlayerBar, new Vector2(0), new Rectangle(0, 0, (int)(143 + 285 * (float)(player.HealthStat / 10.0)), 1080), Color.White);
+                _spriteBatch.Draw(uiPlayerNub, new Vector2(0), new Rectangle(0 + (int)(285 - 285 * (float)(player.HealthStat / 10.0)),0,1920,1080), Color.White);
+
+                _spriteBatch.Draw(uiBossBar, new Vector2(1492 + (285 - (285 * (float)(/*INSERT*/ .5f))), 0),new Rectangle((int)(1492 + (285 - (285 * (float)(/*INSERT*/ .5f))))
+                    ,0,428,1080), Color.White);
 
                 _spriteBatch.Draw(uiPlayerTop, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
