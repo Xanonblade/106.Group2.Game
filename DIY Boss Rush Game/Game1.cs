@@ -35,6 +35,9 @@ namespace DIY_Boss_Rush_Game
         // Placeholder for stats
         private int stat;
 
+        // Public static level to use throughout whole game
+        public static int currentLevel;
+
         // Temporary text
         private SpriteFont font;
 
@@ -75,6 +78,7 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiPlayerTop;
         private Texture2D uiPlayerNub;
         private Texture2D uiPlayerBar;
+        private SpriteFont uiText;
 
         // Hold player and boss objects
         private Player player;
@@ -120,6 +124,9 @@ namespace DIY_Boss_Rush_Game
 
             // Temporary stat is 0
             stat = 0;
+
+            //Current level is 1
+            currentLevel = 1;
 
             // Initialize player
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"));
@@ -194,6 +201,7 @@ namespace DIY_Boss_Rush_Game
             uiPlayerTop = Content.Load<Texture2D>("uiPlayerTop");
             uiPlayerNub = Content.Load<Texture2D>("uiPlayerHealthNub");
             uiPlayerBar = Content.Load<Texture2D>("uiPlayerBar");
+            uiText = Content.Load<SpriteFont>("uiText");
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
@@ -331,8 +339,12 @@ namespace DIY_Boss_Rush_Game
                     new Rectangle(1478, 0,14,1080), Color.White);
                 _spriteBatch.Draw(uiPlayerTop, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
-                
-                
+
+                //Text for battle UI with drop shadow
+                _spriteBatch.DrawString(uiText, $"Score: __", new Vector2(148, 53), Color.Black);
+                _spriteBatch.DrawString(uiText, $"Score: __", new Vector2(150,55), Color.White);
+                _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(145, 86), Color.Black);
+                _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(147, 88), Color.White);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -469,6 +481,9 @@ namespace DIY_Boss_Rush_Game
             boss[0].DamageStat = bossDamageStat;
             boss[0].SpeedStat = bossSpeedStat;
             boss[0].CritStat = bossCritStat;
+
+            //Increase level by one
+            currentLevel++;
         }
     }
 }

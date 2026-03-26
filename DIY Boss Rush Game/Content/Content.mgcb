@@ -527,6 +527,13 @@
 /processorParam:TextureFormat=Color
 /build:uiPlayerTop.png
 
+#begin uiText.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:uiText.spritefont
+
 #begin wallE0V0.png
 /importer:TextureImporter
 /processor:TextureProcessor
