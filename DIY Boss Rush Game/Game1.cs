@@ -322,13 +322,13 @@ namespace DIY_Boss_Rush_Game
                 _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(uiBossMain, new Vector2(0, 0), Color.White);
 
-                //REPLACEMENTS: player.HealthStat = player.CurrHealth || 10.0 = player.MaxHealth
-                _spriteBatch.Draw(uiPlayerBar, new Vector2(0), new Rectangle(0, 0, (int)(143 + 285 * (float)(player.HealthStat / 10.0)), 1080), Color.White);
-                _spriteBatch.Draw(uiPlayerNub, new Vector2(0), new Rectangle(0 + (int)(285 - 285 * (float)(player.HealthStat / 10.0)),0,1920,1080), Color.White);
-
-                _spriteBatch.Draw(uiBossBar, new Vector2(1492 + (285 - (285 * (float)(/*INSERT*/ .5f))), 0),new Rectangle((int)(1492 + (285 - (285 * (float)(/*INSERT*/ .5f))))
-                    ,0,428,1080), Color.White);
-
+                //REPLACEMENTS: boss and player current/max health properties || Count: 5 unresolved
+                _spriteBatch.Draw(uiPlayerBar, new Vector2(0), new Rectangle(0, 0, (int)(143 + 285 * (float)(/*INSERT current/max */ .85f)), 1080), Color.White);
+                _spriteBatch.Draw(uiPlayerNub, new Vector2(0), new Rectangle(0 + (int)(285 - 285 * (float)(/*INSERT current/max */ .85f)),0,1920,1080), Color.White);
+                _spriteBatch.Draw(uiBossBar, new Vector2(1492 + (285 - (285 * (float)(/*INSERT current/max */ .5))), 0),
+                    new Rectangle((int)(1492 + (285 - (285 * (float)(/*INSERT current/max */ .5)))),0,428,1080), Color.White);
+                _spriteBatch.Draw(uiBossNub, new Vector2(1479 + (285 - (285 * (float)(/*INSERT current/max */ .5))), -1), 
+                    new Rectangle(1478, 0,14,1080), Color.White);
                 _spriteBatch.Draw(uiPlayerTop, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
                 
