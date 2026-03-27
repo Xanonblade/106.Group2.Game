@@ -125,7 +125,7 @@ namespace DIY_Boss_Rush_Game
                 bullet.Update(gameTime);
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.texture))
                 {
-                    //Boss.TakeDamage(bullet.Damage);
+                    boss.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }
@@ -138,7 +138,7 @@ namespace DIY_Boss_Rush_Game
                 bullet.Update(gameTime);
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.texture))
                 {
-                    //Player.TakeDamage(bullet.Damage);
+                    player.TakeDamage(bullet.Damage);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }
