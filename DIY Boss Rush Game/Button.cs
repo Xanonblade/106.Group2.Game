@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 // Button Class
 namespace DIY_Boss_Rush_Game
 {
-    internal class Button
+    public class Button
     {
         // Fields
 
@@ -71,5 +71,7 @@ namespace DIY_Boss_Rush_Game
             // In all other cases, return false
             return false;
         }
+
+        
     }
 }

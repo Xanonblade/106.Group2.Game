@@ -25,10 +25,6 @@ namespace DIY_Boss_Rush_Game
         public int SpeedStat { get; set; }
         public int CritStat { get; set; }
 
-        public int CurrHealth { get { return currHealth; } }
-
-        public int MaxHealth { get { return maxHealth; } }
-
         public BulletManager bulletManager { get; set; }
 
         /// <summary>
