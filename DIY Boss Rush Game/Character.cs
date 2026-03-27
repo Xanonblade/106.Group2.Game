@@ -41,7 +41,7 @@ namespace DIY_Boss_Rush_Game
             this.SpeedStat = speedStat;
             this.CritStat = critStat;
             MaxHealth = healthStat * 50; // Set current health to max health at the start
-            CurrHealth = healthStat;
+            CurrHealth = MaxHealth;
         }
 
         /// <summary>
