@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 
 // Enum for each of the GameStates
-enum GameState { Menu, Customize, Game, GameOver }
+enum GameState { Menu, CustomizePlayer, CustomizeBoss, Game, GameOver }
 
 namespace DIY_Boss_Rush_Game
 {
@@ -28,6 +28,13 @@ namespace DIY_Boss_Rush_Game
         // Hold increase & decrease buttons for customize state
         private Button increaseButton;
         private Button decreaseButton;
+
+        // Stat rectangle
+        private Rectangle healthRectangle;
+
+        // Hold button to switch between boss and player customization
+        private Button switchToBossCustomization;
+        private Button switchToPlayerCustomization;
 
         // Hold playAgain button for game over state
         private Button playAgain;
@@ -96,7 +103,7 @@ namespace DIY_Boss_Rush_Game
 
         // Hold a copy of all the player stat's here to reference when resetting 
         // the stats
-        private int playerHealthStat;
+        private int playerMaxHealthStat;
         private int playerDamageStat;
         private int playerSpeedStat;
         private int playerCritStat;
@@ -131,8 +138,10 @@ namespace DIY_Boss_Rush_Game
             // Initialize player
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"));
 
+            player.HealthStat = 10;
+
             // Store initial player stats for reset purposes
-            playerHealthStat = player.HealthStat;
+            playerMaxHealthStat = player.HealthStat;
             playerDamageStat = player.DamageStat;
             playerSpeedStat = player.SpeedStat;
             playerCritStat = player.CritStat;
@@ -170,8 +179,15 @@ namespace DIY_Boss_Rush_Game
             // Create "continue" button
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
 
+            // Create switch customization buttons
+            switchToBossCustomization = new Button(new Rectangle(1850, 50, buttonSprite.Width / 4, buttonSprite.Height / 4), "Boss", buttonSprite);
+            switchToPlayerCustomization = new Button(new Rectangle(50, 50, buttonSprite.Width / 4, buttonSprite.Height / 4), "Player", buttonSprite);
+
             // Create play again button
             playAgain = new Button(new Rectangle(1256, 940, buttonSprite.Width / 4, buttonSprite.Height / 4), "", buttonSprite);
+
+            // Create stat button for health
+            healthRectangle = new Rectangle(100, 100, buttonSprite.Width, buttonSprite.Height / 4);
 
             // Load in textures for arena
             wallN0 = Content.Load<Texture2D>("wallN0V0");
@@ -234,22 +250,28 @@ namespace DIY_Boss_Rush_Game
                 // Create Menu button to play
                 if (menuButton.SingleClick(previousMouseState))
                 {
-                    gameState = GameState.Customize;
+                    gameState = GameState.CustomizePlayer;
                 }
 
             }
-            else if (gameState == GameState.Customize)
+            else if (gameState == GameState.CustomizePlayer)
             {
                 // Check if either button was pressed
                 if (increaseButton.SingleClick(previousMouseState))
                 {
                     // Update text
                     stat++;
+
+                    // Decrease/increase health width based on stat variable
+                    healthRectangle.Width += 100;
                 }
                 else if (decreaseButton.SingleClick(previousMouseState))
                 {
                     // Update text
                     stat--;
+
+                    // Decrease/increase health width based on stat variable
+                    healthRectangle.Width -= 100;
                 }
 
                 // Continue button
@@ -257,8 +279,22 @@ namespace DIY_Boss_Rush_Game
                 {
                     // Move GameState
                     gameState = GameState.Game;
+                }
 
 
+
+                // Switch to boss customization button
+                if (switchToBossCustomization.SingleClick(previousMouseState))
+                {
+                    gameState = GameState.CustomizeBoss;
+                }
+            }
+            else if (gameState == GameState.CustomizeBoss)
+            {
+                // Switch to player customization button
+                if (switchToPlayerCustomization.SingleClick(previousMouseState))
+                {
+                    gameState = GameState.CustomizePlayer;
                 }
             }
             else if (gameState == GameState.Game)
@@ -280,7 +316,7 @@ namespace DIY_Boss_Rush_Game
                     // Reset player and boss stats here
                     ResetPlayerAndBoss();
                     // Move gameState back to the customize state
-                    gameState = GameState.Customize;
+                    gameState = GameState.CustomizePlayer;
                 }
             }
 
@@ -303,7 +339,7 @@ namespace DIY_Boss_Rush_Game
                 // Draw menu button
                 _spriteBatch.Draw(buttonSprite, menuButton.Rect, Color.White);
             }
-            else if (gameState == GameState.Customize)
+            else if (gameState == GameState.CustomizePlayer)
             {
                 // Draw increase and decrease buttons
                 _spriteBatch.Draw(buttonSprite, increaseButton.Rect, Color.Red);
@@ -314,6 +350,17 @@ namespace DIY_Boss_Rush_Game
 
                 // Draw customizeContinue button
                 _spriteBatch.Draw(buttonSprite, customizeContinue.Rect, Color.White);
+
+                // Draw the switch to boss customization button
+                _spriteBatch.Draw(buttonSprite, switchToBossCustomization.Rect, Color.White);
+
+                _spriteBatch.Draw(ground, healthRectangle, Color.White);
+
+            }
+            else if (gameState == GameState.CustomizeBoss)
+            {
+                // Draw the switch to player customization button
+                _spriteBatch.Draw(buttonSprite, switchToPlayerCustomization.Rect, Color.White);
             }
             else if (gameState == GameState.Game)
             {
@@ -471,7 +518,7 @@ namespace DIY_Boss_Rush_Game
         public void ResetPlayerAndBoss()
         {
             // Reset the player's stats
-            player.HealthStat = playerHealthStat;
+            player.HealthStat = playerMaxHealthStat;
             player.DamageStat = playerDamageStat;
             player.SpeedStat = playerSpeedStat;
             player.CritStat = playerCritStat;
