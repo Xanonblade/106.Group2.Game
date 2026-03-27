@@ -14,7 +14,8 @@ namespace DIY_Boss_Rush_Game
     internal class Character
     {
         public static Texture2D BulletTexture;
-        private int currHealth;
+        public int CurrHealth { get; set; }
+        public int MaxHealth { get; private set; }
         //private Weapon[] currWeapons;
 
         // Stats set by picker
@@ -39,7 +40,8 @@ namespace DIY_Boss_Rush_Game
             this.DamageStat = damageStat;
             this.SpeedStat = speedStat;
             this.CritStat = critStat;
-            this.currHealth = healthStat; // Set current health to max health at the start
+            MaxHealth = healthStat * 50; // Set current health to max health at the start
+            CurrHealth = healthStat;
         }
 
         /// <summary>
@@ -49,9 +51,9 @@ namespace DIY_Boss_Rush_Game
         /// <returns></returns>
         public virtual void TakeDamage(int damage)
         {
-            currHealth -= damage;
-            if (currHealth < 0)
-                currHealth = 0;
+            CurrHealth -= damage;
+            if (CurrHealth < 0)
+                CurrHealth = 0;
             // Player and boss finish this method with an override and a base call
         }
 
