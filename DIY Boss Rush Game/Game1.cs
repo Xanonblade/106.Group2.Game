@@ -61,6 +61,9 @@ namespace DIY_Boss_Rush_Game
         // Buttons for final player customization state
         private List<Button> playerCustomizationButtons = new List<Button>();
 
+        // UI for final player customization state
+        private List<Rectangle> playerCustomizationUI = new List<Rectangle>();
+
         // Textures for background tiles to hold
         private Texture2D wallN0;
         private Texture2D wallN1;
@@ -242,8 +245,16 @@ namespace DIY_Boss_Rush_Game
             Character.BulletTexture = bulletTexture;
 
             // Load the buttons for the player customization state
-            AddButton(new Button(new Rectangle(200, 100, 200, 200), "hi", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(400, 200, 50, 50), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(1723, 987, 99, 73), "hi", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 15, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 161, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 311, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 447, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 585, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 721, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 859, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 995, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", bulletTexture), playerCustomizationButtons);
 
         }
 
@@ -264,7 +275,7 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.CustomizePlayer)
             {
-                // Updates the buttons in t
+                // Updates the buttons in one method
                 UpdatePlayerCustomizationButtons(playerCustomizationButtons, previousMouseState);
 
 
@@ -327,7 +338,7 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.CustomizePlayer)
             {
-                DrawPlayerCustomizationButtons(_spriteBatch, playerCustomizationButtons);
+                DrawCustomizationButtons(_spriteBatch, playerCustomizationButtons);
                 /*
                 // Draw increase and decrease buttons
                 _spriteBatch.Draw(buttonSprite, increaseButton.Rect, Color.Red);
@@ -596,10 +607,15 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="buttonArray"></param>
-        public void DrawPlayerCustomizationButtons(SpriteBatch sb, List<Button> buttonArray)
+        public void DrawCustomizationButtons(SpriteBatch sb, List<Button> buttonArray)
         {
             for (int i = 0; i < buttonArray.Count; i++)
                 sb.Draw(bulletTexture, buttonArray[i].Rect, Color.White);
+        }
+
+        public void DrawCustomizationUI(SpriteBatch sb, List<Rectangle> rectangles)
+        {
+            for (int i  = 0; i < rec)
         }
     }
 }
