@@ -113,6 +113,16 @@ namespace DIY_Boss_Rush_Game
         // Bullet texture
         private Texture2D bulletTexture;
 
+        // Multipliers for the stats of the boss and the player
+        private float playerHealthMultiplier = 1;
+        private float playerDamageMultiplier = 1;
+        private float playerSpeedMultiplier = 1;
+        private float playerCritMultiplier = 1;
+        private float bossHealthMultiplier = 1;
+        private float bossDamageMultiplier = 1;
+        private float bossSpeedMultiplier = 1;
+        private float bossCritMultiplier = 1;
+
 
         public Game1()
         {
@@ -551,61 +561,65 @@ namespace DIY_Boss_Rush_Game
                 {
                     case 0:
                         if (buttonArray[i].SingleClick(mouseState))
+                        {
                             gameState = GameState.Game;
+                            // Apply the multipliers to the stats of the player and boss
+                            ApplyMultipliers();
+                        }
                         break;
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.HealthStat += 1;
+                            playerHealthMultiplier += .5f;
                             userInterface[1].Width += 183;
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.HealthStat -= 1;
+                            playerHealthMultiplier -= .5f;
                             userInterface[1].Width -= 183;
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.DamageStat += 1;
+                            playerDamageMultiplier += .5f;
                             userInterface[2].Width += 183;
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.DamageStat -= 1;
+                            playerDamageMultiplier -= .5f;
                             userInterface[2].Width -= 183;
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.SpeedStat += 1;
+                            playerSpeedMultiplier += .5f;
                             userInterface[3].Width += 183;
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.SpeedStat -= 1;
+                            playerSpeedMultiplier -= .5f;
                             userInterface[3].Width -= 183;
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.CritStat += 1;
+                            playerCritMultiplier += .5f;
                             userInterface[4].Width += 183;
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.CritStat -= 1;
+                            playerCritMultiplier -= .5f;
                             userInterface[4].Width -= 183;
                         }
 
@@ -661,56 +675,56 @@ namespace DIY_Boss_Rush_Game
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].HealthStat += 1;
+                            bossHealthMultiplier += .5f;
                             userInterface[1].Width += 183;
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].HealthStat -= 1;
+                            bossHealthMultiplier -= .5f;
                             userInterface[1].Width -= 183;
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].DamageStat += 1;
+                            bossDamageMultiplier -= .5f;
                             userInterface[2].Width += 183;
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].DamageStat -= 1;
+                            bossDamageMultiplier -= .5f;
                             userInterface[2].Width -= 183;
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].SpeedStat += 1;
+                            bossSpeedMultiplier += .5f;
                             userInterface[3].Width += 183;
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].SpeedStat -= 1;
+                            bossSpeedMultiplier -= .5f;
                             userInterface[3].Width -= 183;
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].CritStat += 1;
+                            bossCritMultiplier += .5f;
                             userInterface[4].Width += 183;
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].CritStat -= 1;
+                            bossCritMultiplier -= .5f;
                             userInterface[4].Width -= 183;
                         }
 
@@ -719,5 +733,25 @@ namespace DIY_Boss_Rush_Game
                 
             }
         }
+
+        /// <summary>
+        /// Helper method to apply the multipliers to the player and boss
+        /// </summary>
+        public void ApplyMultipliers()
+        {
+            // Apply multiplier to player
+            this.player.HealthStat = (int)(this.player.HealthStat * playerHealthMultiplier);
+            this.player.DamageStat = (int)(this.player.DamageStat * playerDamageMultiplier);
+            this.player.SpeedStat = (int)(this.player.SpeedStat * playerSpeedMultiplier);
+            this.player.CritStat = (int)(this.player.CritStat * playerCritMultiplier);
+
+            // Apply multiplier to boss
+            this.boss[0].HealthStat = (int)(this.boss[0].HealthStat * playerHealthMultiplier);
+            this.boss[0].DamageStat = (int)(this.boss[0].DamageStat * playerDamageMultiplier);
+            this.boss[0].SpeedStat = (int)(this.boss[0].SpeedStat * playerSpeedMultiplier);
+            this.boss[0].CritStat = (int)(this.boss[0].CritStat * playerCritMultiplier);
+        }
     }
+
+
 }
