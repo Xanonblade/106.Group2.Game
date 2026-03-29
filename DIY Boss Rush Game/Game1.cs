@@ -616,11 +616,11 @@ namespace DIY_Boss_Rush_Game
                 Rectangle buttonRect = buttonArray[i].Rect;
 
                 if (i == 0)
-                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, buttonRect, Color.White, (float)(Math.PI / 2), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 1f);
+                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, null, Color.White, (float)(Math.PI / 2), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 0f);
                 else if (i % 2 == 1)
                     sb.Draw(buttonArray[i].Texture, buttonRect, Color.White);
                 else
-                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, buttonRect, Color.White, (float)(Math.PI), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 1f);
+                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, null, Color.White, (float)(Math.PI), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 0f);
             }
                 
         }
