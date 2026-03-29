@@ -59,6 +59,13 @@ namespace DIY_Boss_Rush_Game
         // UI for boss customization state
         private List<ImageUI> bossCustomizationUI = new List<ImageUI>();
 
+        //Elements for title screen
+        private Texture2D uiStartSprite;
+        private Texture2D uiScoreSprite;
+        private Texture2D uiTitleSprite; //Use once we have a title and drawn sprite
+        private Button buttonStart;
+        private Button buttonScore;
+
         // Textures for background tiles to hold
         private Texture2D wallN0;
         private Texture2D wallN1;
@@ -181,6 +188,17 @@ namespace DIY_Boss_Rush_Game
             // Load temporary button sprite
             buttonSprite = Content.Load<Texture2D>("tempButton");
 
+            //Load title screen elements
+            uiStartSprite = Content.Load<Texture2D>("uiTitleStart");
+            uiScoreSprite = Content.Load<Texture2D>("uiTitleScore");
+            buttonStart = new Button(
+                new Rectangle(240,810,uiStartSprite.Width,uiStartSprite.Height),
+                "", uiStartSprite);
+            buttonScore = new Button(
+                new Rectangle(_graphics.PreferredBackBufferWidth - 240 - uiScoreSprite.Width,
+                810,uiScoreSprite.Width,uiScoreSprite.Height),
+                "", uiScoreSprite);
+
             // Create menu button
             menuButton = new Button(new Rectangle(100, 100, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
 
@@ -261,12 +279,17 @@ namespace DIY_Boss_Rush_Game
             // Finite State Machine
             if (gameState == GameState.Menu)
             {
-                // Create Menu button to play
-                if (menuButton.SingleClick(previousMouseState))
+                // Create Start button to play
+                if (buttonStart.SingleClick(previousMouseState))
                 {
                     gameState = GameState.CustomizePlayer;
                 }
-
+                // Scoreboard button
+                if (buttonScore.SingleClick(previousMouseState))
+                {
+                    //gameState = GameState.Scoreboard; - NOT IMPLEMENTED YET
+                }
+                
             }
             else if (gameState == GameState.CustomizePlayer)
             {
@@ -317,8 +340,13 @@ namespace DIY_Boss_Rush_Game
             // Finite State Machine
             if (gameState == GameState.Menu)
             {
-                // Draw menu button
-                _spriteBatch.Draw(buttonSprite, menuButton.Rect, Color.White);
+                // Draw title page buttons
+                _spriteBatch.Draw(uiStartSprite, buttonStart.Rect, Color.White);
+                _spriteBatch.Draw(uiScoreSprite, buttonScore.Rect, Color.White);
+
+                //Logo texture - for now, just spritefont
+                _spriteBatch.DrawString(uiText, "<Title here>",new Vector2(850, 240),
+                    Color.CornflowerBlue);
             }
             else if (gameState == GameState.CustomizePlayer)
             {
@@ -460,9 +488,9 @@ namespace DIY_Boss_Rush_Game
                     }
                 }
             }
-            catch (Exception e)
+            catch
             {
-                // Do something here with the exception
+                //Nothing to do
 
             }
 
