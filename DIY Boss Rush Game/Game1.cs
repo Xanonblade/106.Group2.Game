@@ -239,43 +239,16 @@ namespace DIY_Boss_Rush_Game
             Character.BulletTexture = bulletTexture;
 
             // Load the buttons for the player customization state
-            AddButton(new Button(new Rectangle(1723, 987, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 15, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 161, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 311, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 447, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 585, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 721, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 859, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 995, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            LoadPlayerCustomizationButtons();
 
             // Load the UI for the player customization state
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1086, 0, 10, 1080), ground));
+            LoadPlayerCustomizationUI();
 
             // Load the buttons for the boss customization state
-            AddButton(new Button(new Rectangle(45, 96, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 28, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 160, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 304, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 435, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 568, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 699, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 832, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 963, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            LoadBossCustomizationButtons();
 
             // Load the UI for the boss customization state
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossC2x")));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), ground));
+            LoadBossCustomizationUI();
 
 
         }
@@ -748,6 +721,65 @@ namespace DIY_Boss_Rush_Game
             this.boss[0].DamageStat = (int)(this.boss[0].DamageStat * playerDamageMultiplier);
             this.boss[0].SpeedStat = (int)(this.boss[0].SpeedStat * playerSpeedMultiplier);
             this.boss[0].CritStat = (int)(this.boss[0].CritStat * playerCritMultiplier);
+        }
+
+        /// <summary>
+        /// Helper method to load all the buttons for the player customization
+        /// </summary>
+        public void LoadPlayerCustomizationButtons()
+        {
+            AddButton(new Button(new Rectangle(1723, 987, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 15, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 161, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 311, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 447, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 585, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 721, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 859, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 995, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", bulletTexture), playerCustomizationButtons);
+        }
+
+        /// <summary>
+        /// Helper method to load all the UI for the player customization screen
+        /// </summary>
+        public void LoadPlayerCustomizationUI()
+        {
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1086, 0, 10, 1080), ground));
+        }
+
+        /// <summary>
+        /// Helper method to load all the buttons for the boss customization screen
+        /// </summary>
+        public void LoadBossCustomizationButtons()
+        {
+            AddButton(new Button(new Rectangle(45, 96, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 28, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 160, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 304, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 435, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 568, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 699, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 832, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 963, 99, 73), "", bulletTexture), bossCustomizationButtons);
+        }
+
+        /// <summary>
+        /// Helper method to load all the buttons for the boss customization screen
+        /// </summary>
+        public void LoadBossCustomizationUI()
+        {
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossC2x")));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), ground));
         }
     }
 
