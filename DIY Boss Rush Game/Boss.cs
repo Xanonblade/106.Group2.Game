@@ -287,7 +287,14 @@ namespace DIY_Boss_Rush_Game
 
         private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
         {
-            base.bulletManager.CreateBullet(bulletSpeed, DamageStat, BulletTexture, direction, 
+            // Check if the bullet crits
+            int chance = random.Next(100);
+
+            int crit = 1;
+
+            if (chance >= CritStat * 5) crit = 2;
+
+            base.bulletManager.CreateBullet(bulletSpeed, 7 * DamageStat * crit, BulletTexture, direction, 
                 new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false);
         }
 
