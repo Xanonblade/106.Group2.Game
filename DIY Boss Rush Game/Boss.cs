@@ -23,6 +23,7 @@ namespace DIY_Boss_Rush_Game
         Shotgun,
         Single,
         Circle,
+        DoubleCircle,
         Random
     }
 
@@ -43,7 +44,6 @@ namespace DIY_Boss_Rush_Game
         // Useful fields
         private GameTime gameTime;
         private Random random;
-        private BulletManager bulletManager;
 
         // Fields used by actions
         private float waitTime;
@@ -64,7 +64,7 @@ namespace DIY_Boss_Rush_Game
             isActionFinished = true;
             random = new Random();
             pos = new Vector2(400, 400);
-            //bulletManager = BulletManager.Instance;
+            Boss.texture = texture;
         }
 
         /// <summary>
@@ -213,12 +213,12 @@ namespace DIY_Boss_Rush_Game
         {
             // Get the direction towards the player
             Vector2 playerDirection = Vector2.Normalize(pos + playerPos);
-            float bulletSpeed = 1f;
+            float bulletSpeed = 1000f;
             int bulletRadius = 3;
 
             Random random = new Random();
 
-            AttackType attackType = (AttackType)(random.Next(0, 4));
+            AttackType attackType = (AttackType)(random.Next(0, 5));
 
             switch (attackType)
             {
@@ -237,7 +237,7 @@ namespace DIY_Boss_Rush_Game
                     break;
                 case AttackType.Single:
                     // Shoot a single bullet at the player
-                    AddBullet(bulletSpeed, bulletRadius, playerDirection);
+                    AddBullet(bulletSpeed, bulletRadius, Vector2.Normalize(playerPos - pos));
                     break;
                 case AttackType.Circle:
                     // Shoot (12)? bullets in a circle around the boss
@@ -250,6 +250,21 @@ namespace DIY_Boss_Rush_Game
                         Vector2 direction = Vector2.Transform(Vector2.UnitX, Matrix.CreateRotationZ(angle));
 
                         AddBullet(bulletSpeed, bulletRadius, direction);
+                    }
+
+                    break;
+                case AttackType.DoubleCircle:
+                    // Shoot (12)? bullets in a circle around the boss
+                    int bulletNumDoubleCircle = 12;
+                    float angleStepDouble = MathHelper.TwoPi / bulletNumDoubleCircle;
+
+                    for (int i = 0; i < bulletNumDoubleCircle; i++)
+                    {
+                        float angle = i * angleStepDouble;
+                        Vector2 direction = Vector2.Transform(Vector2.UnitX, Matrix.CreateRotationZ(angle));
+
+                        AddBullet(bulletSpeed, bulletRadius, direction);
+                        AddBullet(bulletSpeed * 0.5f, bulletRadius, direction);
                     }
 
                     break;
@@ -268,13 +283,19 @@ namespace DIY_Boss_Rush_Game
             }
 
             isActionFinished = true;
-
-            //bulletManager.CreateBullet(bulletSpeed, DamageStat, Character.BulletTexture, direction, pos, bulletRadius, false);
         }
 
         private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
         {
-            //bulletManager.CreateBullet(bulletSpeed, DamageStat, Character.BulletTexture, direction, pos, bulletRadius, false);
+            // Check if the bullet crits
+            int chance = random.Next(100);
+
+            int crit = 1;
+
+            if (chance >= CritStat * 5) crit = 2;
+
+            base.bulletManager.CreateBullet(bulletSpeed, 7 * DamageStat * crit, BulletTexture, direction, 
+                new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false);
         }
 
         /// <summary>

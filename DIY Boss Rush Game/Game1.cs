@@ -120,6 +120,16 @@ namespace DIY_Boss_Rush_Game
         // Bullet texture
         private Texture2D bulletTexture;
 
+        // Multipliers for the stats of the boss and the player
+        private float playerHealthMultiplier = 1;
+        private float playerDamageMultiplier = 1;
+        private float playerSpeedMultiplier = 1;
+        private float playerCritMultiplier = 1;
+        private float bossHealthMultiplier = 1;
+        private float bossDamageMultiplier = 1;
+        private float bossSpeedMultiplier = 1;
+        private float bossCritMultiplier = 1;
+
 
         public Game1()
         {
@@ -247,43 +257,16 @@ namespace DIY_Boss_Rush_Game
             Character.BulletTexture = bulletTexture;
 
             // Load the buttons for the player customization state
-            AddButton(new Button(new Rectangle(1723, 987, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 15, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 161, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 311, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 447, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 585, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 721, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 859, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 995, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            LoadPlayerCustomizationButtons();
 
             // Load the UI for the player customization state
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1086, 0, 10, 1080), ground));
+            LoadPlayerCustomizationUI();
 
             // Load the buttons for the boss customization state
-            AddButton(new Button(new Rectangle(45, 96, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 28, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 160, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 304, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 435, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 568, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 699, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 832, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 963, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            LoadBossCustomizationButtons();
 
             // Load the UI for the boss customization state
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossC2x")));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), ground));
+            LoadBossCustomizationUI();
 
 
         }
@@ -577,61 +560,65 @@ namespace DIY_Boss_Rush_Game
                 {
                     case 0:
                         if (buttonArray[i].SingleClick(mouseState))
+                        {
                             gameState = GameState.Game;
+                            // Apply the multipliers to the stats of the player and boss
+                            ApplyMultipliers();
+                        }
                         break;
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.HealthStat += 1;
+                            playerHealthMultiplier += .5f;
                             userInterface[1].Width += 183;
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.HealthStat -= 1;
+                            playerHealthMultiplier -= .5f;
                             userInterface[1].Width -= 183;
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.DamageStat += 1;
+                            playerDamageMultiplier += .5f;
                             userInterface[2].Width += 183;
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.DamageStat -= 1;
+                            playerDamageMultiplier -= .5f;
                             userInterface[2].Width -= 183;
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.SpeedStat += 1;
+                            playerSpeedMultiplier += .5f;
                             userInterface[3].Width += 183;
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.SpeedStat -= 1;
+                            playerSpeedMultiplier -= .5f;
                             userInterface[3].Width -= 183;
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.CritStat += 1;
+                            playerCritMultiplier += .5f;
                             userInterface[4].Width += 183;
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            player.CritStat -= 1;
+                            playerCritMultiplier -= .5f;
                             userInterface[4].Width -= 183;
                         }
 
@@ -687,56 +674,56 @@ namespace DIY_Boss_Rush_Game
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].HealthStat += 1;
+                            bossHealthMultiplier += .5f;
                             userInterface[1].Width += 183;
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].HealthStat -= 1;
+                            bossHealthMultiplier -= .5f;
                             userInterface[1].Width -= 183;
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].DamageStat += 1;
+                            bossDamageMultiplier -= .5f;
                             userInterface[2].Width += 183;
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].DamageStat -= 1;
+                            bossDamageMultiplier -= .5f;
                             userInterface[2].Width -= 183;
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].SpeedStat += 1;
+                            bossSpeedMultiplier += .5f;
                             userInterface[3].Width += 183;
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].SpeedStat -= 1;
+                            bossSpeedMultiplier -= .5f;
                             userInterface[3].Width -= 183;
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].CritStat += 1;
+                            bossCritMultiplier += .5f;
                             userInterface[4].Width += 183;
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            boss[0].CritStat -= 1;
+                            bossCritMultiplier -= .5f;
                             userInterface[4].Width -= 183;
                         }
 
@@ -745,5 +732,84 @@ namespace DIY_Boss_Rush_Game
                 
             }
         }
+
+        /// <summary>
+        /// Helper method to apply the multipliers to the player and boss
+        /// </summary>
+        public void ApplyMultipliers()
+        {
+            // Apply multiplier to player
+            this.player.HealthStat = (int)(this.player.HealthStat * playerHealthMultiplier);
+            this.player.DamageStat = (int)(this.player.DamageStat * playerDamageMultiplier);
+            this.player.SpeedStat = (int)(this.player.SpeedStat * playerSpeedMultiplier);
+            this.player.CritStat = (int)(this.player.CritStat * playerCritMultiplier);
+
+            // Apply multiplier to boss
+            this.boss[0].HealthStat = (int)(this.boss[0].HealthStat * playerHealthMultiplier);
+            this.boss[0].DamageStat = (int)(this.boss[0].DamageStat * playerDamageMultiplier);
+            this.boss[0].SpeedStat = (int)(this.boss[0].SpeedStat * playerSpeedMultiplier);
+            this.boss[0].CritStat = (int)(this.boss[0].CritStat * playerCritMultiplier);
+        }
+
+        /// <summary>
+        /// Helper method to load all the buttons for the player customization
+        /// </summary>
+        public void LoadPlayerCustomizationButtons()
+        {
+            AddButton(new Button(new Rectangle(1723, 987, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 15, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 161, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 311, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 447, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 585, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 721, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 859, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 995, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", bulletTexture), playerCustomizationButtons);
+        }
+
+        /// <summary>
+        /// Helper method to load all the UI for the player customization screen
+        /// </summary>
+        public void LoadPlayerCustomizationUI()
+        {
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 113), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1086, 0, 10, 1080), ground));
+        }
+
+        /// <summary>
+        /// Helper method to load all the buttons for the boss customization screen
+        /// </summary>
+        public void LoadBossCustomizationButtons()
+        {
+            AddButton(new Button(new Rectangle(45, 96, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 28, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 160, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 304, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 435, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 568, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 699, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 832, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 963, 99, 73), "", bulletTexture), bossCustomizationButtons);
+        }
+
+        /// <summary>
+        /// Helper method to load all the buttons for the boss customization screen
+        /// </summary>
+        public void LoadBossCustomizationUI()
+        {
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossC2x")));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), ground));
+        }
     }
+
+
 }
