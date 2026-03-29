@@ -21,7 +21,6 @@ namespace DIY_Boss_Rush_Game
         private string text;
 
         // Holds the button sprite
-        private Texture2D sprite;
         private Microsoft.Xna.Framework.Rectangle rectangle;
         private string v;
         private Texture2D buttonSprite;
@@ -32,6 +31,11 @@ namespace DIY_Boss_Rush_Game
         /// Getter for rect variable
         /// </summary>
         public Rectangle Rect { get { return rect; } }
+
+        /// <summary>
+        /// Getter for the texture variable
+        /// </summary>
+        public Texture2D Texture { get { return buttonSprite; } }
 
         // Constructor
 
@@ -45,7 +49,7 @@ namespace DIY_Boss_Rush_Game
         {
             this.rect = rect;
             this.text = text;
-            this.sprite = sprite;
+            this.buttonSprite = sprite;
         }
 
         // Methods

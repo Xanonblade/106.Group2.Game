@@ -611,7 +611,18 @@ namespace DIY_Boss_Rush_Game
         public void DrawCustomizationButtons(SpriteBatch sb, List<Button> buttonArray)
         {
             for (int i = 0; i < buttonArray.Count; i++)
-                sb.Draw(bulletTexture, buttonArray[i].Rect, Color.White);
+            {
+                // Get button rect to make code cleaner
+                Rectangle buttonRect = buttonArray[i].Rect;
+
+                if (i == 0)
+                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, buttonRect, Color.White, (float)(Math.PI / 2), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 1f);
+                else if (i % 2 == 1)
+                    sb.Draw(buttonArray[i].Texture, buttonRect, Color.White);
+                else
+                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, buttonRect, Color.White, (float)(Math.PI), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 1f);
+            }
+                
         }
 
         /// <summary>
@@ -728,16 +739,17 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public void LoadPlayerCustomizationButtons()
         {
-            AddButton(new Button(new Rectangle(1723, 987, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 15, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 161, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 311, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 447, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 585, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 721, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 859, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(56, 995, 99, 73), "", bulletTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", bulletTexture), playerCustomizationButtons);
+            Texture2D buttonTexture = Content.Load<Texture2D>("uiCustomizeButton");
+            AddButton(new Button(new Rectangle(1723, 987, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 15, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 161, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 311, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 447, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 585, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 721, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 859, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(56, 995, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", buttonTexture), playerCustomizationButtons);
         }
 
         /// <summary>
