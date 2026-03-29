@@ -14,7 +14,7 @@ namespace DIY_Boss_Rush_Game
         {
             get
             {
-                if (Instance == null)
+                if (instance == null)
                 {
                     instance = new ScoreManager();
                 }
