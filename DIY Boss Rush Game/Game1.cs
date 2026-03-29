@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 
 // Enum for each of the GameStates
-enum GameState { Menu, CustomizePlayer, CustomizeBoss, Game, GameOver }
+enum GameState { Menu, Scoreboard, CustomizePlayer, CustomizeBoss, Game, GameOver }
 
 namespace DIY_Boss_Rush_Game
 {
@@ -22,9 +22,6 @@ namespace DIY_Boss_Rush_Game
 
         // Temporary button Sprite
         private Texture2D buttonSprite;
-
-        // Hold menuPlay button
-        private Button menuButton;
 
         // Hold playAgain button for game over state
         private Button playAgain;
@@ -59,12 +56,14 @@ namespace DIY_Boss_Rush_Game
         // UI for boss customization state
         private List<ImageUI> bossCustomizationUI = new List<ImageUI>();
 
-        //Elements for title screen
+        //Elements for title screen and scoreboard
         private Texture2D uiStartSprite;
         private Texture2D uiScoreSprite;
         private Texture2D uiTitleSprite; //Use once we have a title and drawn sprite
+        private Texture2D uiBackSprite;
         private Button buttonStart;
         private Button buttonScore;
+        private Button buttonBack;
 
         // Textures for background tiles to hold
         private Texture2D wallN0;
@@ -188,9 +187,10 @@ namespace DIY_Boss_Rush_Game
             // Load temporary button sprite
             buttonSprite = Content.Load<Texture2D>("tempButton");
 
-            //Load title screen elements
+            //Load title screen and scoreboard elements
             uiStartSprite = Content.Load<Texture2D>("uiTitleStart");
             uiScoreSprite = Content.Load<Texture2D>("uiTitleScore");
+            uiBackSprite = Content.Load<Texture2D>("uiTitleBack");
             buttonStart = new Button(
                 new Rectangle(240,810,uiStartSprite.Width,uiStartSprite.Height),
                 "", uiStartSprite);
@@ -198,9 +198,10 @@ namespace DIY_Boss_Rush_Game
                 new Rectangle(_graphics.PreferredBackBufferWidth - 240 - uiScoreSprite.Width,
                 810,uiScoreSprite.Width,uiScoreSprite.Height),
                 "", uiScoreSprite);
-
-            // Create menu button
-            menuButton = new Button(new Rectangle(100, 100, buttonSprite.Width / 4, buttonSprite.Height / 4), "Play", buttonSprite);
+            buttonBack = new Button(
+                new Rectangle(_graphics.PreferredBackBufferWidth/2 - uiBackSprite.Width/2,
+                810,uiBackSprite.Width,uiBackSprite.Height),
+                "", uiBackSprite);
 
             // Create "continue" button
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
@@ -287,9 +288,16 @@ namespace DIY_Boss_Rush_Game
                 // Scoreboard button
                 if (buttonScore.SingleClick(previousMouseState))
                 {
-                    //gameState = GameState.Scoreboard; - NOT IMPLEMENTED YET
+                    gameState = GameState.Scoreboard;
                 }
-                
+            }
+            else if (gameState == GameState.Scoreboard)
+            {
+                //Go back to title page
+                if (buttonBack.SingleClick(previousMouseState))
+                {
+                    gameState = GameState.Menu;
+                }
             }
             else if (gameState == GameState.CustomizePlayer)
             {
@@ -347,6 +355,13 @@ namespace DIY_Boss_Rush_Game
                 //Logo texture - for now, just spritefont
                 _spriteBatch.DrawString(uiText, "<Title here>",new Vector2(850, 240),
                     Color.CornflowerBlue);
+            }
+            else if (gameState == GameState.Scoreboard)
+            {
+                //Draw back button
+                _spriteBatch.Draw(uiBackSprite, buttonBack.Rect, Color.White);
+
+                //Draw scoreboard itself
             }
             else if (gameState == GameState.CustomizePlayer)
             {
