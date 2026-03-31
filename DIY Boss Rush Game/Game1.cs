@@ -139,6 +139,8 @@ namespace DIY_Boss_Rush_Game
             // change graphics settings here
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
+
+            // Set full screen to true
             _graphics.IsFullScreen = true;
         }
 
@@ -365,13 +367,13 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.CustomizePlayer)
             {
-                DrawCustomizationButtons(_spriteBatch, playerCustomizationButtons);
+                DrawCustomizationButtons(_spriteBatch, playerCustomizationButtons, false);
 
                 DrawCustomizationUI(_spriteBatch, playerCustomizationUI);
             }
             else if (gameState == GameState.CustomizeBoss)
             {
-                DrawCustomizationButtons(_spriteBatch, bossCustomizationButtons);
+                DrawCustomizationButtons(_spriteBatch, bossCustomizationButtons, true);
 
                 DrawCustomizationUI(_spriteBatch, bossCustomizationUI);
 
@@ -651,19 +653,23 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         /// <param name="sb"></param>
         /// <param name="buttonArray"></param>
-        public void DrawCustomizationButtons(SpriteBatch sb, List<Button> buttonArray)
+        public void DrawCustomizationButtons(SpriteBatch sb, List<Button> buttonArray, bool isBoss)
         {
             for (int i = 0; i < buttonArray.Count; i++)
             {
                 // Get button rect to make code cleaner
                 Rectangle buttonRect = buttonArray[i].Rect;
 
-                if (i == 0)
-                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, null, Color.White, (float)(Math.PI / 2), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 0f);
+                if (i == 0 && !isBoss)
+                    sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y - (buttonRect.Height / 2), buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
+                else if (i == 0 && isBoss)
+                    sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X, buttonRect.Y + buttonRect.Height, buttonRect.Width, buttonRect.Height), null, Color.White, (float)(-Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
+                else if (i == 9)
+                    sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y - (buttonRect.Height / 2), buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
                 else if (i % 2 == 1)
                     sb.Draw(buttonArray[i].Texture, buttonRect, Color.White);
                 else
-                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, null, Color.White, (float)(Math.PI), new Vector2(buttonRect.X + (buttonRect.Width / 2), buttonRect.Y + (buttonRect.Height / 2)), SpriteEffects.None, 0f);
+                    sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y + (buttonRect.Height / 2), buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI), new Vector2(0, 0), SpriteEffects.None, 0f);
             }
                 
         }
@@ -813,15 +819,16 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public void LoadBossCustomizationButtons()
         {
-            AddButton(new Button(new Rectangle(45, 96, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 28, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 160, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 304, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 435, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 568, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 699, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 832, 99, 73), "", bulletTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 963, 99, 73), "", bulletTexture), bossCustomizationButtons);
+            Texture2D buttonTexture = Content.Load<Texture2D>("uiCustomizeButton");
+            AddButton(new Button(new Rectangle(45, 96, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 28, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 160, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 304, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 435, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 568, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 699, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 832, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(883, 963, 99, 73), "", buttonTexture), bossCustomizationButtons);
         }
 
         /// <summary>
