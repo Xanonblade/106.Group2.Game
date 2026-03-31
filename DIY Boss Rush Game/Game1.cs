@@ -669,7 +669,7 @@ namespace DIY_Boss_Rush_Game
                 else if (i % 2 == 1)
                     sb.Draw(buttonArray[i].Texture, buttonRect, Color.White);
                 else
-                    sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y + (buttonRect.Height / 2), buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI), new Vector2(0, 0), SpriteEffects.None, 0f);
+                    sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y + buttonRect.Height, buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI), new Vector2(0, 0), SpriteEffects.None, 0f);
             }
                 
         }
@@ -806,12 +806,13 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public void LoadPlayerCustomizationUI()
         {
+            Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
             playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 113), ground));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1086, 0, 10, 1080), ground));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 90), barTexture));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 90), barTexture));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 90), barTexture));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 90), barTexture));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1086, 0, 10, 1080), barTexture));
         }
 
         /// <summary>
