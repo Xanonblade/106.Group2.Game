@@ -16,7 +16,7 @@ namespace DIY_Boss_Rush_Game
     {
         private Texture2D texture;
         private float speed;
-        public int Damage { get; private set; }
+        public float Damage { get; private set; }
         public Vector2 UnitDir { get; private set; }
         public Vector2 Pos { get; private set; }
         // This doesn't change texture, and needs to be set manually to reflect textures width and height
@@ -32,7 +32,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="unitDir"></param>
         /// <param name="pos"></param>
         /// <param name="radius"></param>
-        public Bullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius)
+        public Bullet(float speed, float damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius)
         {
             this.Damage = damage;
             this.texture = attackTex;
