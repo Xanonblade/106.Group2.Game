@@ -14,16 +14,16 @@ namespace DIY_Boss_Rush_Game
     internal class Character
     {
         public static Texture2D BulletTexture;
-        public int CurrHealth { get; set; }
+        public float CurrHealth { get; set; }
         public int MaxHealth { get; private set; }
         //private Weapon[] currWeapons;
 
         // Stats set by picker
-        public int HealthStat { get; set; }
-        public int DamageStat { get; set; }
+        public float HealthStat { get; set; }
+        public float DamageStat { get; set; }
 
-        public int SpeedStat { get; set; }
-        public int CritStat { get; set; }
+        public float SpeedStat { get; set; }
+        public float CritStat { get; set; }
 
         public BulletManager bulletManager { get; set; }
 
@@ -34,13 +34,13 @@ namespace DIY_Boss_Rush_Game
         /// <param name="damageStat"></param>
         /// <param name="speedStat"></param>
         /// <param name="critStat"></param>
-        public Character(int healthStat, int damageStat, int speedStat, int critStat)
+        public Character(float healthStat, float damageStat, float speedStat, float critStat)
         {
             this.HealthStat = healthStat;
             this.DamageStat = damageStat;
             this.SpeedStat = speedStat;
             this.CritStat = critStat;
-            MaxHealth = healthStat * 50; // Set current health to max health at the start
+            MaxHealth = (int)(healthStat * 50f); // Set current health to max health at the start
             CurrHealth = MaxHealth;
         }
 
@@ -49,7 +49,7 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         /// <param name="damage"></param>
         /// <returns></returns>
-        public virtual void TakeDamage(int damage)
+        public virtual void TakeDamage(float damage)
         {
             CurrHealth -= damage;
             if (CurrHealth < 0)
