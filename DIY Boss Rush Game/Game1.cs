@@ -104,17 +104,17 @@ namespace DIY_Boss_Rush_Game
 
         // Hold a copy of all the boss stat's here to reference when resetting
         // the stats
-        private int bossHealthStat;
-        private int bossDamageStat;
-        private int bossSpeedStat;
-        private int bossCritStat;
+        private int bossInitialHealth;
+        private int bossInitialDamage;
+        private int bossInitialSpeed;
+        private int bossInitialCrit;
 
         // Hold a copy of all the player stat's here to reference when resetting 
         // the stats
-        private int playerMaxHealthStat;
-        private int playerDamageStat;
-        private int playerSpeedStat;
-        private int playerCritStat;
+        private int playerInitialHealth;
+        private int playerInitialDamage;
+        private int playerInitialSpeed;
+        private int playerInitialCrit;
 
         // Bullet texture
         private Texture2D bulletTexture;
@@ -155,26 +155,26 @@ namespace DIY_Boss_Rush_Game
             //Current level is 1
             currentLevel = 1;
 
-            // Initialize player
+            // Initialize player || CHANGE CONSTRUCTOR
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"));
 
             player.HealthStat = 10;
 
             // Store initial player stats for reset purposes
-            playerMaxHealthStat = player.HealthStat;
-            playerDamageStat = player.DamageStat;
-            playerSpeedStat = player.SpeedStat;
-            playerCritStat = player.CritStat;
+            playerInitialHealth = player.HealthStat;
+            playerInitialDamage = player.DamageStat;
+            playerInitialSpeed = player.SpeedStat;
+            playerInitialCrit = player.CritStat;
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
             boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossUC"), 10, 10, 5, 5);
 
             // Store initial boss stats for reset purposes
-            bossHealthStat = boss[0].HealthStat;
-            bossDamageStat = boss[0].DamageStat;
-            bossSpeedStat = boss[0].SpeedStat;
-            bossCritStat = boss[0].CritStat;
+            bossInitialHealth = boss[0].HealthStat;
+            bossInitialDamage = boss[0].DamageStat;
+            bossInitialSpeed = boss[0].SpeedStat;
+            bossInitialCrit = boss[0].CritStat;
 
             base.Initialize();
         }
@@ -537,16 +537,16 @@ namespace DIY_Boss_Rush_Game
         public void ResetPlayerAndBoss()
         {
             // Reset the player's stats
-            player.HealthStat = playerMaxHealthStat;
-            player.DamageStat = playerDamageStat;
-            player.SpeedStat = playerSpeedStat;
-            player.CritStat = playerCritStat;
+            player.HealthStat = playerInitialHealth;
+            player.DamageStat = playerInitialDamage;
+            player.SpeedStat = playerInitialSpeed;
+            player.CritStat = playerInitialCrit;
 
             // Reset the boss's stats
-            boss[0].HealthStat = bossHealthStat;
-            boss[0].DamageStat = bossDamageStat;
-            boss[0].SpeedStat = bossSpeedStat;
-            boss[0].CritStat = bossCritStat;
+            boss[0].HealthStat = bossInitialHealth;
+            boss[0].DamageStat = bossInitialDamage;
+            boss[0].SpeedStat = bossInitialSpeed;
+            boss[0].CritStat = bossInitialCrit;
 
             //Increase level by one
             currentLevel++;
