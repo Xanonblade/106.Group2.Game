@@ -88,7 +88,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="pos"></param>
         /// <param name="radius"></param>
         /// <param name="fromPlayer"></param>
-        public void CreateBullet(float speed, int damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius, bool fromPlayer)
+        public void CreateBullet(float speed, float damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius, bool fromPlayer)
         {
             Bullet newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius);
 

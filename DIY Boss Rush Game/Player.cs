@@ -23,11 +23,16 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         /// <param name="pos"></param>
         /// <param name="tex"></param>
-        public Player(Vector2 pos, Texture2D tex) : base(10, 10, 5, 5)
+        public Player(Vector2 pos, Texture2D tex, float healthStat, float damageStat, float speedStat, float critStat) : base(healthStat, damageStat, speedStat, critStat)
         {
             Player.pos = pos;
             Player.texture = tex;
         }
+
+        /// <summary>
+        /// Attacks using bullets, creates a bullet in the direction of the mouse cursor with the player's current position as the origin. The bullet's speed and damage are determined by the player's stats and multipliers.
+        /// </summary>
+        /// <param name="dir"></param>
         private void Attack(Vector2 dir)
         {
            
