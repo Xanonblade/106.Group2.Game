@@ -29,7 +29,10 @@ namespace DIY_Boss_Rush_Game
         public Dictionary<string, int> Scores { get => scores; }
 
         // Constructor
-        private ScoreManager() { }
+        private ScoreManager()
+        {
+            scores = new Dictionary<string, int>();
+        }
 
         /// <summary>
         /// Adds to the current score
@@ -92,24 +95,14 @@ namespace DIY_Boss_Rush_Game
         /// <summary>
         /// Gets the top 5 scores in the dictionary
         /// </summary>
-        /// <returns>Top 5 scores
-        /// If there are less than 5 scores returns all of them</returns>
-        public static Dictionary<string, int> GetTopFiveScore()
+        /// <returns>Top 5 scores as a list of key value pairs</returns>
+        public static List<KeyValuePair<string, int>> GetTopFiveScore()
         {
-            Dictionary<string, int> topFive = new Dictionary<string, int>();
-
-            // If there is less than 5 scores returns all of them
-            if (Instance.scores.Count <= 5)
-            {
-                foreach (KeyValuePair<string, int> score in Instance.scores)
-                {
-                    topFive.Add(score.Key, score.Value);
-                }
-                return topFive;
-            }
+            List<KeyValuePair<string, int>> topFive = new List<KeyValuePair<string, int>>();
 
             // Convert the dictionary to a list so it can be sorted
             List<KeyValuePair<string, int>> scoreList = new List<KeyValuePair<string, int>>();
+
             foreach (KeyValuePair<string, int> score in Instance.scores)
             {
                 scoreList.Add(score);
@@ -128,13 +121,8 @@ namespace DIY_Boss_Rush_Game
                     }
                 }
             }
-
-            // Add the top 5 to the new dictionary
-            for (int i = 0; i < 5; i++)
-            {
-                topFive.Add(scoreList[i].Key, scoreList[i].Value);
-            }
-
+            
+            // Return the sorted list
             return topFive;
 
         }
