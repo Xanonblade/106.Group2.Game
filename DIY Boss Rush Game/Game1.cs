@@ -94,6 +94,7 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiPlayerNub;
         private Texture2D uiPlayerBar;
         private SpriteFont uiText;
+        private SpriteFont uiTextScore;
 
         // Game over texture
         private Texture2D gameOverTexture;
@@ -132,6 +133,9 @@ namespace DIY_Boss_Rush_Game
         private float bossSpeedMultiplier = 1;
         private float bossCritMultiplier = 1;
 
+        // The number of points the player can allocate || BALANCE LATER
+        private int pointsToAllocate = 4;
+
 
         public Game1()
         {
@@ -158,7 +162,7 @@ namespace DIY_Boss_Rush_Game
             //Current level is 1
             currentLevel = 1;
 
-            // Initialize player || CHANGE CONSTRUCTOR
+            // Initialize player
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"), 100f, 10f, 10f, 5f);
 
             player.HealthStat = 10;
@@ -245,6 +249,7 @@ namespace DIY_Boss_Rush_Game
             uiPlayerNub = Content.Load<Texture2D>("uiPlayerHealthNub");
             uiPlayerBar = Content.Load<Texture2D>("uiPlayerBar");
             uiText = Content.Load<SpriteFont>("uiText");
+            uiTextScore = Content.Load < SpriteFont>("uiTextScore");
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
@@ -387,19 +392,91 @@ namespace DIY_Boss_Rush_Game
                 //Draw back button
                 _spriteBatch.Draw(uiBackSprite, buttonBack.Rect, Color.White);
 
+                //Draw scoreboard title
+                _spriteBatch.DrawString(uiTextScore, "~ SCOREBOARD ~", 
+                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 193,60), Color.White);
+
                 //Draw scoreboard itself
+                ScoreManager.LoadScores();
+
+                List<KeyValuePair<string, int>> scoreList = ScoreManager.GetTopFiveScore();
+
+                //Check count of scores to know how to print
+                if (scoreList.Count < 5)
+                {
+                    //Print however many scores exist, + dead space
+                    int scoreCount = 0;
+                    for (int i = 0; i < scoreList.Count; i++)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * i),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * i),
+                            Color.White);
+
+                        //Increase scoreCount to use later for dead spaces
+                        scoreCount++;
+                    }
+
+                    //Print dead spaces
+                    while (scoreCount < 5)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"___",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * scoreCount),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"-",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * scoreCount),
+                            Color.White);
+
+                        //Increase scoreCount until 5
+                        scoreCount++;
+                    }
+                }
+                else
+                {
+                    //Print first 5 scores because they are sorted
+                    for (int i = 0; i < 5; i++)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * i),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * i),
+                            Color.White);
+                    }
+                }
             }
             else if (gameState == GameState.CustomizePlayer)
             {
+                // Helper method to draw all the buttons of the customization state
                 DrawCustomizationButtons(_spriteBatch, playerCustomizationButtons, false);
 
+                // Helper method to draw all the rectangles and images for the customization state
                 DrawCustomizationUI(_spriteBatch, playerCustomizationUI);
+
+                // Helper method to draw all the text for the player customization state
+                DrawPlayerCustomizationText(_spriteBatch);
             }
             else if (gameState == GameState.CustomizeBoss)
             {
+                // Helper method to draw all the buttons of the customization state
                 DrawCustomizationButtons(_spriteBatch, bossCustomizationButtons, true);
 
+                // Helper method to draw all the rectangles and images for the customization state
                 DrawCustomizationUI(_spriteBatch, bossCustomizationUI);
+
+                // Helper method to draw all the text for the boss customization state
+                DrawBossCustomizationText(_spriteBatch);
 
             }
             else if (gameState == GameState.Game)
@@ -616,57 +693,92 @@ namespace DIY_Boss_Rush_Game
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerHealthMultiplier += .5f;
-                            userInterface[1].Width += 183;
+                            // Cap the multiplier at 2x
+                            if (playerHealthMultiplier != 2 && pointsToAllocate != 0) 
+                            {
+                                playerHealthMultiplier += .25f;
+                                userInterface[1].Width += 91;
+                                // Decrement points to allocate
+                                pointsToAllocate--;
+                            }
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerHealthMultiplier -= .5f;
-                            userInterface[1].Width -= 183;
+                            // Cap the multiplier at .5x
+                            if (playerHealthMultiplier != .5f)
+                            {
+                                playerHealthMultiplier -= .25f;
+                                userInterface[1].Width -= 91;
+                                pointsToAllocate++;
+                            }
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerDamageMultiplier += .5f;
-                            userInterface[2].Width += 183;
+                            if (playerDamageMultiplier != 2 && pointsToAllocate != 0)
+                            {
+                                playerDamageMultiplier += .25f;
+                                userInterface[2].Width += 91;
+                                pointsToAllocate--;
+                            }
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerDamageMultiplier -= .5f;
-                            userInterface[2].Width -= 183;
+                            if (playerDamageMultiplier != .5f)
+                            {
+                                playerDamageMultiplier -= .25f;
+                                userInterface[2].Width -= 91;
+                                pointsToAllocate++;
+                            }
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerSpeedMultiplier += .5f;
-                            userInterface[3].Width += 183;
+                            if (playerSpeedMultiplier != 2 && pointsToAllocate != 0)
+                            {
+                                playerSpeedMultiplier += .25f;
+                                userInterface[3].Width += 91;
+                                pointsToAllocate--;
+                            }
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerSpeedMultiplier -= .5f;
-                            userInterface[3].Width -= 183;
+                            if (playerSpeedMultiplier != .5f)
+                            {
+                                playerSpeedMultiplier -= .25f;
+                                userInterface[3].Width -= 91;
+                                pointsToAllocate++;
+                            }
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerCritMultiplier += .5f;
-                            userInterface[4].Width += 183;
+                            if (playerCritMultiplier != 2 && pointsToAllocate != 0)
+                            {
+                                playerCritMultiplier += .25f;
+                                userInterface[4].Width += 91;
+                                pointsToAllocate--;
+                            }
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerCritMultiplier -= .5f;
-                            userInterface[4].Width -= 183;
+                            if (playerCritMultiplier != .5f)
+                            {
+                                playerCritMultiplier -= .25f;
+                                userInterface[4].Width -= 91;
+                                pointsToAllocate++;
+                            }
                         }
 
                         break;
@@ -736,59 +848,92 @@ namespace DIY_Boss_Rush_Game
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossHealthMultiplier += .5f;
-                            userInterface[1].Width += 183;
+                            // Cap the multiplier at 2x
+                            if (bossHealthMultiplier != 2)
+                            {
+                                bossHealthMultiplier += .25f;
+                                userInterface[1].Width += 91;
+                                pointsToAllocate++;
+                            }
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossHealthMultiplier -= .5f;
-                            userInterface[1].Width -= 183;
+                            // Cap the multiplier at .5x
+                            if (bossHealthMultiplier != .5f && pointsToAllocate != 0)
+                            {
+                                bossHealthMultiplier -= .25f;
+                                userInterface[1].Width -= 91;
+                                pointsToAllocate--;
+                            }
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossDamageMultiplier -= .5f;
-                            userInterface[2].Width += 183;
+                            if (bossDamageMultiplier != 2)
+                            {
+                                bossDamageMultiplier += .25f;
+                                userInterface[2].Width += 91;
+                                pointsToAllocate++;
+                            }
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossDamageMultiplier -= .5f;
-                            userInterface[2].Width -= 183;
+                            if (bossDamageMultiplier != .5f && pointsToAllocate != 0)
+                            {
+                                bossDamageMultiplier -= .25f;
+                                userInterface[2].Width -= 91;
+                                pointsToAllocate--;
+                            }
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossSpeedMultiplier += .5f;
-                            userInterface[3].Width += 183;
+                            if (bossSpeedMultiplier != 2)
+                            {
+                                bossSpeedMultiplier += .25f;
+                                userInterface[3].Width += 91;
+                                pointsToAllocate++;
+                            }
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossSpeedMultiplier -= .5f;
-                            userInterface[3].Width -= 183;
+                            if (bossSpeedMultiplier != .5f && pointsToAllocate != 0)
+                            {
+                                bossSpeedMultiplier -= .25f;
+                                userInterface[3].Width -= 91;
+                                pointsToAllocate--;
+                            }
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossCritMultiplier += .5f;
-                            userInterface[4].Width += 183;
+                            if (bossCritMultiplier != 2)
+                            {
+                                bossCritMultiplier += .25f;
+                                userInterface[4].Width += 91;
+                                pointsToAllocate++;
+                            }
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossCritMultiplier -= .5f;
-                            userInterface[4].Width -= 183;
+                            if (bossCritMultiplier != .5f && pointsToAllocate != 0)
+                            {
+                                bossCritMultiplier -= .25f;
+                                userInterface[4].Width -= 91;
+                                pointsToAllocate--;
+                            }
                         }
-
                         break;
                 }
                 
@@ -838,7 +983,7 @@ namespace DIY_Boss_Rush_Game
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
             playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 90), barTexture));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 113, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 90), barTexture));
@@ -867,12 +1012,42 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public void LoadBossCustomizationUI()
         {
+            Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
             bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossC2x")));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), ground));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), ground));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), barTexture));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), barTexture));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), barTexture));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), barTexture));   
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), barTexture));
+        }
+
+        /// <summary>
+        /// Helper method to draw the text for the player customization screen
+        /// </summary>
+        /// <param name="sb"></param>
+        public void DrawPlayerCustomizationText(SpriteBatch sb)
+        {
+            sb.DrawString(uiText, "To Boss Customization", new Vector2(1563, 47), Color.White);
+            sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(1176, 345), Color.White);
+            sb.DrawString(uiText, "Continue", new Vector2(1699, 831), Color.White);
+            sb.DrawString(uiText, "Health Multiplier: " + playerHealthMultiplier, new Vector2(354, 42), Color.White);
+            sb.DrawString(uiText, "Damage Multiplier: " + playerDamageMultiplier, new Vector2(354, 305), Color.White);
+            sb.DrawString(uiText, "Speed Multiplier: " + playerSpeedMultiplier, new Vector2(354, 567), Color.White);
+            sb.DrawString(uiText, "Crit Multiplier: " + playerCritMultiplier, new Vector2(354, 831), Color.White);
+        }
+
+        /// <summary>
+        /// Helper method to draw the text for the boss customization screen
+        /// </summary>
+        /// <param name="sb"></param>
+        public void DrawBossCustomizationText(SpriteBatch sb)
+        {
+            sb.DrawString(uiText, "To Player Customization", new Vector2(35, 36), Color.White);
+            sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(219, 276), Color.White);
+            sb.DrawString(uiText, "Health Multiplier: " + bossHealthMultiplier, new Vector2(1169, 42), Color.White);
+            sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1169, 305), Color.White);
+            sb.DrawString(uiText, "Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
+            sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1169, 831), Color.White);
         }
     }
 
