@@ -99,6 +99,8 @@ namespace DIY_Boss_Rush_Game
         // Game over texture
         private Texture2D gameOverTexture;
 
+        private ScoreManager scoreManager;
+
         // Hold player and boss objects
         private Player player;
         private Boss[] boss;
@@ -155,6 +157,9 @@ namespace DIY_Boss_Rush_Game
         {
             // Menu is default state
             gameState = GameState.Menu;
+
+            // Initialize score manager
+            scoreManager = ScoreManager.Instance;
 
             // Temporary stat is 0
             stat = 0;
@@ -358,6 +363,11 @@ namespace DIY_Boss_Rush_Game
                 {
                     // Reset player and boss stats here
                     ResetPlayerAndBoss();
+
+                    // Reset score and level
+                    currentLevel = 1;
+                    ScoreManager.ResetCurentScore();
+
                     // Move gameState back to the customize state
                     gameState = GameState.CustomizePlayer;
                 }
@@ -516,7 +526,6 @@ namespace DIY_Boss_Rush_Game
                 _spriteBatch.Draw(gameOverTexture, playAgain.Rect, Color.White);
 
                 // Draw final score and level reached
-                ScoreManager scoreManager = ScoreManager.Instance;
                 int finalScore = scoreManager.CurrentScore;
                 _spriteBatch.DrawString(uiText, $"Final Score: {finalScore}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 300), Color.White);
                 _spriteBatch.DrawString(uiText, $"Final Level: {currentLevel}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 350), Color.White);
@@ -654,9 +663,6 @@ namespace DIY_Boss_Rush_Game
             boss[0].DamageStat = bossInitialDamage;
             boss[0].SpeedStat = bossInitialSpeed;
             boss[0].CritStat = bossInitialCrit;
-
-            //Increase level by one
-            currentLevel++;
         }
 
         /// <summary>
