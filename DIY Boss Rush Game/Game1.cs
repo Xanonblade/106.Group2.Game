@@ -104,17 +104,17 @@ namespace DIY_Boss_Rush_Game
 
         // Hold a copy of all the boss stat's here to reference when resetting
         // the stats
-        private int bossInitialHealth;
-        private int bossInitialDamage;
-        private int bossInitialSpeed;
-        private int bossInitialCrit;
+        private float bossInitialHealth;
+        private float bossInitialDamage;
+        private float bossInitialSpeed;
+        private float bossInitialCrit;
 
         // Hold a copy of all the player stat's here to reference when resetting 
         // the stats
-        private int playerInitialHealth;
-        private int playerInitialDamage;
-        private int playerInitialSpeed;
-        private int playerInitialCrit;
+        private float playerInitialHealth;
+        private float playerInitialDamage;
+        private float playerInitialSpeed;
+        private float playerInitialCrit;
 
         // Bullet texture
         private Texture2D bulletTexture;
@@ -156,7 +156,7 @@ namespace DIY_Boss_Rush_Game
             currentLevel = 1;
 
             // Initialize player || CHANGE CONSTRUCTOR
-            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"));
+            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"), 100f, 10f, 10f, 5f);
 
             player.HealthStat = 10;
 
