@@ -365,22 +365,68 @@ namespace DIY_Boss_Rush_Game
                 //Draw back button
                 _spriteBatch.Draw(uiBackSprite, buttonBack.Rect, Color.White);
 
+                //Draw scoreboard title
+                _spriteBatch.DrawString(uiTextScore, "~ SCOREBOARD ~", 
+                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 193,60), Color.White);
+
                 //Draw scoreboard itself
                 ScoreManager.LoadScores();
 
                 List<KeyValuePair<string, int>> scoreList = ScoreManager.GetTopFiveScore();
 
-                for (int i = 0; i < 5; i++)
+                //Check count of scores to know how to print
+                if (scoreList.Count < 5)
                 {
-                    //Name
-                    _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
-                        new Vector2(_graphics.PreferredBackBufferWidth/3 + 20,150 + 75 * i),
-                        Color.CornflowerBlue);
+                    //Print however many scores exist, + dead space
+                    int scoreCount = 0;
+                    for (int i = 0; i < scoreList.Count; i++)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * i),
+                            Color.CornflowerBlue);
 
-                    //Score
-                    _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
-                        new Vector2(_graphics.PreferredBackBufferWidth/2 + 235, 150 + 75 * i),
-                        Color.White);
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * i),
+                            Color.White);
+
+                        //Increase scoreCount to use later for dead spaces
+                        scoreCount++;
+                    }
+
+                    //Print dead spaces
+                    while (scoreCount < 5)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"___",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * scoreCount),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"-",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * scoreCount),
+                            Color.White);
+
+                        //Increase scoreCount until 5
+                        scoreCount++;
+                    }
+                }
+                else
+                {
+                    //Print first 5 scores because they are sorted
+                    for (int i = 0; i < 5; i++)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * i),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * i),
+                            Color.White);
+                    }
                 }
             }
             else if (gameState == GameState.CustomizePlayer)
