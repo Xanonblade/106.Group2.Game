@@ -24,6 +24,7 @@ namespace DIY_Boss_Rush_Game
 
         public float SpeedStat { get; set; }
         public float CritStat { get; set; }
+        public bool IsDead => CurrHealth <= 0;
 
         public BulletManager bulletManager { get; set; }
 

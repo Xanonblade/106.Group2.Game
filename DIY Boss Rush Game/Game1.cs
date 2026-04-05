@@ -96,6 +96,9 @@ namespace DIY_Boss_Rush_Game
         private SpriteFont uiText;
         private SpriteFont uiTextScore;
 
+        // Game over texture
+        private Texture2D gameOverTexture;
+
         // Hold player and boss objects
         private Player player;
         private Boss[] boss;
@@ -210,7 +213,9 @@ namespace DIY_Boss_Rush_Game
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
 
             // Create play again button
-            playAgain = new Button(new Rectangle(1256, 940, buttonSprite.Width / 4, buttonSprite.Height / 4), "", buttonSprite);
+            gameOverTexture = Content.Load<Texture2D>("uiGameOverSprite");
+            playAgain = new Button(new Rectangle(_graphics.PreferredBackBufferWidth / 2 - gameOverTexture.Width / 2,
+                810, gameOverTexture.Width, gameOverTexture.Height), "Continue", gameOverTexture);
 
             // Load in textures for arena
             wallN0 = Content.Load<Texture2D>("wallN0V0");
@@ -319,10 +324,29 @@ namespace DIY_Boss_Rush_Game
                 boss[0].Update(gameTime);
                 bulletManager.UpdateAllBullets(gameTime);
 
-                // Check if the player has 0 health to test GameOver state
-                if (player.HealthStat <= 0)
+                // Check if GameOver state
+                if (player.IsDead)
+                {
                     gameState = GameState.GameOver;
 
+                    // Set up scores
+                    ScoreManager.SaveScores();
+                }
+                // If boss is dead, increase level and move back to customize player state
+                if (boss[0].IsDead)
+                {
+                    currentLevel++;
+                    gameState = GameState.CustomizePlayer;
+
+                    // increase score for beating lvl
+                    ScoreManager.AddCurrentScore(1000 * currentLevel);
+                    
+                    ResetPlayerAndBoss();
+                    
+                    // Reset healths
+                    player.CurrHealth = player.MaxHealth;
+                    boss[0].CurrHealth = boss[0].MaxHealth;
+                }
             }
             else if (gameState == GameState.GameOver)
             {
@@ -476,7 +500,13 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.GameOver)
             {
                 // Draw play again button
-                _spriteBatch.Draw(buttonSprite, playAgain.Rect, Color.White);
+                _spriteBatch.Draw(gameOverTexture, playAgain.Rect, Color.White);
+
+                // Draw final score and level reached
+                ScoreManager scoreManager = ScoreManager.Instance;
+                int finalScore = scoreManager.CurrentScore;
+                _spriteBatch.DrawString(uiText, $"Final Score: {finalScore}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 300), Color.White);
+                _spriteBatch.DrawString(uiText, $"Final Level: {currentLevel}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 350), Color.White);
             }
 
             _spriteBatch.End();
