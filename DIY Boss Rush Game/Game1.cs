@@ -94,6 +94,10 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiPlayerNub;
         private Texture2D uiPlayerBar;
         private SpriteFont uiText;
+        private SpriteFont uiTextScore;
+
+        // Game over texture
+        private Texture2D gameOverTexture;
 
         // Hold player and boss objects
         private Player player;
@@ -158,7 +162,7 @@ namespace DIY_Boss_Rush_Game
             //Current level is 1
             currentLevel = 1;
 
-            // Initialize player || CHANGE CONSTRUCTOR
+            // Initialize player
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"), 100f, 10f, 10f, 5f);
 
             player.HealthStat = 10;
@@ -212,7 +216,9 @@ namespace DIY_Boss_Rush_Game
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
 
             // Create play again button
-            playAgain = new Button(new Rectangle(1256, 940, buttonSprite.Width / 4, buttonSprite.Height / 4), "", buttonSprite);
+            gameOverTexture = Content.Load<Texture2D>("uiGameOverSprite");
+            playAgain = new Button(new Rectangle(_graphics.PreferredBackBufferWidth / 2 - gameOverTexture.Width / 2,
+                810, gameOverTexture.Width, gameOverTexture.Height), "Continue", gameOverTexture);
 
             // Load in textures for arena
             wallN0 = Content.Load<Texture2D>("wallN0V0");
@@ -243,6 +249,7 @@ namespace DIY_Boss_Rush_Game
             uiPlayerNub = Content.Load<Texture2D>("uiPlayerHealthNub");
             uiPlayerBar = Content.Load<Texture2D>("uiPlayerBar");
             uiText = Content.Load<SpriteFont>("uiText");
+            uiTextScore = Content.Load < SpriteFont>("uiTextScore");
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
@@ -320,10 +327,29 @@ namespace DIY_Boss_Rush_Game
                 boss[0].Update(gameTime);
                 bulletManager.UpdateAllBullets(gameTime);
 
-                // Check if the player has 0 health to test GameOver state
-                if (player.HealthStat <= 0)
+                // Check if GameOver state
+                if (player.IsDead)
+                {
                     gameState = GameState.GameOver;
 
+                    // Set up scores
+                    ScoreManager.SaveScores();
+                }
+                // If boss is dead, increase level and move back to customize player state
+                if (boss[0].IsDead)
+                {
+                    currentLevel++;
+                    gameState = GameState.CustomizePlayer;
+
+                    // increase score for beating lvl
+                    ScoreManager.AddCurrentScore(1000 * currentLevel);
+                    
+                    ResetPlayerAndBoss();
+                    
+                    // Reset healths
+                    player.CurrHealth = player.MaxHealth;
+                    boss[0].CurrHealth = boss[0].MaxHealth;
+                }
             }
             else if (gameState == GameState.GameOver)
             {
@@ -366,7 +392,69 @@ namespace DIY_Boss_Rush_Game
                 //Draw back button
                 _spriteBatch.Draw(uiBackSprite, buttonBack.Rect, Color.White);
 
+                //Draw scoreboard title
+                _spriteBatch.DrawString(uiTextScore, "~ SCOREBOARD ~", 
+                    new Vector2(_graphics.PreferredBackBufferWidth/2 - 193,60), Color.White);
+
                 //Draw scoreboard itself
+                ScoreManager.LoadScores();
+
+                List<KeyValuePair<string, int>> scoreList = ScoreManager.GetTopFiveScore();
+
+                //Check count of scores to know how to print
+                if (scoreList.Count < 5)
+                {
+                    //Print however many scores exist, + dead space
+                    int scoreCount = 0;
+                    for (int i = 0; i < scoreList.Count; i++)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * i),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * i),
+                            Color.White);
+
+                        //Increase scoreCount to use later for dead spaces
+                        scoreCount++;
+                    }
+
+                    //Print dead spaces
+                    while (scoreCount < 5)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"___",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * scoreCount),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"-",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * scoreCount),
+                            Color.White);
+
+                        //Increase scoreCount until 5
+                        scoreCount++;
+                    }
+                }
+                else
+                {
+                    //Print first 5 scores because they are sorted
+                    for (int i = 0; i < 5; i++)
+                    {
+                        //Name
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 3 + 20, 150 + 75 * i),
+                            Color.CornflowerBlue);
+
+                        //Score
+                        _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
+                            new Vector2(_graphics.PreferredBackBufferWidth / 2 + 235, 150 + 75 * i),
+                            Color.White);
+                    }
+                }
             }
             else if (gameState == GameState.CustomizePlayer)
             {
@@ -425,7 +513,13 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.GameOver)
             {
                 // Draw play again button
-                _spriteBatch.Draw(buttonSprite, playAgain.Rect, Color.White);
+                _spriteBatch.Draw(gameOverTexture, playAgain.Rect, Color.White);
+
+                // Draw final score and level reached
+                ScoreManager scoreManager = ScoreManager.Instance;
+                int finalScore = scoreManager.CurrentScore;
+                _spriteBatch.DrawString(uiText, $"Final Score: {finalScore}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 300), Color.White);
+                _spriteBatch.DrawString(uiText, $"Final Level: {currentLevel}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 350), Color.White);
             }
 
             _spriteBatch.End();

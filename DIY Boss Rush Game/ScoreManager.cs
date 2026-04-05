@@ -98,8 +98,6 @@ namespace DIY_Boss_Rush_Game
         /// <returns>Top 5 scores as a list of key value pairs</returns>
         public static List<KeyValuePair<string, int>> GetTopFiveScore()
         {
-            List<KeyValuePair<string, int>> topFive = new List<KeyValuePair<string, int>>();
-
             // Convert the dictionary to a list so it can be sorted
             List<KeyValuePair<string, int>> scoreList = new List<KeyValuePair<string, int>>();
 
@@ -121,9 +119,9 @@ namespace DIY_Boss_Rush_Game
                     }
                 }
             }
-            
+
             // Return the sorted list
-            return topFive;
+            return scoreList;
 
         }
     }

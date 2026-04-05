@@ -15,6 +15,7 @@ namespace DIY_Boss_Rush_Game
         private readonly float speedMultiplier = 1; // Helps scale movement
         private readonly float attackMultiplier = 1; // Helps scale attack
         private readonly float attackSpeedDelay = 0.5f; // Helps set attack speed
+        private readonly float critMultiplier = 10; // Helps scale crits to be percentage based
         private float timeSinceAttacked = 0.0f;
         private Random rng;
 
@@ -44,7 +45,8 @@ namespace DIY_Boss_Rush_Game
             // Calculate damage and speed with crit chance
             float currSpeed = bulletSpeed;
             float currDamage = DamageStat * attackMultiplier;
-            if (rng.NextDouble() < CritStat) // If random number is less than crit stat, it's a crit
+            // Crit stat is between 0.5 and 2
+            if (rng.Next(100) < CritStat * critMultiplier) // If random number is less than crit stat, it's a crit
             {
                 currSpeed *= 1.5f; // Increase bullet speed for crits
                 currDamage *= 2; // Double damage for crits

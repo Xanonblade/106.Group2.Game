@@ -16,13 +16,6 @@
 #begin ArenaV1.level
 /copy:ArenaV1.level
 
-#begin Arial.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Arial.spritefont
-
 #begin bossC1x.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -503,6 +496,18 @@
 /processorParam:TextureFormat=Color
 /build:uiCustomizeColor.png
 
+#begin uiGameOverSprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:uiGameOverSprite.png
+
 #begin uiPlayerBar.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -557,6 +562,13 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:uiText.spritefont
+
+#begin uiTextScore.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:uiTextScore.spritefont
 
 #begin uiTitleBack.png
 /importer:TextureImporter
