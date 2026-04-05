@@ -512,8 +512,8 @@ namespace DIY_Boss_Rush_Game
                 _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
 
                 //Text for battle UI with drop shadow
-                _spriteBatch.DrawString(uiText, $"Score: __", new Vector2(148, 53), Color.Black);
-                _spriteBatch.DrawString(uiText, $"Score: __", new Vector2(150, 55), Color.White);
+                _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(148, 53), Color.Black);
+                _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(150, 55), Color.White);
                 _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(145, 86), Color.Black);
                 _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(147, 88), Color.White);
             }
