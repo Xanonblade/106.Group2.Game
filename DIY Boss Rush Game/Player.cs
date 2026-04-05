@@ -12,10 +12,11 @@ namespace DIY_Boss_Rush_Game
     {
         public static Vector2 pos;
         public static Texture2D texture;
-        private readonly int speedMultiplier = 1; // Helps scale movement
-        private readonly int attackMultiplier = 1; // Helps scale attack
+        private readonly float speedMultiplier = 1; // Helps scale movement
+        private readonly float attackMultiplier = 1; // Helps scale attack
         private readonly float attackSpeedDelay = 0.5f; // Helps set attack speed
         private float timeSinceAttacked = 0.0f;
+        private Random rng;
 
         /// <summary>
         /// Sets player specifics (static pos) and calls base constructor for character stats and texture and rectangle
@@ -27,6 +28,7 @@ namespace DIY_Boss_Rush_Game
         {
             Player.pos = pos;
             Player.texture = tex;
+            rng = new Random();
         }
 
         /// <summary>
@@ -39,8 +41,16 @@ namespace DIY_Boss_Rush_Game
             float bulletSpeed = 1000f;
             float bulletRadius = Character.BulletTexture.Width / 2;
 
-            // The "15"s are just hardcoded magic numbers, I don't quite understand why those values work
-            base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
+            // Calculate damage and speed with crit chance
+            float currSpeed = bulletSpeed;
+            float currDamage = DamageStat * attackMultiplier;
+            if (rng.NextDouble() < CritStat) // If random number is less than crit stat, it's a crit
+            {
+                currSpeed *= 1.5f; // Increase bullet speed for crits
+                currDamage *= 2; // Double damage for crits
+            }
+
+            base.bulletManager.CreateBullet(currSpeed, currDamage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
         }
 
         /// <summary>
@@ -58,19 +68,19 @@ namespace DIY_Boss_Rush_Game
             Vector2 movement = Vector2.Zero;
             if (currState.IsKeyDown(Keys.W))
             {
-                pos.Y -= 1;
+                movement.Y -= 1;
             }
             if (currState.IsKeyDown(Keys.S))
             {
-                pos.Y += 1;
+                movement.Y += 1;
             }
             if (currState.IsKeyDown(Keys.A))
             {
-                pos.X -= 1;
+                movement.X -= 1;
             }
             if (currState.IsKeyDown(Keys.D))
             {
-                pos.X += 1;
+                movement.X += 1;
             }
             if (movement != Vector2.Zero)
                 movement.Normalize(); // Normalize to prevent faster diagonal movement
