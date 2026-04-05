@@ -12,8 +12,8 @@ namespace DIY_Boss_Rush_Game
     {
         public static Vector2 pos;
         public static Texture2D texture;
-        private readonly int speedMultiplier = 1; // Helps scale movement
-        private readonly int attackMultiplier = 1; // Helps scale attack
+        private readonly float speedMultiplier = 1; // Helps scale movement
+        private readonly float attackMultiplier = 1; // Helps scale attack
         private readonly float attackSpeedDelay = 0.5f; // Helps set attack speed
         private float timeSinceAttacked = 0.0f;
         private Random rng;
@@ -68,19 +68,19 @@ namespace DIY_Boss_Rush_Game
             Vector2 movement = Vector2.Zero;
             if (currState.IsKeyDown(Keys.W))
             {
-                pos.Y -= 1;
+                movement.Y -= 1;
             }
             if (currState.IsKeyDown(Keys.S))
             {
-                pos.Y += 1;
+                movement.Y += 1;
             }
             if (currState.IsKeyDown(Keys.A))
             {
-                pos.X -= 1;
+                movement.X -= 1;
             }
             if (currState.IsKeyDown(Keys.D))
             {
-                pos.X += 1;
+                movement.X += 1;
             }
             if (movement != Vector2.Zero)
                 movement.Normalize(); // Normalize to prevent faster diagonal movement
