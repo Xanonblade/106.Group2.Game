@@ -586,57 +586,83 @@ namespace DIY_Boss_Rush_Game
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerHealthMultiplier += .25f;
-                            userInterface[1].Width += 91;
+                            // Cap the multiplier at 2x
+                            if (playerHealthMultiplier != 2) 
+                            {
+                                playerHealthMultiplier += .25f;
+                                userInterface[1].Width += 91;
+                            }
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerHealthMultiplier -= .25f;
-                            userInterface[1].Width -= 91;
+                            // Cap the multiplier at .5x
+                            if (playerHealthMultiplier != .5f)
+                            {
+                                playerHealthMultiplier -= .25f;
+                                userInterface[1].Width -= 91;
+                            }
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerDamageMultiplier += .25f;
-                            userInterface[2].Width += 91;
+                            if (playerDamageMultiplier != 2)
+                            {
+                                playerDamageMultiplier += .25f;
+                                userInterface[2].Width += 91;
+                            }
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerDamageMultiplier -= .25f;
-                            userInterface[2].Width -= 91;
+                            if (playerDamageMultiplier != .5f)
+                            {
+                                playerDamageMultiplier -= .25f;
+                                userInterface[2].Width -= 91;
+                            }
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerSpeedMultiplier += .25f;
-                            userInterface[3].Width += 91;
+                            if (playerSpeedMultiplier != 2)
+                            {
+                                playerSpeedMultiplier += .25f;
+                                userInterface[3].Width += 91;
+                            }
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerSpeedMultiplier -= .25f;
-                            userInterface[3].Width -= 91;
+                            if (playerSpeedMultiplier != .5f)
+                            {
+                                playerSpeedMultiplier -= .25f;
+                                userInterface[3].Width -= 91;
+                            }
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerCritMultiplier += .25f;
-                            userInterface[4].Width += 91;
+                            if (playerCritMultiplier != 2)
+                            {
+                                playerCritMultiplier += .25f;
+                                userInterface[4].Width += 91;
+                            }
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            playerCritMultiplier -= .25f;
-                            userInterface[4].Width -= 91;
+                            if (playerCritMultiplier != .5f)
+                            {
+                                playerCritMultiplier -= .25f;
+                                userInterface[4].Width -= 91;
+                            }
                         }
 
                         break;
@@ -706,59 +732,84 @@ namespace DIY_Boss_Rush_Game
                     case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossHealthMultiplier += .25f;
-                            userInterface[1].Width += 91;
+                            // Cap the multiplier at 2x
+                            if (bossHealthMultiplier != 2)
+                            {
+                                bossHealthMultiplier += .25f;
+                                userInterface[1].Width += 91;
+                            }
                         }
                         break;
                     case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossHealthMultiplier -= .25f;
-                            userInterface[1].Width -= 91;
+                            // Cap the multiplier at .5x
+                            if (bossHealthMultiplier != .5f)
+                            {
+                                bossHealthMultiplier -= .25f;
+                                userInterface[1].Width -= 91;
+                            }
                         }
                         break;
                     case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossDamageMultiplier -= .5f;
-                            userInterface[2].Width += 91;
+                            if (bossDamageMultiplier != 2)
+                            {
+                                bossDamageMultiplier += .25f;
+                                userInterface[2].Width += 91;
+                            }
                         }
                         break;
                     case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossDamageMultiplier -= .5f;
-                            userInterface[2].Width -= 91;
+                            if (bossDamageMultiplier != .5f)
+                            {
+                                bossDamageMultiplier -= .25f;
+                                userInterface[2].Width -= 91;
+                            }
                         }
                         break;
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossSpeedMultiplier += .5f;
-                            userInterface[3].Width += 91;
+                            if (bossSpeedMultiplier != 2)
+                            {
+                                bossSpeedMultiplier += .25f;
+                                userInterface[3].Width += 91;
+                            }
                         }
                         break;
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossSpeedMultiplier -= .5f;
-                            userInterface[3].Width -= 91;
+                            if (bossSpeedMultiplier != .5f)
+                            {
+                                bossSpeedMultiplier -= .25f;
+                                userInterface[3].Width -= 91;
+                            }
                         }
                         break;
                     case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossCritMultiplier += .5f;
-                            userInterface[4].Width += 91;
+                            if (bossCritMultiplier != 2)
+                            {
+                                bossCritMultiplier += .25f;
+                                userInterface[4].Width += 91;
+                            }
                         }
                         break;
                     case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            bossCritMultiplier -= .5f;
-                            userInterface[4].Width -= 91;
+                            if (bossCritMultiplier != .5f)
+                            {
+                                bossCritMultiplier -= .25f;
+                                userInterface[4].Width -= 91;
+                            }
                         }
-
                         break;
                 }
                 
