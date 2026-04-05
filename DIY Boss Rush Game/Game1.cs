@@ -94,6 +94,7 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiPlayerNub;
         private Texture2D uiPlayerBar;
         private SpriteFont uiText;
+        private SpriteFont uiTextScore;
 
         // Hold player and boss objects
         private Player player;
@@ -155,7 +156,7 @@ namespace DIY_Boss_Rush_Game
             //Current level is 1
             currentLevel = 1;
 
-            // Initialize player || CHANGE CONSTRUCTOR
+            // Initialize player
             player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"), 100f, 10f, 10f, 5f);
 
             player.HealthStat = 10;
@@ -240,6 +241,7 @@ namespace DIY_Boss_Rush_Game
             uiPlayerNub = Content.Load<Texture2D>("uiPlayerHealthNub");
             uiPlayerBar = Content.Load<Texture2D>("uiPlayerBar");
             uiText = Content.Load<SpriteFont>("uiText");
+            uiTextScore = Content.Load < SpriteFont>("uiTextScore");
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
@@ -364,6 +366,22 @@ namespace DIY_Boss_Rush_Game
                 _spriteBatch.Draw(uiBackSprite, buttonBack.Rect, Color.White);
 
                 //Draw scoreboard itself
+                ScoreManager.LoadScores();
+
+                List<KeyValuePair<string, int>> scoreList = ScoreManager.GetTopFiveScore();
+
+                for (int i = 0; i < 5; i++)
+                {
+                    //Name
+                    _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Key}",
+                        new Vector2(_graphics.PreferredBackBufferWidth/3 + 20,150 + 75 * i),
+                        Color.CornflowerBlue);
+
+                    //Score
+                    _spriteBatch.DrawString(uiTextScore, $"{scoreList[i].Value}",
+                        new Vector2(_graphics.PreferredBackBufferWidth/2 + 235, 150 + 75 * i),
+                        Color.White);
+                }
             }
             else if (gameState == GameState.CustomizePlayer)
             {
