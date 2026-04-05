@@ -190,9 +190,6 @@ namespace DIY_Boss_Rush_Game
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Load temporary font
-            font = Content.Load<SpriteFont>("Arial");
-
             // Load temporary button sprite
             buttonSprite = Content.Load<Texture2D>("tempButton");
 
@@ -654,6 +651,16 @@ namespace DIY_Boss_Rush_Game
             boss[0].DamageStat = bossInitialDamage;
             boss[0].SpeedStat = bossInitialSpeed;
             boss[0].CritStat = bossInitialCrit;
+
+            // Reset multipliers
+            playerHealthMultiplier = 1;
+            playerDamageMultiplier = 1;
+            playerSpeedMultiplier = 1;
+            playerCritMultiplier = 1;
+            bossHealthMultiplier = 1;
+            bossDamageMultiplier = 1;
+            bossSpeedMultiplier = 1;
+            bossCritMultiplier = 1;
 
             //Increase level by one
             currentLevel++;
