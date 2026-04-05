@@ -129,6 +129,9 @@ namespace DIY_Boss_Rush_Game
         private float bossSpeedMultiplier = 1;
         private float bossCritMultiplier = 1;
 
+        // The number of points the player can allocate || BALANCE LATER
+        private int pointsToAllocate = 4;
+
 
         public Game1()
         {
@@ -367,9 +370,14 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.CustomizePlayer)
             {
+                // Helper method to draw all the buttons of the customization state
                 DrawCustomizationButtons(_spriteBatch, playerCustomizationButtons, false);
 
+                // Helper method to draw all the rectangles and images for the customization state
                 DrawCustomizationUI(_spriteBatch, playerCustomizationUI);
+
+                // Helper method to draw all the text for the player customization state
+                DrawPlayerCustomizationText(_spriteBatch);
             }
             else if (gameState == GameState.CustomizeBoss)
             {
@@ -859,7 +867,7 @@ namespace DIY_Boss_Rush_Game
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
             playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 63, 368, 90), barTexture));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 113, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 912, 368, 90), barTexture));
@@ -895,6 +903,21 @@ namespace DIY_Boss_Rush_Game
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), barTexture));
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), barTexture));   
             bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), barTexture));
+        }
+
+        /// <summary>
+        /// Helper method to draw the text for the player customization screen
+        /// </summary>
+        /// <param name="sb"></param>
+        public void DrawPlayerCustomizationText(SpriteBatch sb)
+        {
+            sb.DrawString(uiText, "To Boss Customization", new Vector2(1563, 47), Color.White);
+            sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(1176, 345), Color.White);
+            sb.DrawString(uiText, "Continue", new Vector2(1699, 831), Color.White);
+            sb.DrawString(uiText, "Health Multiplier: " + playerHealthMultiplier, new Vector2(354, 42), Color.White);
+            sb.DrawString(uiText, "Damage Multiplier: " + playerDamageMultiplier, new Vector2(354, 305), Color.White);
+            sb.DrawString(uiText, "Speed Multiplier: " + playerSpeedMultiplier, new Vector2(354, 567), Color.White);
+            sb.DrawString(uiText, "Crit Multiplier: " + playerCritMultiplier, new Vector2(354, 831), Color.White);
         }
     }
 
