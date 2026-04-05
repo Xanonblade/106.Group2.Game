@@ -62,6 +62,11 @@ namespace DIY_Boss_Rush_Game
             {
                 sw.WriteLine(score.Key + ":" + score.Value);
             }
+
+            if (sw != null)
+            {
+                sw.Close();
+            }
         }
 
         /// <summary>
@@ -81,6 +86,11 @@ namespace DIY_Boss_Rush_Game
                 Instance.scores.Add(data[0], int.Parse(data[1]));
             }
             
+            if (sr != null)
+            {
+                sr.Close();
+            }
+
         }
 
         /// <summary>
