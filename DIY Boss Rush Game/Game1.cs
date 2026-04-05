@@ -381,9 +381,14 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.CustomizeBoss)
             {
+                // Helper method to draw all the buttons of the customization state
                 DrawCustomizationButtons(_spriteBatch, bossCustomizationButtons, true);
 
+                // Helper method to draw all the rectangles and images for the customization state
                 DrawCustomizationUI(_spriteBatch, bossCustomizationUI);
+
+                // Helper method to draw all the text for the boss customization state
+                DrawBossCustomizationText(_spriteBatch);
 
             }
             else if (gameState == GameState.Game)
@@ -918,6 +923,20 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Damage Multiplier: " + playerDamageMultiplier, new Vector2(354, 305), Color.White);
             sb.DrawString(uiText, "Speed Multiplier: " + playerSpeedMultiplier, new Vector2(354, 567), Color.White);
             sb.DrawString(uiText, "Crit Multiplier: " + playerCritMultiplier, new Vector2(354, 831), Color.White);
+        }
+
+        /// <summary>
+        /// Helper method to draw the text for the boss customization screen
+        /// </summary>
+        /// <param name="sb"></param>
+        public void DrawBossCustomizationText(SpriteBatch sb)
+        {
+            sb.DrawString(uiText, "To Player Customization", new Vector2(35, 36), Color.White);
+            sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(219, 276), Color.White);
+            sb.DrawString(uiText, "Health Multiplier: " + bossHealthMultiplier, new Vector2(1169, 42), Color.White);
+            sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1169, 305), Color.White);
+            sb.DrawString(uiText, "Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
+            sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1169, 831), Color.White);
         }
     }
 
