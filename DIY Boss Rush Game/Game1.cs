@@ -660,8 +660,6 @@ namespace DIY_Boss_Rush_Game
             boss[0].DamageStat = bossInitialDamage;
             boss[0].SpeedStat = bossInitialSpeed;
             boss[0].CritStat = bossInitialCrit;
-<<<<<<< HEAD
-=======
 
             // Reset multipliers
             playerHealthMultiplier = 1;
@@ -672,10 +670,6 @@ namespace DIY_Boss_Rush_Game
             bossDamageMultiplier = 1;
             bossSpeedMultiplier = 1;
             bossCritMultiplier = 1;
-
-            //Increase level by one
-            currentLevel++;
->>>>>>> main
         }
 
         /// <summary>
