@@ -168,7 +168,7 @@ namespace DIY_Boss_Rush_Game
             currentLevel = 1;
 
             // Initialize player
-            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"), 100f, 10f, 10f, 5f);
+            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerREGame"), 100f, 10f, 10f, 5f);
 
             player.HealthStat = 10;
 
@@ -1006,7 +1006,7 @@ namespace DIY_Boss_Rush_Game
         public void LoadPlayerCustomizationUI()
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerRECustomize")));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 113, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 90), barTexture));
