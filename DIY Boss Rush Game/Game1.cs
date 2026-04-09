@@ -180,7 +180,7 @@ namespace DIY_Boss_Rush_Game
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
-            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossUC"), 10, 10, 5, 5);
+            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 5, 5);
 
             // Store initial boss stats for reset purposes
             bossInitialHealth = boss[0].HealthStat;
@@ -255,9 +255,6 @@ namespace DIY_Boss_Rush_Game
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
-
-            Boss.texture = Content.Load<Texture2D>("bossC2x");
-
 
             // Bullet
             BulletManager.Configure(wallN2, player, boss[0]);
@@ -1040,7 +1037,7 @@ namespace DIY_Boss_Rush_Game
         public void LoadBossCustomizationUI()
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossC2x")));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossRECustomize")));
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), barTexture));
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), barTexture));
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), barTexture));
