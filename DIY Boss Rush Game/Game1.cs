@@ -1066,6 +1066,7 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Speed Multiplier: " + playerSpeedMultiplier, new Vector2(354, 567), Color.White);
             sb.DrawString(uiText, "Crit Multiplier: " + playerCritMultiplier, new Vector2(354, 831), Color.White);
             sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
+            sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
         }
 
         /// <summary>
