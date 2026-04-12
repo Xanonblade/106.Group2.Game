@@ -48,7 +48,9 @@ namespace DIY_Boss_Rush_Game
         // Fields used by actions
         private float waitTime;
         private Vector2 selectedMovePos;
+        private Vector2 startPos;
         private Vector2 playerPos;
+        private bool hasAttackedWhileMove;
 
         // Constructor for the boss
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
@@ -122,6 +124,8 @@ namespace DIY_Boss_Rush_Game
             int buffer = 64 + Math.Max(texture.Width, texture.Height);
 
             playerPos = Player.pos;
+            startPos = pos;
+            hasAttackedWhileMove = false;
 
             if (currentAction == Action.Move)
             {
@@ -158,6 +162,8 @@ namespace DIY_Boss_Rush_Game
                     Math.Clamp(targetRetreatPos.Y, buffer, height - buffer)
                 );
             }
+
+           
         }
 
         /// <summary>
@@ -168,16 +174,16 @@ namespace DIY_Boss_Rush_Game
             switch (currentAction)
             {
                 case Action.Move:
-                    Move(selectedMovePos, 1);
+                    Move(selectedMovePos, 3f);
                     break;
                 case Action.Charge:
                     Move(selectedMovePos, 4f);
                     break;
                 case Action.Retreat:
-                    Move(selectedMovePos, 1);
+                    Move(selectedMovePos, 3f);
                     break;
                 case Action.Attack:
-                    Attack();
+                    Attack(true);
                     break;
                 case Action.Wait:
                     Wait(1.5f);
@@ -207,10 +213,22 @@ namespace DIY_Boss_Rush_Game
             {
                 isActionFinished = true;
             }
+
+            // If the distance is halfway to the destination attack
+            float distanceCoveredSq = Vector2.DistanceSquared(startPos, pos);
+            float distanceRemainingSq = Vector2.DistanceSquared(pos, destination);
+
+            if (distanceCoveredSq >= distanceRemainingSq && !hasAttackedWhileMove)
+            {
+                Attack(false);
+                hasAttackedWhileMove = true;
+            }
+
         }
 
-        private void Attack()
+        private void Attack(bool endAction)
         {
+            playerPos = Player.pos;
             // Get the direction towards the player
             Vector2 playerDirection = Vector2.Normalize(pos + playerPos);
             float bulletSpeed = 1000f;
@@ -282,7 +300,8 @@ namespace DIY_Boss_Rush_Game
                     break;
             }
 
-            isActionFinished = true;
+            if (endAction)
+                isActionFinished = true;
         }
 
         private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
