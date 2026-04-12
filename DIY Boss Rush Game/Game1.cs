@@ -682,8 +682,8 @@ namespace DIY_Boss_Rush_Game
             bossCustomizationUI[4].Width = 368;
 
             // Reset player and boss position
-            //player.Position = new Vector2(480, 540);
-            //boss[0].Position = new Vector2(1440, 540);
+            Player.pos = new Vector2(480, 540);
+            Boss.pos = new Vector2(1440, 540);
 
         }
 
