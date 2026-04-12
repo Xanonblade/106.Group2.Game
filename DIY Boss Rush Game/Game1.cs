@@ -697,6 +697,9 @@ namespace DIY_Boss_Rush_Game
             Player.pos = new Vector2(480, 540 - (Player.texture.Height / 2));
             Boss.pos = new Vector2(1440, 540 - (Boss.texture.Height / 2));
 
+            //Clear all bullets currently left in game
+            bulletManager.ClearBullets();
+
         }
 
         /// <summary>
