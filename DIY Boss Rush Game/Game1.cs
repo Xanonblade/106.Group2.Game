@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 
 // Enum for each of the GameStates
-enum GameState { Menu, Scoreboard, CustomizePlayer, CustomizeBoss, Game, GameOver }
+enum GameState { Menu, Scoreboard, CustomizePlayer, CustomizeBoss, SkillTree, Game, GameOver }
 
 namespace DIY_Boss_Rush_Game
 {
@@ -340,6 +340,8 @@ namespace DIY_Boss_Rush_Game
                     currentLevel++;
                     gameState = GameState.CustomizePlayer;
 
+                    // gameState = GameState.SkillTree;
+
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
                     
@@ -348,7 +350,13 @@ namespace DIY_Boss_Rush_Game
                     // Reset healths
                     player.CurrHealth = player.MaxHealth;
                     boss[0].CurrHealth = boss[0].MaxHealth;
+
+
                 }
+            }
+            else if (gameState == GameState.SkillTree)
+            {
+                // Update skill tree here
             }
             else if (gameState == GameState.GameOver)
             {
@@ -482,6 +490,10 @@ namespace DIY_Boss_Rush_Game
                 // Helper method to draw all the text for the boss customization state
                 DrawBossCustomizationText(_spriteBatch);
 
+            }
+            else if (gameState == GameState.SkillTree)
+            {
+                // Draw skill tree here
             }
             else if (gameState == GameState.Game)
             {
