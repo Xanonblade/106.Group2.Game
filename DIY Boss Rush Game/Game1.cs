@@ -685,6 +685,9 @@ namespace DIY_Boss_Rush_Game
             //player.Position = new Vector2(480, 540);
             //boss[0].Position = new Vector2(1440, 540);
 
+            //Clear all bullets currently left in game
+            bulletManager.ClearBullets();
+
         }
 
         /// <summary>
