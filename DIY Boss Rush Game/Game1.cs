@@ -1029,7 +1029,8 @@ namespace DIY_Boss_Rush_Game
         public void LoadPlayerCustomizationUI()
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerRECustomize")));
+            Texture2D playerDisplayTexture = Content.Load<Texture2D>("playerRECustomize");
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 430, playerDisplayTexture.Width * 2 / 3, playerDisplayTexture.Height * 2 / 3), playerDisplayTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 113, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 90), barTexture));
