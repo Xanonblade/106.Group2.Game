@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -187,6 +188,8 @@ namespace DIY_Boss_Rush_Game
             bossInitialDamage = boss[0].DamageStat;
             bossInitialSpeed = boss[0].SpeedStat;
             bossInitialCrit = boss[0].CritStat;
+
+            SkillTree.Instance.ReadData();
 
             base.Initialize();
         }
