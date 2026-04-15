@@ -157,7 +157,7 @@ namespace DIY_Boss_Rush_Game
         protected override void Initialize()
         {
             // Menu is default state
-            gameState = GameState.Menu;
+            gameState = GameState.SkillTree;
 
             // Initialize score manager
             scoreManager = ScoreManager.Instance;
@@ -359,7 +359,7 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.SkillTree)
             {
-                // Update skill tree here
+                SkillTree.Instance.Update(gameTime);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -496,7 +496,7 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.SkillTree)
             {
-                // Draw skill tree here
+                SkillTree.Instance.Draw(GraphicsDevice);
             }
             else if (gameState == GameState.Game)
             {
