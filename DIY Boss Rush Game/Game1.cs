@@ -138,8 +138,11 @@ namespace DIY_Boss_Rush_Game
         // The number of points the player can allocate || BALANCE LATER
         private int pointsToAllocate = 4;
 
+        private KeyboardState lastFrameState;
+        private string currName = "";
+        private bool saved = false;
 
-        public Game1()
+		public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -333,7 +336,9 @@ namespace DIY_Boss_Rush_Game
 
                     // Set up scores
                     ScoreManager.SaveScores();
-                }
+                    saved = false;
+                    lastFrameState = Keyboard.GetState();
+				}
                 // If boss is dead, increase level and move back to customize player state
                 if (boss[0].IsDead)
                 {
@@ -373,10 +378,13 @@ namespace DIY_Boss_Rush_Game
                     // Move gameState back to the customize state
                     gameState = GameState.CustomizePlayer;
                 }
-            }
 
-            // Collect previous mouseState
-            previousMouseState = Mouse.GetState();
+				// Get player name for scoreboard
+                NameInput();
+			}
+
+			// Collect previous mouseState
+			previousMouseState = Mouse.GetState();
 
             base.Update(gameTime);
         }
@@ -535,12 +543,52 @@ namespace DIY_Boss_Rush_Game
                 int finalScore = scoreManager.CurrentScore;
                 _spriteBatch.DrawString(uiText, $"Final Score: {finalScore}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 300), Color.White);
                 _spriteBatch.DrawString(uiText, $"Final Level: {currentLevel}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 350), Color.White);
-            }
 
-            _spriteBatch.End();
+				// Draw prompt to enter name for scoreboard if not saved yet
+                if (!saved)
+					_spriteBatch.DrawString(uiText, $"Enter Name: {currName} and hit Enter to save score", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 400), Color.White);
+			}
+
+			_spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        /// <summary>
+        /// Gets the player's name in game over during update
+        /// </summary>
+        private void NameInput()
+        {
+            KeyboardState state = Keyboard.GetState();
+
+            // Enter
+            if (state.IsKeyDown(Keys.Enter) && currName.Length == 3)
+            {
+                // Save the player's name and score
+                ScoreManager.AddScore(currName);
+                // Move back to menu or scoreboard
+                gameState = GameState.Menu;
+
+                saved = true;
+			}
+
+            // All letters
+			for (Keys key = Keys.A; key <= Keys.Z; key++)
+			{
+				if (state.IsKeyDown(key) && !lastFrameState.IsKeyDown(key))
+				{
+					currName += key.ToString().ToUpper();
+				}
+			}
+
+			// Update lastFrameState
+            lastFrameState = state;
+
+			// 3 letter limit for names on scoreboard so cut off the first letter if they go over
+			if (currName.Length > 3)
+                currName = currName.Substring(1, 3);
+		}
+
 
         /// <summary>
         /// Method to read in arena files
