@@ -26,7 +26,10 @@ namespace DIY_Boss_Rush_Game
         public float CritStat { get; set; }
         public bool IsDead => CurrHealth <= 0;
 
-        public BulletManager bulletManager { get; set; }
+        public bool Multishot { get; set; }
+        public bool Richochet { get; set; }
+
+		public BulletManager bulletManager { get; set; }
 
         /// <summary>
         /// Sets defaults mostly based on what player chooses in the picker
