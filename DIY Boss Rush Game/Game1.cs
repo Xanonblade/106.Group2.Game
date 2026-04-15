@@ -96,6 +96,10 @@ namespace DIY_Boss_Rush_Game
         private SpriteFont uiText;
         private SpriteFont uiTextScore;
 
+        // Additional battle UI for sprint bar
+        private Texture2D uiPlayerSprintBarFront;
+        private Texture2D uiPlayerSprintBarBack;
+
         // Game over texture
         private Texture2D gameOverTexture;
 
@@ -138,6 +142,9 @@ namespace DIY_Boss_Rush_Game
         // The number of points the player can allocate || BALANCE LATER
         private int pointsToAllocate = 4;
 
+        // Bool to check if the player has the "Sprint ability" for the skill tree, temporary
+        private bool hasSkillSprint = false;
+
 
         public Game1()
         {
@@ -177,6 +184,9 @@ namespace DIY_Boss_Rush_Game
             playerInitialDamage = player.DamageStat;
             playerInitialSpeed = player.SpeedStat;
             playerInitialCrit = player.CritStat;
+
+            // Initialize the player skill sprint as true for now
+            hasSkillSprint = true;
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
@@ -252,6 +262,10 @@ namespace DIY_Boss_Rush_Game
             uiPlayerBar = Content.Load<Texture2D>("uiPlayerBar");
             uiText = Content.Load<SpriteFont>("uiText");
             uiTextScore = Content.Load < SpriteFont>("uiTextScore");
+
+            // Load textures for sprint bar
+            uiPlayerSprintBarBack = Content.Load<Texture2D>("uiCustomizeColor");
+            uiPlayerSprintBarFront = Content.Load<Texture2D>("uiCustomizeColor");
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
@@ -388,7 +402,6 @@ namespace DIY_Boss_Rush_Game
             _spriteBatch.Begin();
 
             // Finite State Machine for Draw Method
-            // Finite State Machine
             if (gameState == GameState.Menu)
             {
                 // Draw title page buttons
@@ -504,9 +517,15 @@ namespace DIY_Boss_Rush_Game
                 player.Draw(_spriteBatch);
                 boss[0].Draw(_spriteBatch);
 
-
-
                 bulletManager.DrawAllBulllets(_spriteBatch);
+
+                // Draw stamina bar if has the skill
+                if (hasSkillSprint)
+                {
+                    _spriteBatch.Draw(uiPlayerSprintBarBack, new Rectangle(75, 75, 143 + 160, 20), null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(uiPlayerSprintBarFront, new Rectangle(75, 75, 143 + 160 * (player.CurrStamina / player.MaxStamina), 20), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+
+                }
 
                 //Draw battle UI
                 _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
@@ -519,6 +538,9 @@ namespace DIY_Boss_Rush_Game
                     new Rectangle(1478, 0, 14, 1080), Color.White);
                 _spriteBatch.Draw(uiPlayerTop, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
+
+               
+
 
                 //Text for battle UI with drop shadow
                 _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(148, 53), Color.Black);

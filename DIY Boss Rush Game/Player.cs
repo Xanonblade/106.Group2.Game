@@ -19,6 +19,20 @@ namespace DIY_Boss_Rush_Game
         private float timeSinceAttacked = 0.0f;
         private Random rng;
 
+        // Hold the max stamina and current stamina of the player, and the rate at which stamina regenerates
+        private int maxStamina = 100;
+        private int currStamina = 100;
+
+        /// <summary>
+        /// Getter for MaxStamina
+        /// </summary>
+        public int MaxStamina { get { return maxStamina; } }
+
+        /// <summary>
+        /// Getter and setter for CurrStamina
+        /// </summary>
+        public int CurrStamina { get { return currStamina; }  set { currStamina = value; } }
+
         /// <summary>
         /// Sets player specifics (static pos) and calls base constructor for character stats and texture and rectangle
         /// Most of the player constructor arguments should be set in picker instead of here once picker is done
