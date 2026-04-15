@@ -31,9 +31,6 @@ namespace DIY_Boss_Rush_Game
             Player.texture = tex;
 
             rng = new Random();
-
-			// TODO: REMOVE AFTER TESTING
-			base.Multishot = true;
 		}
 
         /// <summary>
@@ -60,7 +57,7 @@ namespace DIY_Boss_Rush_Game
             if (base.Multishot)
             {
                 float damage = DamageStat * attackMultiplier * 3 / 4; // Reduce damage for multishot bullets
-                int offset = 5;
+                int offset = 15;
                 Vector2 perpendicular = Vector2.Rotate(dir, (float)Math.PI / 2) * offset;
 				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) + perpendicular, bulletRadius, true);
 				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) - perpendicular, bulletRadius, true);

@@ -141,7 +141,11 @@ namespace DIY_Boss_Rush_Game
             for (int i = 0; i < playerBullets.Count; i++)
             {
                 Bullet bullet = playerBullets[i];
-                bullet.Update(gameTime);
+
+                // Update with Richochet info
+                bullet.Update(gameTime, player.Richochet);
+
+
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.texture))
                 {
                     boss.TakeDamage(bullet.Damage);
@@ -154,7 +158,7 @@ namespace DIY_Boss_Rush_Game
             for (int i = 0; i < enemyBullets.Count; i++)
             {
                 Bullet bullet = enemyBullets[i];
-                bullet.Update(gameTime);
+                bullet.Update(gameTime, false);
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.texture))
                 {
                     player.TakeDamage(bullet.Damage);
