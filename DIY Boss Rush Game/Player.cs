@@ -29,11 +29,12 @@ namespace DIY_Boss_Rush_Game
         {
             Player.pos = pos;
             Player.texture = tex;
+
             rng = new Random();
-        }
+		}
 
         /// <summary>
-        /// Attacks using bullets, creates a bullet in the direction of the mouse cursor with the player's current position as the origin. The bullet's speed and damage are determined by the player's stats and multipliers.
+        /// Attacks with a bullet
         /// </summary>
         /// <param name="dir"></param>
         private void Attack(Vector2 dir)
@@ -52,7 +53,17 @@ namespace DIY_Boss_Rush_Game
                 currDamage *= 2; // Double damage for crits
             }
 
-            base.bulletManager.CreateBullet(currSpeed, currDamage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
+            // Shoot two if multishot
+            if (base.Multishot)
+            {
+                float damage = DamageStat * attackMultiplier * 3 / 4; // Reduce damage for multishot bullets
+                int offset = 15;
+                Vector2 perpendicular = Vector2.Rotate(dir, (float)Math.PI / 2) * offset;
+				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) + perpendicular, bulletRadius, true);
+				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) - perpendicular, bulletRadius, true);
+			}
+            else
+                base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, true);
         }
 
         /// <summary>
