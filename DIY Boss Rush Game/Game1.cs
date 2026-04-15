@@ -522,8 +522,8 @@ namespace DIY_Boss_Rush_Game
                 // Draw stamina bar if has the skill
                 if (hasSkillSprint)
                 {
-                    _spriteBatch.Draw(uiPlayerSprintBarBack, new Rectangle(75, 75, 143 + 160, 20), null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-                    _spriteBatch.Draw(uiPlayerSprintBarFront, new Rectangle(75, 75, 143 + 160 * (player.CurrStamina / player.MaxStamina), 20), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                    _spriteBatch.Draw(uiPlayerSprintBarBack, new Rectangle(125, 75, 143 + 160, 20), null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+                    _spriteBatch.Draw(uiPlayerSprintBarFront, new Rectangle(125, 75, 143 + 160 * (player.CurrStamina / player.MaxStamina), 20), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
                 }
 

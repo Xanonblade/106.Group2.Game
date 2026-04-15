@@ -21,7 +21,7 @@ namespace DIY_Boss_Rush_Game
 
         // Hold the max stamina and current stamina of the player, and the rate at which stamina regenerates
         private int maxStamina = 100;
-        private int currStamina = 100;
+        private int currStamina = 0;
 
         /// <summary>
         /// Getter for MaxStamina
@@ -76,6 +76,12 @@ namespace DIY_Boss_Rush_Game
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime); // Does nothing currently can add in character if makes sense
+
+            // Update current stamina
+            if (currStamina < maxStamina)
+            {
+                currStamina += 1;
+            }
 
             
             KeyboardState currState = Keyboard.GetState();
