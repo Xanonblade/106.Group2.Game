@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 
 // Enum for each of the GameStates
-enum GameState { Menu, Scoreboard, CustomizePlayer, CustomizeBoss, Game, GameOver }
+enum GameState { Menu, Scoreboard, CustomizePlayer, CustomizeBoss, SkillTree, Game, GameOver }
 
 namespace DIY_Boss_Rush_Game
 {
@@ -168,7 +168,7 @@ namespace DIY_Boss_Rush_Game
             currentLevel = 1;
 
             // Initialize player
-            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerC2x"), 100f, 10f, 10f, 5f);
+            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerREGame"), 100f, 10f, 10f, 5f);
 
             player.HealthStat = 10;
 
@@ -180,7 +180,7 @@ namespace DIY_Boss_Rush_Game
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
-            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossUC"), 10, 10, 5, 5);
+            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 5, 5);
 
             // Store initial boss stats for reset purposes
             bossInitialHealth = boss[0].HealthStat;
@@ -255,9 +255,6 @@ namespace DIY_Boss_Rush_Game
 
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
-
-            Boss.texture = Content.Load<Texture2D>("bossC2x");
-
 
             // Bullet
             BulletManager.Configure(wallN2, player, boss[0]);
@@ -343,6 +340,8 @@ namespace DIY_Boss_Rush_Game
                     currentLevel++;
                     gameState = GameState.CustomizePlayer;
 
+                    // gameState = GameState.SkillTree;
+
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
                     
@@ -351,7 +350,13 @@ namespace DIY_Boss_Rush_Game
                     // Reset healths
                     player.CurrHealth = player.MaxHealth;
                     boss[0].CurrHealth = boss[0].MaxHealth;
+
+
                 }
+            }
+            else if (gameState == GameState.SkillTree)
+            {
+                // Update skill tree here
             }
             else if (gameState == GameState.GameOver)
             {
@@ -485,6 +490,10 @@ namespace DIY_Boss_Rush_Game
                 // Helper method to draw all the text for the boss customization state
                 DrawBossCustomizationText(_spriteBatch);
 
+            }
+            else if (gameState == GameState.SkillTree)
+            {
+                // Draw skill tree here
             }
             else if (gameState == GameState.Game)
             {
@@ -684,6 +693,13 @@ namespace DIY_Boss_Rush_Game
             bossCustomizationUI[3].Width = 368;
             bossCustomizationUI[4].Width = 368;
 
+            // Reset player and boss position
+            Player.pos = new Vector2(480, 540 - (Player.texture.Height / 2));
+            Boss.pos = new Vector2(1440, 540 - (Boss.texture.Height / 2));
+
+            //Clear all bullets currently left in game
+            bulletManager.ClearBullets();
+
         }
 
         /// <summary>
@@ -813,6 +829,10 @@ namespace DIY_Boss_Rush_Game
                         if (buttonArray[i].SingleClick(mouseState))
                             gameState = GameState.CustomizeBoss;
                         break;
+                    case 10:
+                        if (buttonArray[i].SingleClick(mouseState))
+                            gameState = GameState.Menu;
+                        break;
                 }
             }
         }
@@ -837,6 +857,8 @@ namespace DIY_Boss_Rush_Game
                     sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y - (buttonRect.Height / 2), buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
                 else if (i % 2 == 1)
                     sb.Draw(buttonArray[i].Texture, buttonRect, Color.White);
+                else if (i == 10)
+                    sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X, buttonRect.Y + buttonRect.Height, buttonRect.Width, buttonRect.Height), null, Color.White, (float)(-Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
                 else
                     sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y + buttonRect.Height, buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI), new Vector2(0, 0), SpriteEffects.None, 0f);
             }
@@ -1001,6 +1023,7 @@ namespace DIY_Boss_Rush_Game
             AddButton(new Button(new Rectangle(56, 859, 99, 73), "", buttonTexture), playerCustomizationButtons);
             AddButton(new Button(new Rectangle(56, 995, 99, 73), "", buttonTexture), playerCustomizationButtons);
             AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", buttonTexture), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(1164, 158, 99, 73), "", buttonTexture), playerCustomizationButtons);
         }
 
         /// <summary>
@@ -1009,7 +1032,8 @@ namespace DIY_Boss_Rush_Game
         public void LoadPlayerCustomizationUI()
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 523, 527, 608), Content.Load<Texture2D>("playerC2x")));
+            Texture2D playerDisplayTexture = Content.Load<Texture2D>("playerRECustomize");
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 430, playerDisplayTexture.Width * 2 / 3, playerDisplayTexture.Height * 2 / 3), playerDisplayTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 113, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 359, 368, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(257, 643, 368, 90), barTexture));
@@ -1040,7 +1064,7 @@ namespace DIY_Boss_Rush_Game
         public void LoadBossCustomizationUI()
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossC2x")));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossRECustomize")));
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), barTexture));
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), barTexture));
             bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), barTexture));
@@ -1061,6 +1085,8 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Damage Multiplier: " + playerDamageMultiplier, new Vector2(354, 305), Color.White);
             sb.DrawString(uiText, "Speed Multiplier: " + playerSpeedMultiplier, new Vector2(354, 567), Color.White);
             sb.DrawString(uiText, "Crit Multiplier: " + playerCritMultiplier, new Vector2(354, 831), Color.White);
+            sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
+            sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
         }
 
         /// <summary>

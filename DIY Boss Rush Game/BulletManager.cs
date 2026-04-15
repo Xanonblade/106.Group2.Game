@@ -205,5 +205,14 @@ namespace DIY_Boss_Rush_Game
                 bullet.Draw(spriteBatch, false);
             }
         }
+
+        /// <summary>
+        /// Clears all bullets currently in game
+        /// </summary>
+        public void ClearBullets()
+        {
+            playerBullets.Clear();
+            enemyBullets.Clear();
+        }
     }
 }
