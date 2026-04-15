@@ -670,29 +670,6 @@ namespace DIY_Boss_Rush_Game
             boss[0].SpeedStat = bossInitialSpeed;
             boss[0].CritStat = bossInitialCrit;
 
-            // Reset multipliers
-            playerHealthMultiplier = 1;
-            playerDamageMultiplier = 1;
-            playerSpeedMultiplier = 1;
-            playerCritMultiplier = 1;
-            bossHealthMultiplier = 1;
-            bossDamageMultiplier = 1;
-            bossSpeedMultiplier = 1;
-            bossCritMultiplier = 1;
-
-            // Reset points to allocate
-            pointsToAllocate = 4;
-
-            // Reset UI for customization states
-            playerCustomizationUI[1].Width = 368;
-            playerCustomizationUI[2].Width = 368;
-            playerCustomizationUI[3].Width = 368;
-            playerCustomizationUI[4].Width = 368;
-            bossCustomizationUI[1].Width = 368;
-            bossCustomizationUI[2].Width = 368;
-            bossCustomizationUI[3].Width = 368;
-            bossCustomizationUI[4].Width = 368;
-
             // Reset player and boss position
             Player.pos = new Vector2(480, 540 - (Player.texture.Height / 2));
             Boss.pos = new Vector2(1440, 540 - (Boss.texture.Height / 2));
