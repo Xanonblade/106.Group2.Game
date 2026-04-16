@@ -184,7 +184,7 @@ namespace DIY_Boss_Rush_Game
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
-            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 5, 5);
+            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 100, 5);
 
             // Store initial boss stats for reset purposes
             bossInitialHealth = boss[0].HealthStat;
@@ -711,6 +711,10 @@ namespace DIY_Boss_Rush_Game
             player.DamageStat = playerInitialDamage;
             player.SpeedStat = playerInitialSpeed;
             player.CritStat = playerInitialCrit;
+
+            //Character health values back to max
+            player.CurrHealth = player.MaxHealth;
+            boss[0].CurrHealth = boss[0].MaxHealth;
 
             // Reset the boss's stats
             boss[0].HealthStat = bossInitialHealth;

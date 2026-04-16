@@ -196,7 +196,7 @@ namespace DIY_Boss_Rush_Game
                     break;
             }
         }
-
+        
         /// <summary>
         /// Moves the entity toward the specified destination at a speed modified by the given multiplier.
         /// </summary>
@@ -206,6 +206,8 @@ namespace DIY_Boss_Rush_Game
         {
             // Find the direction to move in
             Vector2 direction = Vector2.Normalize(destination - pos);
+
+            //float moveSpeed = 20f;
 
             // Move a small amount towards the move position based on the speedMult and SpeedStat
             Vector2 movement = direction * speedMult * SpeedStat * (float)gameTime.ElapsedGameTime.TotalSeconds;
