@@ -163,6 +163,7 @@ namespace DIY_Boss_Rush_Game
 
             // Initialize score manager
             scoreManager = ScoreManager.Instance;
+            ScoreManager.LoadScores();
 
             // Temporary stat is 0
             stat = 0;
@@ -417,7 +418,6 @@ namespace DIY_Boss_Rush_Game
                     new Vector2(_graphics.PreferredBackBufferWidth/2 - 193,60), Color.White);
 
                 //Draw scoreboard itself
-                ScoreManager.LoadScores();
 
                 List<KeyValuePair<string, int>> scoreList = ScoreManager.GetTopFiveScore();
 
