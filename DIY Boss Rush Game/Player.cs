@@ -31,6 +31,9 @@ namespace DIY_Boss_Rush_Game
             Player.texture = tex;
 
             rng = new Random();
+
+            Richochet = true;
+            Multishot = true;
 		}
 
         /// <summary>
