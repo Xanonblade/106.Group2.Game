@@ -143,8 +143,7 @@ namespace DIY_Boss_Rush_Game
                 Bullet bullet = playerBullets[i];
 
                 // Update with Richochet info
-                bullet.Update(gameTime, player.Richochet);
-
+                bullet.Update(gameTime, player.Richochet, true);
 
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.texture))
                 {
@@ -158,7 +157,10 @@ namespace DIY_Boss_Rush_Game
             for (int i = 0; i < enemyBullets.Count; i++)
             {
                 Bullet bullet = enemyBullets[i];
-                bullet.Update(gameTime, false);
+
+                // Update with Richochet info
+                bullet.Update(gameTime, player.Richochet, false); // can use boss.Richochet if we've updated boss as well, but rn only player is being updated with richochet
+
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.texture))
                 {
                     player.TakeDamage(bullet.Damage);
