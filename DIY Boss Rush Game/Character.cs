@@ -26,8 +26,8 @@ namespace DIY_Boss_Rush_Game
         public float CritStat { get; set; }
         public bool IsDead => CurrHealth <= 0;
 
-        public bool Multishot { get; set; }
-        public bool Richochet { get; set; }
+        public bool Multishot { get; private set; }
+        public bool Richochet { get; private set; }
 
 		public BulletManager bulletManager { get; set; }
 
@@ -46,6 +46,11 @@ namespace DIY_Boss_Rush_Game
             this.CritStat = critStat;
             MaxHealth = (int)(healthStat * 50f); // Set current health to max health at the start
             CurrHealth = MaxHealth;
+
+            // Set skill tree values
+            SkillTree skillTree = SkillTree.Instance;
+            Multishot = skillTree.CheckIfUnlocked("Multishot");
+            Richochet = skillTree.CheckIfUnlocked("Richochet");
         }
 
         /// <summary>
