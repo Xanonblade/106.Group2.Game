@@ -107,7 +107,7 @@ namespace DIY_Boss_Rush_Game
                 // set to slow down if stamina == 0
                 isSlowed = true;
 
-                SpeedStat /= 2;
+                SpeedStat = 3;
 
                 staminaTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
