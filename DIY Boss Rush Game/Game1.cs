@@ -414,6 +414,7 @@ namespace DIY_Boss_Rush_Game
                 {
                     // Reset player and boss stats here
                     ResetPlayerAndBoss();
+                    SkillTree.Instance.WipeTree();
 
                     // Reset score and level
                     currentLevel = 1;
@@ -561,7 +562,7 @@ namespace DIY_Boss_Rush_Game
                 bulletManager.DrawAllBulllets(_spriteBatch);
 
                 // Draw stamina bar if has the skill
-                if (hasSkillSprint)
+                if (player.Sprint)
                 {
                     _spriteBatch.Draw(uiPlayerSprintBarBack, new Rectangle(125, 75, 143 + 160, 20), null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None, 0f);
                     _spriteBatch.Draw(uiPlayerSprintBarFront, new Rectangle(125, 75, player.CurrStamina, 20), null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
@@ -783,6 +784,7 @@ namespace DIY_Boss_Rush_Game
 
             //Clear all bullets currently left in game
             bulletManager.ClearBullets();
+            boss[0].StopAction();
 
         }
 

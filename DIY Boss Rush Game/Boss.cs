@@ -495,5 +495,10 @@ namespace DIY_Boss_Rush_Game
             base.CollideWithBullet(damage, statusEffect);
             ScoreManager.AddCurrentScore(100);
         }
+
+        public void StopAction()
+        {
+            isActionFinished = true;
+        }
     }
 }
