@@ -56,7 +56,7 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public static void SaveScores()
         {
-            StreamWriter sw = new StreamWriter("../../../Score.txt");
+            StreamWriter sw = new StreamWriter("Content/Score.txt");
 
             foreach (KeyValuePair<string, int> score in Instance.scores)
             {
@@ -75,7 +75,7 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public static void LoadScores()
         {
-            StreamReader sr = new StreamReader("../../../Score.txt");
+            StreamReader sr = new StreamReader("Content/Score.txt");
 
             Instance.scores.Clear();
 

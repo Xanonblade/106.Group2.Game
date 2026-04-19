@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -27,14 +26,8 @@ namespace DIY_Boss_Rush_Game
         // Hold playAgain button for game over state
         private Button playAgain;
 
-        // Placeholder for stats
-        private int stat;
-
         // Public static level to use throughout whole game
         public static int currentLevel;
-
-        // Temporary text
-        private SpriteFont font;
 
         // Hold previousMouse state to enable single click
         private MouseState previousMouseState;
@@ -149,9 +142,6 @@ namespace DIY_Boss_Rush_Game
         // The number of points the player can allocate || BALANCE LATER
         private int pointsToAllocate = 4;
 
-        // Bool to check if the player has the "Sprint ability" for the skill tree, temporary
-        private bool hasSkillSprint = false;
-
         private KeyboardState lastFrameState;
         private string currName = "";
         private bool saved = false;
@@ -181,9 +171,6 @@ namespace DIY_Boss_Rush_Game
             scoreManager = ScoreManager.Instance;
             ScoreManager.LoadScores();
 
-            // Temporary stat is 0
-            stat = 0;
-
             //Current level is 1
             currentLevel = 1;
 
@@ -197,9 +184,6 @@ namespace DIY_Boss_Rush_Game
             playerInitialDamage = player.DamageStat;
             playerInitialSpeed = player.SpeedStat;
             playerInitialCrit = player.CritStat;
-
-            // Initialize the player skill sprint as true for now
-            hasSkillSprint = true;
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];

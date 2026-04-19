@@ -76,6 +76,9 @@
 /processorParam:TextureFormat=Color
 /build:bossREGame.png
 
+#begin BossSequences.txt
+/copy:BossSequences.txt
+
 #begin bossUC.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -255,6 +258,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PlayerUC.png
+
+#begin Score.txt
+/copy:Score.txt
 
 #begin tempButton.png
 /importer:TextureImporter
@@ -484,6 +490,9 @@
 /processorParam:TextureFormat=Color
 /build:test9.png
 
+#begin TreeData.txt
+/copy:TreeData.txt
+
 #begin uiBossBar.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -639,18 +648,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:uiStaminaBack.png
-
-#begin uiStaminaBar.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:uiStaminaBar.png
 
 #begin uiStaminaBar.png
 /importer:TextureImporter

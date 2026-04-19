@@ -21,8 +21,6 @@ namespace DIY_Boss_Rush_Game
         private string text;
 
         // Holds the button sprite
-        private Microsoft.Xna.Framework.Rectangle rectangle;
-        private string v;
         private Texture2D buttonSprite;
 
         // Properties
