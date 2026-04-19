@@ -59,6 +59,11 @@ namespace DIY_Boss_Rush_Game
         private float timeBetweenBullets;
         private int bulletsLeftToShoot;
 
+        //Status effects
+        private bool isInfected;
+        private float infectedTimer;
+        private bool waiting;
+
         // Damage multipliers for attacks, helps balance the boss's attacks without changing the boss's actual damage stat
         public float BulletMultiplier { get; private set; }
         public float BodyMultiplier { get; private set; }
@@ -76,10 +81,13 @@ namespace DIY_Boss_Rush_Game
             waitTime = 0;
             isActionFinished = true;
             random = new Random();
-            pos = new Vector2(400, 400);
+            pos = new Vector2(rect.X, rect.Y);
             Boss.texture = texture;
             BulletMultiplier = 7;
             BodyMultiplier = 42;
+            isInfected = false;
+            infectedTimer = 2f;
+            waiting = false;
         }
 
         /// <summary>
@@ -190,24 +198,31 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         private void DoAction()
         {
-            switch (currentAction)
+            if (waiting)
             {
-                case Action.Move:
-                    Move(selectedMovePos, 3f);
-                    break;
-                case Action.Charge:
-                    Move(selectedMovePos, 4f);
-                    break;
-                case Action.Retreat:
-                    Move(selectedMovePos, 3f);
-                    break;
-                case Action.Attack:
-                    Attack(true);
-                    break;
-                case Action.Wait:
-                    Wait(1.5f);
-                    break;
+                Wait(2f);
             }
+            else
+            {
+                switch (currentAction)
+                {
+                    case Action.Move:
+                        Move(selectedMovePos, 3f);
+                        break;
+                    case Action.Charge:
+                        Move(selectedMovePos, 4f);
+                        break;
+                    case Action.Retreat:
+                        Move(selectedMovePos, 3f);
+                        break;
+                    case Action.Attack:
+                        Attack(true);
+                        break;
+                    case Action.Wait:
+                        Wait(1f);
+                        break;
+                }
+            } 
         }
         
         /// <summary>
@@ -385,6 +400,12 @@ namespace DIY_Boss_Rush_Game
                 // Normal (not machine gun) wait ending
                 else
                     isActionFinished = true;
+
+            }
+
+            if (waitTime >= timeToWait)
+            {
+                waiting = false;
             }
         }
 
@@ -433,11 +454,31 @@ namespace DIY_Boss_Rush_Game
             sr.Close();
         }
 
-        public override void TakeDamage(float damage)
+        /// <summary>
+        /// This override handles status effects from bullets before calling base
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <param name="statusEffect"></param>
+        public override void CollideWithBullet(float damage, BulletState statusEffect)
         {
-            base.TakeDamage(damage);
-            ScoreManager.AddCurrentScore(100);
+            //Status effects from bullets
+            switch (statusEffect)
+            {
+                case BulletState.Shock:
+                    //Freezes boss
+                    isActionFinished = false;
+                    waiting = true;
+                    break;
+                case BulletState.Virus:
+                    //Damage over time
+                    isInfected = true;
+                    break;
+                    //Ignores neutral state because it's meant to do nothing then
+            }
 
+            //Damage and score
+            base.CollideWithBullet(damage, statusEffect);
+            ScoreManager.AddCurrentScore(100);
         }
     }
 }
