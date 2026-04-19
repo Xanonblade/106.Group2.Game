@@ -18,6 +18,28 @@ namespace DIY_Boss_Rush_Game
         private readonly float critMultiplier = 10; // Helps scale crits to be percentage based
         private float timeSinceAttacked = 0.0f;
         private Random rng;
+        private KeyboardState previousKeyboardState; // Holds previousKeyboardState for a single click function
+        private float staminaTimer = 3f; // Time to reduce speed
+        private float resetSpeed; // Holds the reducedSpeed stat to slow down the player
+        private bool isSlowed = false;
+
+        // Hold the max stamina and current stamina of the player, and the rate at which stamina regenerates
+        private int maxStamina = 303;
+        private int currStamina = 1;
+
+        // Holds the amount of time for a dash
+        private float dashWindow = .2f;
+        private bool isDashing = false;
+
+        /// <summary>
+        /// Getter for MaxStamina
+        /// </summary>
+        public int MaxStamina { get { return maxStamina; } }
+
+        /// <summary>
+        /// Getter and setter for CurrStamina
+        /// </summary>
+        public int CurrStamina { get { return currStamina; }  set { currStamina = value; } }
 
         /// <summary>
         /// Sets player specifics (static pos) and calls base constructor for character stats and texture and rectangle
@@ -29,11 +51,15 @@ namespace DIY_Boss_Rush_Game
         {
             Player.pos = pos;
             Player.texture = tex;
+
             rng = new Random();
-        }
+
+            Richochet = true;
+            Multishot = true;
+		}
 
         /// <summary>
-        /// Attacks using bullets, creates a bullet in the direction of the mouse cursor with the player's current position as the origin. The bullet's speed and damage are determined by the player's stats and multipliers.
+        /// Attacks with a bullet
         /// </summary>
         /// <param name="dir"></param>
         private void Attack(Vector2 dir)
@@ -52,7 +78,17 @@ namespace DIY_Boss_Rush_Game
                 currDamage *= 2; // Double damage for crits
             }
 
-            base.bulletManager.CreateBullet(currSpeed, currDamage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width/2, pos.Y + texture.Height/2), bulletRadius, true);
+            // Shoot two if multishot
+            if (base.Multishot)
+            {
+                float damage = DamageStat * attackMultiplier * 3 / 4; // Reduce damage for multishot bullets
+                int offset = 15;
+                Vector2 perpendicular = Vector2.Rotate(dir, (float)Math.PI / 2) * offset;
+				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) + perpendicular, bulletRadius, true);
+				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) - perpendicular, bulletRadius, true);
+			}
+            else
+                base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, true);
         }
 
         /// <summary>
@@ -63,11 +99,42 @@ namespace DIY_Boss_Rush_Game
         {
             base.Update(gameTime); // Does nothing currently can add in character if makes sense
 
-            
             KeyboardState currState = Keyboard.GetState();
 
+            // Check if the stamina ever hits zero, speed temporarily decreases
+            if (currStamina < 0 || isSlowed)
+            {
+                // Set to resetSpeed to change later
+                if (!isSlowed)
+                    resetSpeed = SpeedStat;
+
+                // set to slow down if stamina == 0
+                isSlowed = true;
+
+                SpeedStat = 3;
+
+                staminaTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (staminaTimer <= 0)
+                {
+                    isSlowed = false;
+                    currStamina++;
+                    staminaTimer = 3f;
+
+                    SpeedStat = resetSpeed;
+                }
+
+            }
+            // Update current stamina when shift isn't held down
+            else if (currStamina <= maxStamina && !currState.IsKeyDown(Keys.LeftShift))
+            {
+                currStamina += 1;
+            }
+            
+            
             // Movement
             Vector2 movement = Vector2.Zero;
+
             if (currState.IsKeyDown(Keys.W))
             {
                 movement.Y -= 1;
@@ -88,6 +155,15 @@ namespace DIY_Boss_Rush_Game
                 movement.Normalize(); // Normalize to prevent faster diagonal movement
             movement *= SpeedStat * speedMultiplier; // Scale movement by speed stat and multiplier
             pos += movement; // Update player Position
+
+            // Sprint
+            if (currStamina > 0 && currState.IsKeyDown(Keys.LeftShift) )
+            {
+                pos += movement / 2;
+                currStamina -= 4;
+            }
+
+            
 
             // Screen size - wall size
             int screenWidth = 1920 - 64;
@@ -119,6 +195,47 @@ namespace DIY_Boss_Rush_Game
                 // Attack in the direction of the mouse cursor with the player's current position
                 Attack(dirAim);
             }
+
+            // Dash
+
+            // Make a single click method
+            if (currState.IsKeyDown(Keys.Space) && previousKeyboardState != currState && currStamina - 150 >= 0)
+            {
+                // Reduce stamina
+                currStamina -= 150;
+
+                // let game know that the player is dashing
+                isDashing = true;
+            }
+
+            //
+            if (isDashing)
+            {
+                // Find the relation between the mouse and the player
+                Vector2 direction = new Vector2();
+
+                direction.X = mouseState.X - pos.X;
+                direction.Y = mouseState.Y - pos.Y;
+
+                // Normalize to get direction only
+                direction.Normalize();
+
+                direction *= SpeedStat * speedMultiplier * 4;
+                pos += direction;
+
+                dashWindow -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // Reset dash
+                if (dashWindow < 0)
+                {
+                    dashWindow = .2f;
+                    isDashing = false;
+                }
+            }
+
+            // Collected previous keyboard state to do single click
+            previousKeyboardState = currState;
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -26,6 +26,9 @@ namespace DIY_Boss_Rush_Game
         private Player player;
         private Boss boss;
 
+        // Collision fields
+        private bool isColliding = false;
+
         /// <summary>
         /// Private constructor for singleton
         /// </summary>
@@ -112,6 +115,22 @@ namespace DIY_Boss_Rush_Game
             enemyBullets.Remove(bullet);
         }
 
+        private void PlayerBossCollision()
+        {
+            // Player boss collision, Needs to take in position as well
+            Rectangle bossRect = new Rectangle((int)Boss.pos.X, (int)Boss.pos.Y, Boss.texture.Width, Boss.texture.Height);
+            Rectangle playerRect = new Rectangle((int)Player.pos.X, (int)Player.pos.Y, Player.texture.Width, Player.texture.Height);
+            if (bossRect.Intersects(playerRect) && !isColliding)
+            {
+                player.TakeDamage(boss.DamageStat * boss.BodyMultiplier);
+                isColliding = true; // Set collision state to prevent multiple damage instances while colliding
+            }
+            else if (isColliding && !bossRect.Intersects(playerRect))
+            {
+                isColliding = false; // Reset collision state when not colliding
+            }
+        }
+
         /// <summary>
         /// Call all bullets update, and also check for collisions here
         /// </summary>
@@ -122,7 +141,10 @@ namespace DIY_Boss_Rush_Game
             for (int i = 0; i < playerBullets.Count; i++)
             {
                 Bullet bullet = playerBullets[i];
-                bullet.Update(gameTime);
+
+                // Update with Richochet info
+                bullet.Update(gameTime, player.Richochet, true);
+
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.texture))
                 {
                     boss.TakeDamage(bullet.Damage);
@@ -135,7 +157,10 @@ namespace DIY_Boss_Rush_Game
             for (int i = 0; i < enemyBullets.Count; i++)
             {
                 Bullet bullet = enemyBullets[i];
-                bullet.Update(gameTime);
+
+                // Update with Richochet info
+                bullet.Update(gameTime, player.Richochet, false); // can use boss.Richochet if we've updated boss as well, but rn only player is being updated with richochet
+
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.texture))
                 {
                     player.TakeDamage(bullet.Damage);
@@ -143,6 +168,9 @@ namespace DIY_Boss_Rush_Game
                     i--; // Decrement index to account for removed bullet
                 }
             }
+
+            // Check player and boss collision (this could be moved to game1 or somewhere else if we wanted to)
+            PlayerBossCollision();
         }
 
         /// <summary>

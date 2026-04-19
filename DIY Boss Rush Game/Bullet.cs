@@ -22,6 +22,10 @@ namespace DIY_Boss_Rush_Game
         // This doesn't change texture, and needs to be set manually to reflect textures width and height
         public float Radius { get; private set; }
 
+        private int bounces;
+
+        private readonly int percentChangeBossBounce = 25;
+
         /// <summary>
         /// Sets every field
         /// </summary>
@@ -40,6 +44,8 @@ namespace DIY_Boss_Rush_Game
             this.UnitDir = unitDir;
             this.Pos = pos;
             this.Radius = radius;
+
+            bounces = 0;
         }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace DIY_Boss_Rush_Game
         /// Add removal from list, and change magic numbers for bounds later, hopefully a static number or something
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, bool richochet, bool isPlayers)
         {
             // Move bullet in the direction of unitDir scaled by speed and elapsed time
             Pos += UnitDir * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -57,8 +63,53 @@ namespace DIY_Boss_Rush_Game
             // 64 border but 0 to 1920, 0 to 1024
             if (Pos.X < -Radius + 64 || Pos.X > 1920 + Radius - 64 || Pos.Y < -Radius + 64 || Pos.Y > 1024 + Radius - 64)
             {
-                // Remove from bulletManager's list
-                BulletManager.Instance.RemoveBullet(this);
+				// If richochet is enabled, reverse direction instead of removing
+				if (richochet && bounces <= 2)
+                {
+                    // Differences based on boss/player
+                    if (isPlayers)
+                    {
+                        // Update damage
+                        Damage *= 1.5f; // Increase damage by 50% on each bounce
+                    }
+                    else
+                    {
+                        Damage *= 0.75f; // Decrease damage by 25% on each bounce
+
+                        // Also remove if not passing test to prevent too many bullets
+                        Random rng = new Random();
+                        if (rng.Next(100) > percentChangeBossBounce)
+                        {
+                            BulletManager.Instance.RemoveBullet(this);
+
+                            // exit because bullet is gone
+                            return;
+                        }
+                    }
+
+                    // Check which bounds it hit and reverse the appropriate direction
+                    if (Pos.X < -Radius + 64 || Pos.X > 1920 + Radius - 64)
+                    {
+                        UnitDir = new Vector2(-UnitDir.X, UnitDir.Y); // Reverse X direction
+                        Pos = new Vector2(Math.Clamp(Pos.X, -Radius + 64, 1920 + Radius - 64), Pos.Y); // Clamp position to prevent sticking out of bounds
+                    }
+                    if (Pos.Y < -Radius + 64 || Pos.Y > 1024 + Radius - 64)
+                    {
+						UnitDir = new Vector2(UnitDir.X, -UnitDir.Y); // Reverse Y direction
+						Pos = new Vector2(Pos.X, Math.Clamp(Pos.Y, -Radius + 64, 1024 + Radius - 64)); // Clamp position to prevent sticking out of bounds
+                    }
+
+                    // Update bounces
+                    bounces++;
+
+                    // Randomize direction slightly
+                    UnitDir = Vector2.Transform(UnitDir, Matrix.CreateRotationZ((float)(new Random().NextDouble() * 0.4 - 0.2))); // Rotate direction by -0.2 to 0.2 radians
+				}
+                else
+                {
+					// Remove from bulletManager's list
+					BulletManager.Instance.RemoveBullet(this);
+				}
             }
         }
 
