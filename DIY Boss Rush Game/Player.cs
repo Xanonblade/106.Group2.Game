@@ -22,14 +22,14 @@ namespace DIY_Boss_Rush_Game
         private KeyboardState previousKeyboardState; // Holds previousKeyboardState for a single click function
         private float staminaTimer = 3f; // Time to reduce speed
         private float resetSpeed; // Holds the reducedSpeed stat to slow down the player
-        private bool isSlowed;
+        public bool IsSlowed { get; set; }
 
         // Hold the max stamina and current stamina of the player, and the rate at which stamina regenerates
         private int maxStamina;
         private int currStamina;
 
         //Status effects
-        private bool isInfected;
+        public bool IsInfected { get; set; }
         private float infectedTimer;
 
         // Holds the amount of time for a dash
@@ -58,10 +58,10 @@ namespace DIY_Boss_Rush_Game
             Player.pos = pos;
             Player.texture = tex;
             //Skilltree values
-            isSlowed = false;
+            IsSlowed = false;
             maxStamina = 303;
             currStamina = maxStamina;
-            isInfected = false;
+            IsInfected = false;
             infectedTimer = 1.5f;
 
             rng = new Random();
@@ -111,14 +111,14 @@ namespace DIY_Boss_Rush_Game
             KeyboardState currState = Keyboard.GetState();
 
             // Check if the stamina ever hits zero, speed temporarily decreases
-            if (currStamina < 0 || isSlowed)
+            if (currStamina < 0 || IsSlowed)
             {
                 // Set to resetSpeed to change later
-                if (!isSlowed)
+                if (!IsSlowed)
                     resetSpeed = SpeedStat;
 
                 // set to slow down if stamina == 0
-                isSlowed = true;
+                IsSlowed = true;
 
                 SpeedStat = 3;
 
@@ -126,7 +126,7 @@ namespace DIY_Boss_Rush_Game
 
                 if (staminaTimer <= 0)
                 {
-                    isSlowed = false;
+                    IsSlowed = false;
                     currStamina++;
                     staminaTimer = 3f;
 
@@ -141,7 +141,7 @@ namespace DIY_Boss_Rush_Game
             }
             
             //Virus status effect
-            if (isInfected)
+            if (IsInfected)
             {
                 //Deal damage
                 CurrHealth -= MaxHealth*.0015f;
@@ -150,7 +150,7 @@ namespace DIY_Boss_Rush_Game
 
                 if (infectedTimer <= 0)
                 {
-                    isInfected = false;
+                    IsInfected = false;
                     infectedTimer = 1.5f;
                 }
             }
@@ -276,7 +276,7 @@ namespace DIY_Boss_Rush_Game
                     break;
                 case BulletState.Virus:
                     //Damage over time
-                    isInfected = true;
+                    IsInfected = true;
                     break;
                     //Ignores neutral state because it's meant to do nothing then
             }

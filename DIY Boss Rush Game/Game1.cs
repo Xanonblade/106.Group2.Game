@@ -62,12 +62,11 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiScoreSprite;
         private Texture2D uiTitleSprite; //Use once we have a title and drawn sprite
         private Texture2D uiBackSprite;
+        private Texture2D uiReSpecSprite;
         private Button buttonStart;
         private Button buttonScore;
         private Button buttonBack;
-
-        // Elements for skill tree screen
-        private Button respecButton;
+        private Button buttonReSpec;
 
         // Textures for background tiles to hold
         private Texture2D wallN0;
@@ -97,6 +96,10 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiPlayerTop;
         private Texture2D uiPlayerNub;
         private Texture2D uiPlayerBar;
+        private Texture2D uiStaminaTop;
+        private Texture2D uiStaminaNub;
+        private Texture2D uiStaminaBar;
+        private Texture2D uiStaminaBack;
         private SpriteFont uiText;
         private SpriteFont uiTextScore;
 
@@ -166,7 +169,7 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
         }
 
         protected override void Initialize()
@@ -224,6 +227,7 @@ namespace DIY_Boss_Rush_Game
             uiStartSprite = Content.Load<Texture2D>("uiTitleStart");
             uiScoreSprite = Content.Load<Texture2D>("uiTitleScore");
             uiBackSprite = Content.Load<Texture2D>("uiTitleBack");
+            uiReSpecSprite = Content.Load<Texture2D>("uiReSpecSprite");
             buttonStart = new Button(
                 new Rectangle(240,810,uiStartSprite.Width,uiStartSprite.Height),
                 "", uiStartSprite);
@@ -235,6 +239,10 @@ namespace DIY_Boss_Rush_Game
                 new Rectangle(_graphics.PreferredBackBufferWidth/2 - uiBackSprite.Width/2,
                 810,uiBackSprite.Width,uiBackSprite.Height),
                 "", uiBackSprite);
+            buttonReSpec = new Button(
+                new Rectangle(_graphics.PreferredBackBufferWidth - 240 - uiReSpecSprite.Width,
+                810, uiReSpecSprite.Width, uiReSpecSprite.Height),
+                "", uiReSpecSprite);
 
             // Create "continue" button
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
@@ -272,6 +280,10 @@ namespace DIY_Boss_Rush_Game
             uiPlayerTop = Content.Load<Texture2D>("uiPlayerTop");
             uiPlayerNub = Content.Load<Texture2D>("uiPlayerHealthNub");
             uiPlayerBar = Content.Load<Texture2D>("uiPlayerBar");
+            uiStaminaTop = Content.Load<Texture2D>("uiStaminaTop");
+            uiStaminaNub = Content.Load<Texture2D>("uiStaminaNub");
+            uiStaminaBar = Content.Load<Texture2D>("uiStaminaBar");
+            uiStaminaBack = Content.Load<Texture2D>("uiStaminaBack");
             uiText = Content.Load<SpriteFont>("uiText");
             uiTextScore = Content.Load < SpriteFont>("uiTextScore");
 
@@ -297,10 +309,6 @@ namespace DIY_Boss_Rush_Game
             // Initialize skill tree 
             int width = uiStartSprite.Width / 2;
             int height = uiStartSprite.Height / 2;
-
-            respecButton = new Button(
-                new Rectangle(1200, 800, width, height),
-                "Respec", uiStartSprite);
                 
             SkillTree.Instance.Initialize(uiTextScore, uiText);
 
@@ -317,7 +325,7 @@ namespace DIY_Boss_Rush_Game
             LoadBossCustomizationUI();
 
             // Load arrow button for the skill tree to advance to the next stage
-            nextStageButton = new Button(new Rectangle(1600, 900, 99, 73), "", Content.Load<Texture2D>("uiCustomizeButton"));
+            nextStageButton = new Button(new Rectangle(1800, 810, 99, 73), "", Content.Load<Texture2D>("uiCustomizeButton"));
         }
 
         protected override void Update(GameTime gameTime)
@@ -402,7 +410,7 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.SkillTree)
             {
                 SkillTree.Instance.Update(gameTime);
-                if (respecButton.SingleClick(previousMouseState)) SkillTree.Instance.RespecTree();
+                if (buttonReSpec.SingleClick(previousMouseState)) SkillTree.Instance.RespecTree();
 
                 if (nextStageButton.SingleClick(previousMouseState))
                     gameState = GameState.CustomizePlayer;
@@ -545,7 +553,7 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.SkillTree)
             {
                 SkillTree.Instance.Draw(GraphicsDevice, _spriteBatch);
-                _spriteBatch.Draw(respecButton.Texture, respecButton.Rect, Color.White);
+                _spriteBatch.Draw(uiReSpecSprite, buttonReSpec.Rect, Color.White);
 
                 _spriteBatch.Draw(nextStageButton.Texture, nextStageButton.Rect, null, Color.White, (float)(Math.PI / 2), new Vector2(-25, 50), SpriteEffects.None, 0f);
 
@@ -564,9 +572,10 @@ namespace DIY_Boss_Rush_Game
                 // Draw stamina bar if has the skill
                 if (player.Sprint)
                 {
-                    _spriteBatch.Draw(uiPlayerSprintBarBack, new Rectangle(125, 75, 143 + 160, 20), null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-                    _spriteBatch.Draw(uiPlayerSprintBarFront, new Rectangle(125, 75, player.CurrStamina, 20), null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
-
+                    _spriteBatch.Draw(uiStaminaBack, new Vector2(0, 0), Color.White);
+                    _spriteBatch.Draw(uiStaminaBar, new Vector2(0, 0), new Rectangle(0,0,(int)(143 + 233 * (float)player.CurrStamina / (float)player.MaxStamina),1080), Color.White);
+                    _spriteBatch.Draw(uiStaminaNub, new Vector2(0, 0),new Rectangle(0 + (int)(233 - 232 * (float)player.CurrStamina / (float)player.MaxStamina),0,1920,1080), Color.White);
+                    _spriteBatch.Draw(uiStaminaTop, new Vector2(0, 0), Color.White);
                 }
 
                 //Draw battle UI
@@ -581,14 +590,23 @@ namespace DIY_Boss_Rush_Game
                 _spriteBatch.Draw(uiPlayerTop, new Vector2(0, 0), Color.White);
                 _spriteBatch.Draw(uiBossTop, new Vector2(0, 0), Color.White);
 
-               
-
-
                 //Text for battle UI with drop shadow
-                _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(148, 53), Color.Black);
-                _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(150, 55), Color.White);
-                _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(145, 86), Color.Black);
-                _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(147, 88), Color.White);
+                if (player.Sprint) //When stamina bar is visible
+                {
+                    _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(146, 80), Color.Black);
+                    _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(148, 82), Color.White);
+                    _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(141, 113), Color.Black);
+                    _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(143, 115), Color.White);
+                    
+                }
+                else
+                {
+                    _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(148, 53), Color.Black);
+                    _spriteBatch.DrawString(uiText, $"Score: {scoreManager.CurrentScore}", new Vector2(150, 55), Color.White);
+                    _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(145, 86), Color.Black);
+                    _spriteBatch.DrawString(uiText, $"Level: {currentLevel}", new Vector2(147, 88), Color.White);
+                }
+                    
             }
             else if (gameState == GameState.GameOver)
             {
@@ -767,6 +785,11 @@ namespace DIY_Boss_Rush_Game
             player.DamageStat = playerInitialDamage;
             player.SpeedStat = playerInitialSpeed;
             player.CritStat = playerInitialCrit;
+
+            //Reset player status and stamina in case they are relevant
+            player.IsInfected = false;
+            player.IsSlowed = false;
+            player.CurrStamina = player.MaxStamina;
 
             //Character health values back to max
             player.CurrHealth = player.MaxHealth;
