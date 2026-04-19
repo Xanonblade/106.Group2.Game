@@ -18,10 +18,14 @@ namespace DIY_Boss_Rush_Game
         private readonly float critMultiplier = 10; // Helps scale crits to be percentage based
         private float timeSinceAttacked = 0.0f;
         private Random rng;
+        private KeyboardState previousKeyboardState; // Holds previousKeyboardState for a single click function
+        private float staminaTimer = 3f; // Time to reduce speed
+        private float resetSpeed; // Holds the reducedSpeed stat to slow down the player
+        private bool isSlowed = false;
 
         // Hold the max stamina and current stamina of the player, and the rate at which stamina regenerates
-        private int maxStamina = 100;
-        private int currStamina = 0;
+        private int maxStamina = 303;
+        private int currStamina = 1;
 
         /// <summary>
         /// Getter for MaxStamina
@@ -91,17 +95,42 @@ namespace DIY_Boss_Rush_Game
         {
             base.Update(gameTime); // Does nothing currently can add in character if makes sense
 
-            // Update current stamina
-            if (currStamina < maxStamina)
+            KeyboardState currState = Keyboard.GetState();
+
+            // Check if the stamina ever hits zero, speed temporarily decreases
+            if (currStamina < 0 || isSlowed)
+            {
+                // Set to resetSpeed to change later
+                if (!isSlowed)
+                    resetSpeed = SpeedStat;
+
+                // set to slow down if stamina == 0
+                isSlowed = true;
+
+                SpeedStat /= 2;
+
+                staminaTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (staminaTimer <= 0)
+                {
+                    isSlowed = false;
+                    currStamina++;
+                    staminaTimer = 3f;
+
+                    SpeedStat = resetSpeed;
+                }
+
+            }
+            // Update current stamina when shift isn't held down
+            else if (currStamina <= maxStamina && !currState.IsKeyDown(Keys.LeftShift))
             {
                 currStamina += 1;
             }
-
             
-            KeyboardState currState = Keyboard.GetState();
-
+            
             // Movement
             Vector2 movement = Vector2.Zero;
+
             if (currState.IsKeyDown(Keys.W))
             {
                 movement.Y -= 1;
@@ -122,6 +151,15 @@ namespace DIY_Boss_Rush_Game
                 movement.Normalize(); // Normalize to prevent faster diagonal movement
             movement *= SpeedStat * speedMultiplier; // Scale movement by speed stat and multiplier
             pos += movement; // Update player Position
+
+            // Sprint
+            if (currStamina > 0 && currState.IsKeyDown(Keys.LeftShift) )
+            {
+                pos += movement / 2;
+                currStamina -= 4;
+            }
+
+            
 
             // Screen size - wall size
             int screenWidth = 1920 - 64;
@@ -153,6 +191,31 @@ namespace DIY_Boss_Rush_Game
                 // Attack in the direction of the mouse cursor with the player's current position
                 Attack(dirAim);
             }
+
+            // Dash
+
+            // Make a single click method
+            if (currState.IsKeyDown(Keys.Space) && previousKeyboardState != currState && currStamina - 150 >= 0)
+            {
+                // Find the relation between the mouse and the player
+                Vector2 direction = new Vector2();
+
+                direction.X = mouseState.X - pos.X;
+                direction.Y = mouseState.Y - pos.Y;
+
+                // Normalize to get direction only
+                direction.Normalize();
+
+                direction *= SpeedStat * speedMultiplier * 35;
+                pos += direction;
+
+                // Reduce stamina
+                currStamina -= 150;
+            }
+
+            // Collected previous keyboard state to do single click
+            previousKeyboardState = currState;
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -161,13 +161,13 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
         }
 
         protected override void Initialize()
         {
             // Menu is default state
-            gameState = GameState.SkillTree;
+            gameState = GameState.Menu;
 
             // Initialize score manager
             scoreManager = ScoreManager.Instance;
@@ -534,7 +534,7 @@ namespace DIY_Boss_Rush_Game
                 if (hasSkillSprint)
                 {
                     _spriteBatch.Draw(uiPlayerSprintBarBack, new Rectangle(125, 75, 143 + 160, 20), null, Color.Gray, 0f, Vector2.Zero, SpriteEffects.None, 0f);
-                    _spriteBatch.Draw(uiPlayerSprintBarFront, new Rectangle(125, 75, 143 + 160 * (player.CurrStamina / player.MaxStamina), 20), null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
+                    _spriteBatch.Draw(uiPlayerSprintBarFront, new Rectangle(125, 75, player.CurrStamina, 20), null, Color.Black, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
                 }
 

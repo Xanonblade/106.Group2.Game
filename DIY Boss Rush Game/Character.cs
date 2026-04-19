@@ -26,8 +26,8 @@ namespace DIY_Boss_Rush_Game
         public float CritStat { get; set; }
         public bool IsDead => CurrHealth <= 0;
 
-        public bool Multishot { get; private set; }
-        public bool Richochet { get; private set; }
+        public bool Multishot { get; set; }
+        public bool Richochet { get; set; }
 
 		public BulletManager bulletManager { get; set; }
 
