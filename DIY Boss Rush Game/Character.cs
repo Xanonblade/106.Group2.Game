@@ -26,10 +26,10 @@ namespace DIY_Boss_Rush_Game
         public float CritStat { get; set; }
         public bool IsDead => CurrHealth <= 0;
 
-        public bool Multishot { get; set; }
-        public bool Richochet { get; set; }
+        public bool Multishot { get => SkillTree.Instance.CheckIfUnlocked("More bullets!");}
+        public bool Richochet { get => SkillTree.Instance.CheckIfUnlocked("This really is a bullet... hell"); }
 
-		public BulletManager bulletManager { get; set; }
+        public BulletManager bulletManager { get; set; }
 
         /// <summary>
         /// Sets defaults mostly based on what player chooses in the picker
@@ -49,8 +49,6 @@ namespace DIY_Boss_Rush_Game
 
             // Set skill tree values
             SkillTree skillTree = SkillTree.Instance;
-            Multishot = skillTree.CheckIfUnlocked("Multishot");
-            Richochet = skillTree.CheckIfUnlocked("Richochet");
         }
 
 

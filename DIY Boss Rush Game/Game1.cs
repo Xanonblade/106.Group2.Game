@@ -66,6 +66,9 @@ namespace DIY_Boss_Rush_Game
         private Button buttonScore;
         private Button buttonBack;
 
+        // Elements for skill tree screen
+        private Button respecButton;
+
         // Textures for background tiles to hold
         private Texture2D wallN0;
         private Texture2D wallN1;
@@ -149,6 +152,8 @@ namespace DIY_Boss_Rush_Game
         private KeyboardState lastFrameState;
         private string currName = "";
         private bool saved = false;
+
+        private Button nextStageButton; // Button to switch from skill tree to player customization screen
 
 		public Game1()
         {
@@ -289,6 +294,16 @@ namespace DIY_Boss_Rush_Game
             bulletTexture = Content.Load<Texture2D>("bullet1");
             Character.BulletTexture = bulletTexture;
 
+            // Initialize skill tree 
+            int width = uiStartSprite.Width / 2;
+            int height = uiStartSprite.Height / 2;
+
+            respecButton = new Button(
+                new Rectangle(1200, 800, width, height),
+                "Respec", uiStartSprite);
+                
+            SkillTree.Instance.Initialize(uiTextScore, uiText);
+
             // Load the buttons for the player customization state
             LoadPlayerCustomizationButtons();
 
@@ -301,7 +316,8 @@ namespace DIY_Boss_Rush_Game
             // Load the UI for the boss customization state
             LoadBossCustomizationUI();
 
-
+            // Load arrow button for the skill tree to advance to the next stage
+            nextStageButton = new Button(new Rectangle(1600, 900, 99, 73), "", Content.Load<Texture2D>("uiCustomizeButton"));
         }
 
         protected override void Update(GameTime gameTime)
@@ -360,6 +376,7 @@ namespace DIY_Boss_Rush_Game
                 // If boss is dead, increase level and move back to customize player state
                 if (boss[0].IsDead)
                 {
+                    
                     currentLevel++;
                     gameState = GameState.CustomizePlayer;
 
@@ -380,6 +397,10 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.SkillTree)
             {
                 SkillTree.Instance.Update(gameTime);
+                if (respecButton.SingleClick(previousMouseState)) SkillTree.Instance.RespecTree();
+
+                if (nextStageButton.SingleClick(previousMouseState))
+                    gameState = GameState.CustomizePlayer;
             }
             else if (gameState == GameState.GameOver)
             {
@@ -517,7 +538,11 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.SkillTree)
             {
-                SkillTree.Instance.Draw(GraphicsDevice);
+                SkillTree.Instance.Draw(GraphicsDevice, _spriteBatch);
+                _spriteBatch.Draw(respecButton.Texture, respecButton.Rect, Color.White);
+
+                _spriteBatch.Draw(nextStageButton.Texture, nextStageButton.Rect, Color.White);
+
             }
             else if (gameState == GameState.Game)
             {
