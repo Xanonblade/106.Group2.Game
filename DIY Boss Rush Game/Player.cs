@@ -174,7 +174,7 @@ namespace DIY_Boss_Rush_Game
             pos += movement; // Update player Position
 
             // Sprint
-            if (currStamina > 0 && currState.IsKeyDown(Keys.LeftShift) )
+            if (Sprint && currStamina > 0 && currState.IsKeyDown(Keys.LeftShift) )
             {
                 pos += movement / 2;
                 currStamina -= 4;
@@ -214,7 +214,7 @@ namespace DIY_Boss_Rush_Game
             // Dash
 
             // Make a single click method
-            if (currState.IsKeyDown(Keys.Space) && previousKeyboardState != currState && currStamina - 150 >= 0)
+            if (Dash && currState.IsKeyDown(Keys.Space) && previousKeyboardState != currState && currStamina - 150 >= 0)
             {
                 // Reduce stamina
                 currStamina -= 150;

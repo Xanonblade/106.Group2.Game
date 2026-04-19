@@ -378,9 +378,14 @@ namespace DIY_Boss_Rush_Game
                 {
                     
                     currentLevel++;
-                    gameState = GameState.CustomizePlayer;
 
-                    // gameState = GameState.SkillTree;
+                    if (currentLevel % 2 == 0)
+                    {
+                        gameState = GameState.SkillTree;
+                        SkillTree.Instance.AddPoint();
+                    }
+                    else 
+                        gameState = GameState.CustomizePlayer;
 
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);

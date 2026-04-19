@@ -28,6 +28,8 @@ namespace DIY_Boss_Rush_Game
 
         public bool Multishot { get => SkillTree.Instance.CheckIfUnlocked("More bullets!");}
         public bool Richochet { get => SkillTree.Instance.CheckIfUnlocked("This really is a bullet... hell"); }
+        public bool Sprint { get => SkillTree.Instance.CheckIfUnlocked("Oiled up gears"); }
+        public bool Dash { get => SkillTree.Instance.CheckIfUnlocked("Boost dash"); }
 
         public BulletManager bulletManager { get; set; }
 

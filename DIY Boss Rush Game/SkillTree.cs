@@ -45,7 +45,7 @@ namespace DIY_Boss_Rush_Game
         {
             links = new Dictionary<string, List<Vertex>>();
             vertices = new List<Vertex>();
-            currentPoints = 2;
+            currentPoints = 0;
             maxPoints = currentPoints;
             highlightedVertex = null;
             continueToCustomization = false;
