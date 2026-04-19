@@ -130,7 +130,7 @@ namespace DIY_Boss_Rush_Game
                 if (isPlayers)
                     spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Blue);
                 else
-                    spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Firebrick);
+                    spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.White);
             }
             else if (StatusEffect == BulletState.Shock)
             {

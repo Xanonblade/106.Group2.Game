@@ -110,6 +110,21 @@ namespace DIY_Boss_Rush_Game
             }
             else
                 DoAction();
+
+            //Virus status effect
+            if (isInfected)
+            {
+                //Deal damage
+                CurrHealth -= MaxHealth * .0015f;
+
+                infectedTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (infectedTimer <= 0)
+                {
+                    isInfected = false;
+                    infectedTimer = 1.5f;
+                }
+            }
         }
 
         public override void Draw(SpriteBatch sb)
