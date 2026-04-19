@@ -161,7 +161,7 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
         }
 
         protected override void Initialize()
@@ -180,7 +180,7 @@ namespace DIY_Boss_Rush_Game
             currentLevel = 1;
 
             // Initialize player
-            player = new Player(new Vector2(100, 100), Content.Load<Texture2D>("playerREGame"), 100f, 10f, 10f, 5f);
+            player = new Player(new Vector2(480, 417), Content.Load<Texture2D>("playerREGame"), 100f, 10f, 10f, 5f);
 
             player.HealthStat = 10;
 
@@ -195,7 +195,7 @@ namespace DIY_Boss_Rush_Game
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
-            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 100, 5);
+            boss[0] = new Boss(new Rectangle(1440, 417, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 100, 5);
 
             // Store initial boss stats for reset purposes
             bossInitialHealth = boss[0].HealthStat;

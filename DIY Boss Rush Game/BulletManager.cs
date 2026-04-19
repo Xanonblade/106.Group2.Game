@@ -47,6 +47,10 @@ namespace DIY_Boss_Rush_Game
             shockShotUnlocked = skillTree.CheckIfUnlocked("Shock shot");
             viralShotUnlocked = skillTree.CheckIfUnlocked("Viral shot");
 
+            //Delete two lines below when done
+            shockShotUnlocked = true;
+            viralShotUnlocked = true;
+
             rng = new Random();
         }
 

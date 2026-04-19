@@ -125,10 +125,21 @@ namespace DIY_Boss_Rush_Game
         /// <param name="isPlayers">Value whether its a players bullet or not</param>
         public void Draw(SpriteBatch spriteBatch, bool isPlayers)
         {
-            if (isPlayers)
-                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Purple);
+            if(StatusEffect == BulletState.Neutral)
+            {
+                if (isPlayers)
+                    spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Blue);
+                else
+                    spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Firebrick);
+            }
+            else if (StatusEffect == BulletState.Shock)
+            {
+                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Yellow);
+            }
             else
-                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.LightYellow);
+            {
+                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Green);
+            }
         }
     }
 }

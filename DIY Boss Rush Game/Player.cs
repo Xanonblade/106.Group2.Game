@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Threading;
 
 namespace DIY_Boss_Rush_Game
 {
@@ -21,11 +22,15 @@ namespace DIY_Boss_Rush_Game
         private KeyboardState previousKeyboardState; // Holds previousKeyboardState for a single click function
         private float staminaTimer = 3f; // Time to reduce speed
         private float resetSpeed; // Holds the reducedSpeed stat to slow down the player
-        private bool isSlowed = false;
+        private bool isSlowed;
 
         // Hold the max stamina and current stamina of the player, and the rate at which stamina regenerates
-        private int maxStamina = 303;
-        private int currStamina = 1;
+        private int maxStamina;
+        private int currStamina;
+
+        //Status effects
+        private bool isInfected;
+        private float infectedTimer;
 
         /// <summary>
         /// Getter for MaxStamina
@@ -36,6 +41,7 @@ namespace DIY_Boss_Rush_Game
         /// Getter and setter for CurrStamina
         /// </summary>
         public int CurrStamina { get { return currStamina; }  set { currStamina = value; } }
+
 
         /// <summary>
         /// Sets player specifics (static pos) and calls base constructor for character stats and texture and rectangle
@@ -50,8 +56,12 @@ namespace DIY_Boss_Rush_Game
 
             rng = new Random();
 
-            Richochet = true;
-            Multishot = true;
+            //Skilltree values
+            isSlowed = false;
+            maxStamina = 303;
+            currStamina = maxStamina;
+            isInfected = false;
+            infectedTimer = 1.5f;
 		}
 
         /// <summary>
@@ -127,7 +137,21 @@ namespace DIY_Boss_Rush_Game
                 currStamina += 1;
             }
             
-            
+            //Virus status effect
+            if (isInfected)
+            {
+                //Deal damage
+                CurrHealth -= MaxHealth*.0015f;
+
+                infectedTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (infectedTimer <= 0)
+                {
+                    isInfected = false;
+                    infectedTimer = 1.5f;
+                }
+            }
+
             // Movement
             Vector2 movement = Vector2.Zero;
 
@@ -158,8 +182,6 @@ namespace DIY_Boss_Rush_Game
                 pos += movement / 2;
                 currStamina -= 4;
             }
-
-            
 
             // Screen size - wall size
             int screenWidth = 1920 - 64;
@@ -230,12 +252,12 @@ namespace DIY_Boss_Rush_Game
             switch (statusEffect)
             {
                 case BulletState.Shock:
-                    //Slows player
-
+                    //Slows player by reusing stamina exhaustion mechanic
+                    currStamina = -1;
                     break;
                 case BulletState.Virus:
                     //Damage over time
-
+                    isInfected = true;
                     break;
                     //Ignores neutral state because it's meant to do nothing then
             }
