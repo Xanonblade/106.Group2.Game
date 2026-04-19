@@ -16,6 +16,7 @@ namespace DIY_Boss_Rush_Game
         public Rectangle Rect { get => rect; set => rect = value; }
         public int Radius { get; set; }
         public Vertex Parent { get; set; }
+        public bool CanUnlock { get => !IsUnlocked && Parent.IsUnlocked; }
 
         public Vertex(string name, string pDescription, string bDescription)
         {
@@ -30,7 +31,7 @@ namespace DIY_Boss_Rush_Game
 
         public void onClick()
         {
-            if (Parent != null && Parent.IsUnlocked)
+            if (Parent != null && CanUnlock)
                 IsUnlocked = true;
         }
 

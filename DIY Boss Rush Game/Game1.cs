@@ -66,6 +66,10 @@ namespace DIY_Boss_Rush_Game
         private Button buttonScore;
         private Button buttonBack;
 
+        // Elements for skill tree screen
+        private Button respecButton;
+        private Button continueButton;
+
         // Textures for background tiles to hold
         private Texture2D wallN0;
         private Texture2D wallN1;
@@ -271,6 +275,22 @@ namespace DIY_Boss_Rush_Game
             bulletTexture = Content.Load<Texture2D>("bullet1");
             Character.BulletTexture = bulletTexture;
 
+            // Initialize skill tree 
+            int width = uiStartSprite.Width / 2;
+            int height = uiStartSprite.Height / 2;
+
+            respecButton = new Button(
+                new Rectangle(1200, 800, width, height),
+                "Respec", uiStartSprite);
+
+            width = gameOverTexture.Width / 2;
+            height = gameOverTexture.Height / 2;
+
+            continueButton = new Button(
+                new Rectangle(1600, 800, width, height),
+                "Continue", gameOverTexture);
+            SkillTree.Instance.Initialize(uiTextScore, uiText);
+
             // Load the buttons for the player customization state
             LoadPlayerCustomizationButtons();
 
@@ -360,6 +380,8 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.SkillTree)
             {
                 SkillTree.Instance.Update(gameTime);
+                if (respecButton.SingleClick(previousMouseState)) SkillTree.Instance.RespecTree();
+                if (continueButton.SingleClick(previousMouseState)) gameState = GameState.CustomizePlayer;
             }
             else if (gameState == GameState.GameOver)
             {
@@ -496,7 +518,9 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.SkillTree)
             {
-                SkillTree.Instance.Draw(GraphicsDevice);
+                SkillTree.Instance.Draw(GraphicsDevice, _spriteBatch);
+                _spriteBatch.Draw(respecButton.Texture, respecButton.Rect, Color.White);
+                _spriteBatch.Draw(continueButton.Texture, continueButton.Rect, Color.White);
             }
             else if (gameState == GameState.Game)
             {
