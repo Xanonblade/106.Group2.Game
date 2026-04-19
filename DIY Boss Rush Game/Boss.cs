@@ -228,7 +228,7 @@ namespace DIY_Boss_Rush_Game
             pos += movement;
 
             // If the distance to the destination is less than 5, end the action
-            if (Vector2.DistanceSquared(pos, destination) <= 25f)
+            if (Vector2.DistanceSquared(pos, destination) <= 100f)
             {
                 isActionFinished = true;
             }

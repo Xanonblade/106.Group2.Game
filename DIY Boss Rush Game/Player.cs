@@ -27,6 +27,10 @@ namespace DIY_Boss_Rush_Game
         private int maxStamina = 303;
         private int currStamina = 1;
 
+        // Holds the amount of time for a dash
+        private float dashWindow = .2f;
+        private bool isDashing = false;
+
         /// <summary>
         /// Getter for MaxStamina
         /// </summary>
@@ -197,6 +201,16 @@ namespace DIY_Boss_Rush_Game
             // Make a single click method
             if (currState.IsKeyDown(Keys.Space) && previousKeyboardState != currState && currStamina - 150 >= 0)
             {
+                // Reduce stamina
+                currStamina -= 150;
+
+                // let game know that the player is dashing
+                isDashing = true;
+            }
+
+            //
+            if (isDashing)
+            {
                 // Find the relation between the mouse and the player
                 Vector2 direction = new Vector2();
 
@@ -206,11 +220,17 @@ namespace DIY_Boss_Rush_Game
                 // Normalize to get direction only
                 direction.Normalize();
 
-                direction *= SpeedStat * speedMultiplier * 35;
+                direction *= SpeedStat * speedMultiplier * 4;
                 pos += direction;
 
-                // Reduce stamina
-                currStamina -= 150;
+                dashWindow -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // Reset dash
+                if (dashWindow < 0)
+                {
+                    dashWindow = .2f;
+                    isDashing = false;
+                }
             }
 
             // Collected previous keyboard state to do single click
