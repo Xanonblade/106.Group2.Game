@@ -57,6 +57,12 @@ namespace DIY_Boss_Rush_Game
         {
             Player.pos = pos;
             Player.texture = tex;
+            //Skilltree values
+            isSlowed = false;
+            maxStamina = 303;
+            currStamina = maxStamina;
+            isInfected = false;
+            infectedTimer = 1.5f;
 
             rng = new Random();
 		}

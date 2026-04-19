@@ -29,10 +29,12 @@ namespace DIY_Boss_Rush_Game
         // Collision fields
         private bool isColliding = false;
 
-        //Skill tree fields
-        private bool shockShotUnlocked;
-        private bool viralShotUnlocked;
+        //Skill tree fields and properties
         private Random rng;
+
+        public bool ShockShotUnlocked { get => SkillTree.Instance.CheckIfUnlocked("Shock shot"); }
+        public bool ViralShotUnlocked { get => SkillTree.Instance.CheckIfUnlocked("Viral shot"); }
+
 
         /// <summary>
         /// Private constructor for singleton
@@ -41,15 +43,6 @@ namespace DIY_Boss_Rush_Game
             // Initialize bullet lists
             playerBullets = new List<Bullet>();
             enemyBullets = new List<Bullet>();
-
-            //Check for skill tree nodes
-            SkillTree skillTree = SkillTree.Instance;
-            shockShotUnlocked = skillTree.CheckIfUnlocked("Shock shot");
-            viralShotUnlocked = skillTree.CheckIfUnlocked("Viral shot");
-
-            //Delete two lines below when done
-            shockShotUnlocked = true;
-            viralShotUnlocked = true;
 
             rng = new Random();
         }
@@ -114,13 +107,13 @@ namespace DIY_Boss_Rush_Game
             int chance = rng.Next(0, 100);
 
             //Bullet status effects
-            if (chance >= 90 && shockShotUnlocked) //Hit chance for bullet to have status effect
+            if (chance >= 90 && ShockShotUnlocked) //Hit chance for bullet to have status effect
             {
                 if (rng.Next(0,2) == 0) //Coin flip between two effects
                 {
                     newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Shock);
                 }
-                else if (viralShotUnlocked)
+                else if (ViralShotUnlocked)
                 {
                     newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Virus);
                 }
