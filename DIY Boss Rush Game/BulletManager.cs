@@ -29,6 +29,11 @@ namespace DIY_Boss_Rush_Game
         // Collision fields
         private bool isColliding = false;
 
+        //Skill tree fields
+        private bool shockShotUnlocked;
+        private bool viralShotUnlocked;
+        private Random rng;
+
         /// <summary>
         /// Private constructor for singleton
         /// </summary>
@@ -36,6 +41,13 @@ namespace DIY_Boss_Rush_Game
             // Initialize bullet lists
             playerBullets = new List<Bullet>();
             enemyBullets = new List<Bullet>();
+
+            //Check for skill tree nodes
+            SkillTree skillTree = SkillTree.Instance;
+            shockShotUnlocked = skillTree.CheckIfUnlocked("Shock shot");
+            viralShotUnlocked = skillTree.CheckIfUnlocked("Viral shot");
+
+            rng = new Random();
         }
 
         /// <summary>
@@ -93,7 +105,30 @@ namespace DIY_Boss_Rush_Game
         /// <param name="fromPlayer"></param>
         public void CreateBullet(float speed, float damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius, bool fromPlayer)
         {
-            Bullet newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius);
+            //Start newBullet as null before factoring in possible status effects
+            Bullet newBullet = null!;
+            int chance = rng.Next(0, 100);
+
+            //Bullet status effects
+            if (chance >= 90 && shockShotUnlocked) //Hit chance for bullet to have status effect
+            {
+                if (rng.Next(0,2) == 0) //Coin flip between two effects
+                {
+                    newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Shock);
+                }
+                else if (viralShotUnlocked)
+                {
+                    newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Virus);
+                }
+                else //Just make it a neutral bullet again
+                {
+                    newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
+                }
+            }
+            else //Bullet is just normal
+            {
+                newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
+            }
 
             if (fromPlayer)
             {
@@ -122,7 +157,7 @@ namespace DIY_Boss_Rush_Game
             Rectangle playerRect = new Rectangle((int)Player.pos.X, (int)Player.pos.Y, Player.texture.Width, Player.texture.Height);
             if (bossRect.Intersects(playerRect) && !isColliding)
             {
-                player.TakeDamage(boss.DamageStat * boss.BodyMultiplier);
+                player.CollideWithBullet(boss.DamageStat * boss.BodyMultiplier, BulletState.Neutral);
                 isColliding = true; // Set collision state to prevent multiple damage instances while colliding
             }
             else if (isColliding && !bossRect.Intersects(playerRect))
@@ -147,7 +182,7 @@ namespace DIY_Boss_Rush_Game
 
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Boss.pos, Boss.texture))
                 {
-                    boss.TakeDamage(bullet.Damage);
+                    boss.CollideWithBullet(bullet.Damage, bullet.StatusEffect);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }
@@ -163,7 +198,7 @@ namespace DIY_Boss_Rush_Game
 
                 if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, Player.pos, Player.texture))
                 {
-                    player.TakeDamage(bullet.Damage);
+                    player.CollideWithBullet(bullet.Damage, bullet.StatusEffect);
                     RemoveBullet(bullet);
                     i--; // Decrement index to account for removed bullet
                 }

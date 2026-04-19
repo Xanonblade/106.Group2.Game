@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Enum for status effect of bullet
+enum BulletState { Neutral, Shock, Virus}
+
 namespace DIY_Boss_Rush_Game
 {
     /// <summary>
@@ -25,6 +28,7 @@ namespace DIY_Boss_Rush_Game
         private int bounces;
 
         private readonly int percentChangeBossBounce = 25;
+        public BulletState StatusEffect { get; private set; }
 
         /// <summary>
         /// Sets every field
@@ -36,7 +40,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="unitDir"></param>
         /// <param name="pos"></param>
         /// <param name="radius"></param>
-        public Bullet(float speed, float damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius)
+        public Bullet(float speed, float damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius, BulletState statusEffect)
         {
             this.Damage = damage;
             this.texture = attackTex;
@@ -44,6 +48,7 @@ namespace DIY_Boss_Rush_Game
             this.UnitDir = unitDir;
             this.Pos = pos;
             this.Radius = radius;
+            this.StatusEffect = statusEffect;
 
             bounces = 0;
         }

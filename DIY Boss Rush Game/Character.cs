@@ -53,17 +53,18 @@ namespace DIY_Boss_Rush_Game
             Richochet = skillTree.CheckIfUnlocked("Richochet");
         }
 
+
         /// <summary>
         /// Lowers characters health, calling dead methods is done in player and boss
         /// </summary>
         /// <param name="damage"></param>
-        /// <returns></returns>
-        public virtual void TakeDamage(float damage)
+        /// <param name="statusEffect">Takes in a status effect from the bullet when colliding</param>
+        public virtual void CollideWithBullet(float damage, BulletState statusEffect)
         {
+            //Damage
             CurrHealth -= damage;
             if (CurrHealth < 0)
                 CurrHealth = 0;
-            // Player and boss finish this method with an override and a base call
         }
 
         /// <summary>

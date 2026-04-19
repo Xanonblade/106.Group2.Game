@@ -218,6 +218,32 @@ namespace DIY_Boss_Rush_Game
 
         }
 
+        /// <summary>
+        /// This override handles status effects from bullets before calling base
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <param name="statusEffect"></param>
+        public override void CollideWithBullet(float damage, BulletState statusEffect)
+        {
+
+            //Status effects from bullets
+            switch (statusEffect)
+            {
+                case BulletState.Shock:
+                    //Slows player
+
+                    break;
+                case BulletState.Virus:
+                    //Damage over time
+
+                    break;
+                    //Ignores neutral state because it's meant to do nothing then
+            }
+
+            //Damage effect
+            base.CollideWithBullet(damage, statusEffect);
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);

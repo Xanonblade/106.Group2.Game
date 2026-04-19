@@ -433,11 +433,30 @@ namespace DIY_Boss_Rush_Game
             sr.Close();
         }
 
-        public override void TakeDamage(float damage)
+        /// <summary>
+        /// This override handles status effects from bullets before calling base
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <param name="statusEffect"></param>
+        public override void CollideWithBullet(float damage, BulletState statusEffect)
         {
-            base.TakeDamage(damage);
-            ScoreManager.AddCurrentScore(100);
+            //Status effects from bullets
+            switch (statusEffect)
+            {
+                case BulletState.Shock:
+                    //Freezes boss
 
+                    break;
+                case BulletState.Virus:
+                    //Damage over time
+
+                    break;
+                    //Ignores neutral state because it's meant to do nothing then
+            }
+
+            //Damage and score
+            base.CollideWithBullet(damage, statusEffect);
+            ScoreManager.AddCurrentScore(100);
         }
     }
 }
