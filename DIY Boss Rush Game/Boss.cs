@@ -24,7 +24,9 @@ namespace DIY_Boss_Rush_Game
         Single,
         Circle,
         DoubleCircle,
-        Random
+        Random,
+        MachineGun = 5,
+        MachineGunX2 = 6 // Second machine gun attack just to increase chance of it happening when multishot is on
     }
 
     /// <summary>
@@ -52,6 +54,15 @@ namespace DIY_Boss_Rush_Game
         private Vector2 playerPos;
         private bool hasAttackedWhileMove;
 
+        // Machine gun
+        private bool currMachineGunning;
+        private float timeBetweenBullets;
+        private int bulletsLeftToShoot;
+
+        // Damage multipliers for attacks, helps balance the boss's attacks without changing the boss's actual damage stat
+        public float BulletMultiplier { get; private set; }
+        public float BodyMultiplier { get; private set; }
+
         // Constructor for the boss
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
             base(healthStat, damageStat, speedStat, critStat)
@@ -67,6 +78,8 @@ namespace DIY_Boss_Rush_Game
             random = new Random();
             pos = new Vector2(400, 400);
             Boss.texture = texture;
+            BulletMultiplier = 7;
+            BodyMultiplier = 42;
         }
 
         /// <summary>
@@ -82,7 +95,13 @@ namespace DIY_Boss_Rush_Game
             {
                 DetermineAction();
             }
-            DoAction();
+            // Complete machine gun attack if we're in the middle of it, otherwise do the current action
+            if (currMachineGunning)
+            {
+                Wait(timeBetweenBullets);
+            }
+            else
+                DoAction();
         }
 
         public override void Draw(SpriteBatch sb)
@@ -190,21 +209,21 @@ namespace DIY_Boss_Rush_Game
                     break;
             }
         }
-
+        
         /// <summary>
         /// Moves the entity toward the specified destination at a speed modified by the given multiplier.
         /// </summary>
         /// <param name="destination">The target position to move toward.</param>
         /// <param name="speedMult">The multiplier applied to the movement speed. Defaults to 1.</param>
-        private void Move(Vector2 destination, float speedMult = 1)
+        private void Move(Vector2 destination, float speedMult = 20)
         {
             // Find the direction to move in
             Vector2 direction = Vector2.Normalize(destination - pos);
 
-            float moveSpeed = 20f;
+            //float moveSpeed = 20f;
 
             // Move a small amount towards the move position based on the speedMult and SpeedStat
-            Vector2 movement = direction * speedMult * SpeedStat * moveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Vector2 movement = direction * speedMult * SpeedStat * (float)gameTime.ElapsedGameTime.TotalSeconds;
             // Add the movement vector to the boss's position
             pos += movement;
 
@@ -236,7 +255,11 @@ namespace DIY_Boss_Rush_Game
 
             Random random = new Random();
 
-            AttackType attackType = (AttackType)(random.Next(0, 5));
+            AttackType attackType;
+            if (Multishot)
+                attackType = (AttackType)(random.Next(0, 7));
+            else
+                attackType = (AttackType)(random.Next(0, 5));
 
             switch (attackType)
             {
@@ -298,6 +321,19 @@ namespace DIY_Boss_Rush_Game
                         AddBullet(bulletSpeed, bulletRadius, direction);
                     }
                     break;
+                case AttackType.MachineGun:
+                case AttackType.MachineGunX2:
+                    // Setup repeated bullet shooting handled elsewhere
+                    currMachineGunning = true;
+                    bulletsLeftToShoot = attackType == AttackType.MachineGun ? 20 : 40;
+                    float attackDuration = 2f;
+                    timeBetweenBullets = attackDuration / bulletsLeftToShoot;
+                    //BulletOfMachineGun();
+                    AddBullet(bulletSpeed, bulletRadius, Vector2.Normalize(playerPos - pos));
+                    Wait(timeBetweenBullets); // Wait for next bullet
+
+                    // Skip ending of attack here because we have to wait for end of machine gun
+                    return;
             }
 
             if (endAction)
@@ -313,7 +349,7 @@ namespace DIY_Boss_Rush_Game
 
             if (chance >= CritStat * 5) crit = 2;
 
-            base.bulletManager.CreateBullet(bulletSpeed, 7 * DamageStat * crit, BulletTexture, direction, 
+            base.bulletManager.CreateBullet(bulletSpeed, BulletMultiplier * DamageStat * crit, BulletTexture, direction, 
                 new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false);
         }
 
@@ -329,8 +365,40 @@ namespace DIY_Boss_Rush_Game
             // End the action if enough time has passed
             if (waitTime >= timeToWait)
             {
-                isActionFinished = true;
+                // If we're machine gunning, shoot another bullet and reset wait time, otherwise end the action
+                if (currMachineGunning)
+                {
+                    BulletOfMachineGun();
+                    bulletsLeftToShoot--;
+                    if (bulletsLeftToShoot > 0)
+                    {
+                        waitTime = 0; // reset timer
+                        Wait(timeBetweenBullets); // Wait for next bullet
+                    }
+                    else
+                    {
+                        currMachineGunning = false;
+                        isActionFinished = true;
+                    }
+                }
+
+                // Normal (not machine gun) wait ending
+                else
+                    isActionFinished = true;
             }
+        }
+
+        /// <summary>
+        /// Shoots a singular bullet towards the player, used for machine gun attack. This method along with update and wait form the machine gun sequence
+        /// </summary>
+        private void BulletOfMachineGun()
+        {
+            playerPos = Player.pos;
+            // Get the direction towards the player
+            Vector2 playerDirection = Vector2.Normalize(pos + playerPos);
+            float bulletSpeed = 1000f;
+            int bulletRadius = 3;
+            AddBullet(bulletSpeed, bulletRadius, Vector2.Normalize(playerPos - pos));
         }
 
         /// <summary>

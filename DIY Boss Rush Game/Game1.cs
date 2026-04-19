@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -145,8 +146,11 @@ namespace DIY_Boss_Rush_Game
         // Bool to check if the player has the "Sprint ability" for the skill tree, temporary
         private bool hasSkillSprint = false;
 
+        private KeyboardState lastFrameState;
+        private string currName = "";
+        private bool saved = false;
 
-        public Game1()
+		public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -163,10 +167,11 @@ namespace DIY_Boss_Rush_Game
         protected override void Initialize()
         {
             // Menu is default state
-            gameState = GameState.Menu;
+            gameState = GameState.SkillTree;
 
             // Initialize score manager
             scoreManager = ScoreManager.Instance;
+            ScoreManager.LoadScores();
 
             // Temporary stat is 0
             stat = 0;
@@ -190,13 +195,15 @@ namespace DIY_Boss_Rush_Game
 
             // Initialize boss array, only 1 boss for now but can easily expand later
             boss = new Boss[1];
-            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 5, 5);
+            boss[0] = new Boss(new Rectangle(100, 100, 100, 100), Content.Load<Texture2D>("bossREGame"), 10, 10, 100, 5);
 
             // Store initial boss stats for reset purposes
             bossInitialHealth = boss[0].HealthStat;
             bossInitialDamage = boss[0].DamageStat;
             bossInitialSpeed = boss[0].SpeedStat;
             bossInitialCrit = boss[0].CritStat;
+
+            SkillTree.Instance.ReadData();
 
             base.Initialize();
         }
@@ -347,7 +354,9 @@ namespace DIY_Boss_Rush_Game
 
                     // Set up scores
                     ScoreManager.SaveScores();
-                }
+                    saved = false;
+                    lastFrameState = Keyboard.GetState();
+				}
                 // If boss is dead, increase level and move back to customize player state
                 if (boss[0].IsDead)
                 {
@@ -370,7 +379,7 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.SkillTree)
             {
-                // Update skill tree here
+                SkillTree.Instance.Update(gameTime);
             }
             else if (gameState == GameState.GameOver)
             {
@@ -387,10 +396,13 @@ namespace DIY_Boss_Rush_Game
                     // Move gameState back to the customize state
                     gameState = GameState.CustomizePlayer;
                 }
-            }
 
-            // Collect previous mouseState
-            previousMouseState = Mouse.GetState();
+				// Get player name for scoreboard
+                NameInput();
+			}
+
+			// Collect previous mouseState
+			previousMouseState = Mouse.GetState();
 
             base.Update(gameTime);
         }
@@ -422,7 +434,6 @@ namespace DIY_Boss_Rush_Game
                     new Vector2(_graphics.PreferredBackBufferWidth/2 - 193,60), Color.White);
 
                 //Draw scoreboard itself
-                ScoreManager.LoadScores();
 
                 List<KeyValuePair<string, int>> scoreList = ScoreManager.GetTopFiveScore();
 
@@ -506,7 +517,7 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.SkillTree)
             {
-                // Draw skill tree here
+                SkillTree.Instance.Draw(GraphicsDevice);
             }
             else if (gameState == GameState.Game)
             {
@@ -557,12 +568,52 @@ namespace DIY_Boss_Rush_Game
                 int finalScore = scoreManager.CurrentScore;
                 _spriteBatch.DrawString(uiText, $"Final Score: {finalScore}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 300), Color.White);
                 _spriteBatch.DrawString(uiText, $"Final Level: {currentLevel}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 350), Color.White);
-            }
 
-            _spriteBatch.End();
+				// Draw prompt to enter name for scoreboard if not saved yet
+                if (!saved)
+					_spriteBatch.DrawString(uiText, $"Enter Name: {currName} and hit Enter to save score", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 400), Color.White);
+			}
+
+			_spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        /// <summary>
+        /// Gets the player's name in game over during update
+        /// </summary>
+        private void NameInput()
+        {
+            KeyboardState state = Keyboard.GetState();
+
+            // Enter
+            if (state.IsKeyDown(Keys.Enter) && currName.Length == 3)
+            {
+                // Save the player's name and score
+                ScoreManager.AddScore(currName);
+                // Move back to menu or scoreboard
+                gameState = GameState.Menu;
+
+                saved = true;
+			}
+
+            // All letters
+			for (Keys key = Keys.A; key <= Keys.Z; key++)
+			{
+				if (state.IsKeyDown(key) && !lastFrameState.IsKeyDown(key))
+				{
+					currName += key.ToString().ToUpper();
+				}
+			}
+
+			// Update lastFrameState
+            lastFrameState = state;
+
+			// 3 letter limit for names on scoreboard so cut off the first letter if they go over
+			if (currName.Length > 3)
+                currName = currName.Substring(1, 3);
+		}
+
 
         /// <summary>
         /// Method to read in arena files
@@ -685,6 +736,10 @@ namespace DIY_Boss_Rush_Game
             player.DamageStat = playerInitialDamage;
             player.SpeedStat = playerInitialSpeed;
             player.CritStat = playerInitialCrit;
+
+            //Character health values back to max
+            player.CurrHealth = player.MaxHealth;
+            boss[0].CurrHealth = boss[0].MaxHealth;
 
             // Reset the boss's stats
             boss[0].HealthStat = bossInitialHealth;
