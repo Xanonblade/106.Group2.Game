@@ -546,7 +546,7 @@ namespace DIY_Boss_Rush_Game
                 SkillTree.Instance.Draw(GraphicsDevice, _spriteBatch);
                 _spriteBatch.Draw(respecButton.Texture, respecButton.Rect, Color.White);
 
-                _spriteBatch.Draw(nextStageButton.Texture, nextStageButton.Rect, Color.White);
+                _spriteBatch.Draw(nextStageButton.Texture, nextStageButton.Rect, null, Color.White, (float)(Math.PI / 2), new Vector2(-25, 50), SpriteEffects.None, 0f);
 
             }
             else if (gameState == GameState.Game)
