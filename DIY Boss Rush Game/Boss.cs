@@ -75,7 +75,7 @@ namespace DIY_Boss_Rush_Game
             sequences = new List<List<Action>>();
 
             // Reads in all of the possile sequences the boss can do
-            ReadSequences("BossSequences.txt");
+            ReadSequences("Content/BossSequences.txt");
 
             // Set initial values
             waitTime = 0;
@@ -444,7 +444,7 @@ namespace DIY_Boss_Rush_Game
         private void ReadSequences(string fileName)
         {
             // Creates a stream reader to read the file
-            StreamReader sr = new StreamReader("../../../" + fileName);
+            StreamReader sr = new StreamReader(fileName);
             
             // Clear all sequences
             sequences.Clear();

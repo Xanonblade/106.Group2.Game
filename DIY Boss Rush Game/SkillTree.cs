@@ -19,8 +19,6 @@ namespace DIY_Boss_Rush_Game
         private MouseState lastMouseState;
         private SpriteFont titleText, bodyText;
         private Vertex highlightedVertex;
-        private Button respecButton;
-        private Button continueButton;
 
         public bool continueToCustomization;
 
@@ -208,7 +206,7 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public void ReadData()
         {
-            StreamReader sr = new StreamReader("../../../TreeData.txt");
+            StreamReader sr = new StreamReader("Content/TreeData.txt");
 
             string line = "";
 

@@ -1,0 +1,17 @@
+Charge,Attack,Wait,Retreat
+Attack,Wait
+Charge,Retreat,Charge
+Move,Attack,Retreat
+Wait
+Move,Wait,Move
+Charge,Charge,Charge
+Move,Attack,Move,Attack
+Wait,Charge,Attack
+Retreat,Wait,Charge
+Attack,Attack,Attack
+Move,Charge,Retreat
+Wait,Wait,Charge
+Retreat,Attack,Wait,Move
+Charge,Attack,Charge,Attack
+Move,Move,Wait,Attack
+Retreat,Retreat,Wait
