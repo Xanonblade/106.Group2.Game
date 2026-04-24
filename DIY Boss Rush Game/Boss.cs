@@ -129,6 +129,20 @@ namespace DIY_Boss_Rush_Game
             critChance = initialCrit * CritStat;
         }
 
+        public void IncrementBossStats()
+        {
+            int level = Game1.currentLevel;
+
+            MaxHealth += 10 * level;
+            CurrHealth = MaxHealth;
+
+            bulletDamage += 0.5f * level;
+
+            speed += 0.1f * level;
+
+            critChance += 2f * level;
+        }
+
         /// <summary>
         /// Updates the game state and determines the next action if the previous action is finished.
         /// </summary>

@@ -407,6 +407,8 @@ namespace DIY_Boss_Rush_Game
                     ResetPlayerAndBoss();
 
                     SelectRandomBoss();
+
+                    boss[0].IncrementBossStats();
                 }
             }
             else if (gameState == GameState.SkillTree)
@@ -1229,9 +1231,9 @@ namespace DIY_Boss_Rush_Game
             {
                 // Health
                 case 0:
-                    health *= 3;
+                    health *= 2f;
                     damage *= 0.75f;
-                    speed *= 0.75f;
+                    speed *= 0.6f;
                     break;
                 // Damage
                 case 1:
