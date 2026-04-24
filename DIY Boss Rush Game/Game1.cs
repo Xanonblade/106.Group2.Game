@@ -50,6 +50,12 @@ namespace DIY_Boss_Rush_Game
         // UI for boss customization state
         private List<ImageUI> bossCustomizationUI = new List<ImageUI>();
 
+        // UI for customization info pop-up
+        private Texture2D uiInfoBubble;
+        private Texture2D uiInfoOverlay;
+        private Button buttonInfo;
+        private bool overlayShowing;
+
         //Elements for title screen and scoreboard
         private Texture2D uiStartSprite;
         private Texture2D uiScoreSprite;
@@ -170,7 +176,7 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
         }
 
         protected override void Initialize()
@@ -206,9 +212,10 @@ namespace DIY_Boss_Rush_Game
             bossInitialSpeed = boss[0].SpeedStat;
             bossInitialCrit = boss[0].CritStat;
 
-            SkillTree.Instance.ReadData();
+            //Customize info overlay
+            overlayShowing = false;
 
-            
+            SkillTree.Instance.ReadData();
 
             base.Initialize();
         }
@@ -252,6 +259,11 @@ namespace DIY_Boss_Rush_Game
             gameOverTexture = Content.Load<Texture2D>("uiGameOverSprite");
             playAgain = new Button(new Rectangle(_graphics.PreferredBackBufferWidth / 2 - gameOverTexture.Width / 2,
                 810, gameOverTexture.Width, gameOverTexture.Height), "Continue", gameOverTexture);
+
+            //Load content for customization info overlay
+            uiInfoBubble = Content.Load<Texture2D>("infoBubble");
+            uiInfoOverlay = Content.Load<Texture2D>("infoOverlay");
+            buttonInfo = new Button(new Rectangle(1742,236, uiInfoBubble.Width, uiInfoBubble.Height), "", uiInfoBubble);
 
             // Load in textures for arena
             wallN0 = Content.Load<Texture2D>("wallN0V0");
@@ -372,6 +384,12 @@ namespace DIY_Boss_Rush_Game
             {
                 // Updates the buttons in one method
                 UpdatePlayerCustomizationButtons(playerCustomizationButtons, previousMouseState, playerCustomizationUI, gameTime);
+
+                //Check info button click
+                if (buttonInfo.SingleClick(previousMouseState))
+                {
+                    overlayShowing = !overlayShowing;
+                }
             }
             else if (gameState == GameState.CustomizeBoss)
             {
@@ -575,6 +593,15 @@ namespace DIY_Boss_Rush_Game
 
                 // Helper method to draw all the text for the player customization state
                 DrawPlayerCustomizationText(_spriteBatch);
+
+                //Draw info bubble and overlay
+                _spriteBatch.Draw(uiInfoBubble, buttonInfo.Rect, Color.White);
+
+                //Check whether overlay should be showing
+                if (overlayShowing)
+                {
+                    _spriteBatch.Draw(uiInfoOverlay, new Rectangle(0, 0, 1920, 1080),Color.White);
+                }
             }
             else if (gameState == GameState.CustomizeBoss)
             {
