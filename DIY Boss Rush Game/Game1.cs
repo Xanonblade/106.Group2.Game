@@ -1180,7 +1180,7 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(219, 276), Color.White);
             sb.DrawString(uiText, "Health Multiplier: " + bossHealthMultiplier, new Vector2(1169, 42), Color.White);
             sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1169, 305), Color.White);
-            sb.DrawString(uiText, "Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
+            sb.DrawString(uiText, "Action Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
             sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1169, 831), Color.White);
         }
     }
