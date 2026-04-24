@@ -175,7 +175,12 @@ namespace DIY_Boss_Rush_Game
             Rectangle playerRect = new Rectangle((int)Player.pos.X, (int)Player.pos.Y, Player.texture.Width, Player.texture.Height);
             if (bossRect.Intersects(playerRect) && !isColliding)
             {
-                player.CollideWithBullet(boss.DamageStat * boss.BodyMultiplier, BulletState.Neutral);
+                // Increases the player-boss collision damage during a "charge" action if the player has the dash skill
+                if (boss.CurrentAction == Action.Charge && boss.Dash)
+                    player.CollideWithBullet(2 * boss.DamageStat * boss.BodyMultiplier, BulletState.Neutral);
+                else
+                    player.CollideWithBullet(boss.DamageStat * boss.BodyMultiplier, BulletState.Neutral);
+
                 isColliding = true; // Set collision state to prevent multiple damage instances while colliding
             }
             else if (isColliding && !bossRect.Intersects(playerRect))
