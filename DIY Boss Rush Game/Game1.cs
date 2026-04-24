@@ -379,22 +379,33 @@ namespace DIY_Boss_Rush_Game
                 // If boss is dead, increase level and move back to customize player state
                 else if (boss[0].IsDead)
                 {
-                    
-                    currentLevel++;
-
-                    if (currentLevel % 2 == 0)
+                    if (transitionDelay <= 0)
                     {
-                        SkillTree.Instance.AddPoint();
+                        // Change gameState & reset transition time & transition bool
+                        transitionDelay = 2f;
+                        gameState = GameState.GameOver;
+                        isTransition = false;
+
+                        currentLevel++;
+
+                        if (currentLevel % 2 == 0)
+                        {
+                            SkillTree.Instance.AddPoint();
+                        }
+
+                        //Go to skill tree next
+                        gameState = GameState.SkillTree;
+
+                        // increase score for beating lvl
+                        ScoreManager.AddCurrentScore(1000 * currentLevel);
+
+                        ResetPlayerAndBoss();
                     }
-
-                    //Go to skill tree next
-                    gameState = GameState.SkillTree;
-
-                    // increase score for beating lvl
-                    ScoreManager.AddCurrentScore(1000 * currentLevel);
-
-                    ResetPlayerAndBoss();
+                    else
+                        transitionDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                   
                 }
+                // To freeze the screen if the player or the boss dies
                 else
                 {
                     player.Update(gameTime);
@@ -583,6 +594,10 @@ namespace DIY_Boss_Rush_Game
                 // Draw text if player died
                 if (player.IsDead)
                     _spriteBatch.DrawString(uiText, "ERROR...Player broken...", new Vector2(960, 540), Color.Green);
+
+                // Draw text if boss died
+                if (boss[0].IsDead)
+                    _spriteBatch.DrawString(uiText, "Boss defeated...moving to upgrades...", new Vector2(960, 540), Color.Green);
 
                 //Draw battle UI
                 _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
