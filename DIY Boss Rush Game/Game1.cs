@@ -630,7 +630,6 @@ namespace DIY_Boss_Rush_Game
 
             // Set up scores
             ScoreManager.SaveScores();
-            saved = false;
         }
 
 
