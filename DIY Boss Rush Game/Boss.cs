@@ -71,6 +71,13 @@ namespace DIY_Boss_Rush_Game
         public float BulletMultiplier { get; private set; }
         public float BodyMultiplier { get; private set; }
 
+        // Return current action
+
+        /// <summary>
+        /// Getter method for currentAction
+        /// </summary>
+        public Action CurrentAction { get { return currentAction; } }
+
         // Constructor for the boss
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
             base(healthStat, damageStat, speedStat, critStat)

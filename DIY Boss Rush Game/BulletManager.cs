@@ -106,33 +106,54 @@ namespace DIY_Boss_Rush_Game
             Bullet newBullet = null!;
             int chance = rng.Next(0, 100);
 
-            //Bullet status effects
-            if (chance >= 90 && ShockShotUnlocked) //Hit chance for bullet to have status effect
+            //Determine if bullet is player or boss bullet
+            if (fromPlayer)
             {
-                if (rng.Next(0,2) == 0) //Coin flip between two effects
+                //Bullet status effects
+                if (chance >= 90 && ShockShotUnlocked) //Hit chance for bullet to have status effect
                 {
-                    newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Shock);
+                    if (rng.Next(0, 2) == 0) //Coin flip between two effects
+                    {
+                        newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Shock);
+                    }
+                    else if (ViralShotUnlocked)
+                    {
+                        newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Virus);
+                    }
+                    else //Just make it a neutral bullet again
+                    {
+                        newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
+                    }
                 }
-                else if (ViralShotUnlocked)
-                {
-                    newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Virus);
-                }
-                else //Just make it a neutral bullet again
+                else //Bullet is just normal
                 {
                     newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
                 }
-            }
-            else //Bullet is just normal
-            {
-                newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
-            }
 
-            if (fromPlayer)
-            {
                 playerBullets.Add(newBullet);
             }
             else
             {
+                //Bullet status effects
+                if (chance >= 95 && ShockShotUnlocked) //Hit chance for bullet to have status effect
+                {
+                    if (rng.Next(0, 2) == 0) //Coin flip between two effects
+                    {
+                        newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Shock);
+                    }
+                    else if (ViralShotUnlocked)
+                    {
+                        newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Virus);
+                    }
+                    else //Just make it a neutral bullet again
+                    {
+                        newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
+                    }
+                }
+                else //Bullet is just normal
+                {
+                    newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
+                }
                 enemyBullets.Add(newBullet);
             }
         }
@@ -154,7 +175,12 @@ namespace DIY_Boss_Rush_Game
             Rectangle playerRect = new Rectangle((int)Player.pos.X, (int)Player.pos.Y, Player.texture.Width, Player.texture.Height);
             if (bossRect.Intersects(playerRect) && !isColliding)
             {
-                player.CollideWithBullet(boss.DamageStat * boss.BodyMultiplier, BulletState.Neutral);
+                // Increases the player-boss collision damage during a "charge" action if the player has the dash skill
+                if (boss.CurrentAction == Action.Charge && boss.Dash)
+                    player.CollideWithBullet(2 * boss.DamageStat * boss.BodyMultiplier, BulletState.Neutral);
+                else
+                    player.CollideWithBullet(boss.DamageStat * boss.BodyMultiplier, BulletState.Neutral);
+
                 isColliding = true; // Set collision state to prevent multiple damage instances while colliding
             }
             else if (isColliding && !bossRect.Intersects(playerRect))
