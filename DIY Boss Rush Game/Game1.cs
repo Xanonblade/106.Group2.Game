@@ -359,9 +359,7 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Game)
             {
-                player.Update(gameTime);
-                boss[0].Update(gameTime);
-                bulletManager.UpdateAllBullets(gameTime);
+
 
                 // Check if GameOver state
                 if (player.IsDead)
@@ -379,7 +377,7 @@ namespace DIY_Boss_Rush_Game
                     lastFrameState = Keyboard.GetState();
 				}
                 // If boss is dead, increase level and move back to customize player state
-                if (boss[0].IsDead)
+                else if (boss[0].IsDead)
                 {
                     
                     currentLevel++;
@@ -396,6 +394,12 @@ namespace DIY_Boss_Rush_Game
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
 
                     ResetPlayerAndBoss();
+                }
+                else
+                {
+                    player.Update(gameTime);
+                    boss[0].Update(gameTime);
+                    bulletManager.UpdateAllBullets(gameTime);
                 }
             }
             else if (gameState == GameState.SkillTree)
