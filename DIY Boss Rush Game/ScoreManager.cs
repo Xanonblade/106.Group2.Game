@@ -10,6 +10,8 @@ namespace DIY_Boss_Rush_Game
         private int currentScore;
         private Dictionary<string, int> scores;
 
+        private static string filePath;
+
         public static ScoreManager Instance
         {
             get
@@ -32,6 +34,7 @@ namespace DIY_Boss_Rush_Game
         private ScoreManager()
         {
             scores = new Dictionary<string, int>();
+            filePath = "../../../Content/Score.txt";
         }
 
         /// <summary>
@@ -56,7 +59,7 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public static void SaveScores()
         {
-            StreamWriter sw = new StreamWriter("Content/Score.txt");
+            StreamWriter sw = new StreamWriter(filePath);
 
             foreach (KeyValuePair<string, int> score in Instance.scores)
             {
@@ -75,7 +78,7 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         public static void LoadScores()
         {
-            StreamReader sr = new StreamReader("Content/Score.txt");
+            StreamReader sr = new StreamReader(filePath);
 
             Instance.scores.Clear();
 
@@ -99,7 +102,10 @@ namespace DIY_Boss_Rush_Game
         /// <param name="name">Player's name</param>
         public static void AddScore(string name)
         {
-            Instance.scores.Add(name, Instance.currentScore);
+            if (Instance.scores.ContainsKey(name) && Instance.scores[name] < Instance.currentScore)
+                Instance.scores[name] = Instance.CurrentScore;
+            else
+                Instance.scores.Add(name, Instance.currentScore);
         }
 
         /// <summary>
