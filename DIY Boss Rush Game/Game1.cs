@@ -145,8 +145,14 @@ namespace DIY_Boss_Rush_Game
         private float bossSpeedMultiplier = 1;
         private float bossCritMultiplier = 1;
 
+        // Boolean to transition between screens
+        private bool isTransition = false;
+
+        // Float for time to delay for transitions
+        private float transitionDelay = 2f;
+
         // The number of points the player can allocate || BALANCE LATER
-        private int pointsToAllocate = 4;
+        private int pointsToAllocate = 0;
 
         private KeyboardState lastFrameState;
         private string currName = "";
@@ -365,7 +371,7 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.CustomizePlayer)
             {
                 // Updates the buttons in one method
-                UpdatePlayerCustomizationButtons(playerCustomizationButtons, previousMouseState, playerCustomizationUI);
+                UpdatePlayerCustomizationButtons(playerCustomizationButtons, previousMouseState, playerCustomizationUI, gameTime);
             }
             else if (gameState == GameState.CustomizeBoss)
             {
@@ -374,41 +380,62 @@ namespace DIY_Boss_Rush_Game
             }
             else if (gameState == GameState.Game)
             {
-                player.Update(gameTime);
-                boss[0].Update(gameTime);
-                bulletManager.UpdateAllBullets(gameTime);
+
 
                 // Check if GameOver state
                 if (player.IsDead)
                 {
-                    gameState = GameState.GameOver;
+                    if (transitionDelay <= 0)
+                    {
+                        // Change gameState & reset transition time & transition bool
+                        transitionDelay = 2f;
+                        gameState = GameState.GameOver;
+                        isTransition = false;
+                    }
+                    else
+                         transitionDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
                     lastFrameState = Keyboard.GetState();
 				}
                 // If boss is dead, increase level and move back to customize player state
-                if (boss[0].IsDead)
+                else if (boss[0].IsDead)
                 {
-                    
-                    currentLevel++;
-
-                    if (currentLevel % 2 == 0)
+                    if (transitionDelay <= 0)
                     {
-                        SkillTree.Instance.AddPoint();
+                        // Change gameState & reset transition time & transition bool
+                        transitionDelay = 2f;
+                        gameState = GameState.GameOver;
+                        isTransition = false;
+
+                        currentLevel++;
+                        pointsToAllocate++;
+
+                        if (currentLevel % 2 == 0)
+                        {
+                            SkillTree.Instance.AddPoint();
+                        }
+
+                        //Go to skill tree next
+                        gameState = GameState.SkillTree;
+
+                        // increase score for beating lvl
+                        ScoreManager.AddCurrentScore(1000 * currentLevel);
+
+                        ResetPlayerAndBoss();
+
+                        SelectRandomBoss();
+                        boss[0].IncrementBossStats();
                     }
-
-                    //Go to skill tree next
-                    gameState = GameState.SkillTree;
-
-                    // increase score for beating lvl
-                    ScoreManager.AddCurrentScore(1000 * currentLevel);
-
-                    boss[0].StopAction();
-
-                    ResetPlayerAndBoss();
-
-                    SelectRandomBoss();
-
-                    boss[0].IncrementBossStats();
+                    else
+                        transitionDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                   
+                }
+                // To freeze the screen if the player or the boss dies
+                else
+                {
+                    player.Update(gameTime);
+                    boss[0].Update(gameTime);
+                    bulletManager.UpdateAllBullets(gameTime);
                 }
             }
             else if (gameState == GameState.SkillTree)
@@ -588,6 +615,14 @@ namespace DIY_Boss_Rush_Game
                     _spriteBatch.Draw(uiStaminaNub, new Vector2(0, 0),new Rectangle(0 + (int)(233 - 232 * (float)player.CurrStamina / (float)player.MaxStamina),0,1920,1080), Color.White);
                     _spriteBatch.Draw(uiStaminaTop, new Vector2(0, 0), Color.White);
                 }
+
+                // Draw text if player died
+                if (player.IsDead)
+                    _spriteBatch.DrawString(uiText, "ERROR...Player broken...", new Vector2(960, 540), Color.Green);
+
+                // Draw text if boss died
+                if (boss[0].IsDead)
+                    _spriteBatch.DrawString(uiText, "Boss defeated...moving to upgrades...", new Vector2(960, 540), Color.Green);
 
                 //Draw battle UI
                 _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
@@ -829,8 +864,21 @@ namespace DIY_Boss_Rush_Game
         /// Updates the buttons and the UI for the player customization state
         /// </summary>
         /// <param name="buttonArray"></param>
-        public void UpdatePlayerCustomizationButtons(List<Button> buttonArray, MouseState mouseState, List<ImageUI> userInterface)
+        public void UpdatePlayerCustomizationButtons(List<Button> buttonArray, MouseState mouseState, List<ImageUI> userInterface, GameTime gameTime)
         {
+            // If statement to check for transition
+            if (isTransition)
+            {
+                if (transitionDelay <= 0)
+                {
+                    // Change gameState & reset transition time & transition bool
+                    transitionDelay = 2f;
+                    gameState = GameState.Game;
+                    isTransition = false;
+                }
+                else
+                    transitionDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             // Loop through each button and check if it was clicked
             for (int i = 0; i < buttonArray.Count; i++)
             {
@@ -839,7 +887,8 @@ namespace DIY_Boss_Rush_Game
                     case 0:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            gameState = GameState.Game;
+                            // Let game1 know to transition
+                            isTransition = true;
                             // Apply the multipliers to the stats of the player and boss
                             ApplyMultipliers();
                         }
@@ -1112,10 +1161,10 @@ namespace DIY_Boss_Rush_Game
             this.player.CritStat = (int)(this.player.CritStat * playerCritMultiplier);
 
             // Apply multiplier to boss
-            this.boss[0].HealthStat = (int)(this.boss[0].HealthStat * playerHealthMultiplier);
-            this.boss[0].DamageStat = (int)(this.boss[0].DamageStat * playerDamageMultiplier);
-            this.boss[0].SpeedStat = (int)(this.boss[0].SpeedStat * playerSpeedMultiplier);
-            this.boss[0].CritStat = (int)(this.boss[0].CritStat * playerCritMultiplier);
+            this.boss[0].HealthStat = (int)(this.boss[0].HealthStat * bossHealthMultiplier);
+            this.boss[0].DamageStat = (int)(this.boss[0].DamageStat * bossDamageMultiplier);
+            this.boss[0].SpeedStat = (int)(this.boss[0].SpeedStat * bossSpeedMultiplier);
+            this.boss[0].CritStat = (int)(this.boss[0].CritStat * bossCritMultiplier);
         }
 
         /// <summary>
@@ -1198,6 +1247,12 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Crit Multiplier: " + playerCritMultiplier, new Vector2(354, 831), Color.White);
             sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
             sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
+
+            // Draw transition text if transitioning
+            if (isTransition)
+            {
+                sb.DrawString(uiText, "Going to arena...", new Vector2(960, 540), Color.Green);
+            }
         }
 
         /// <summary>
@@ -1210,8 +1265,10 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(219, 276), Color.White);
             sb.DrawString(uiText, "Health Multiplier: " + bossHealthMultiplier, new Vector2(1169, 42), Color.White);
             sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1169, 305), Color.White);
-            sb.DrawString(uiText, "Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
+            sb.DrawString(uiText, "Action Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
             sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1169, 831), Color.White);
+
+
         }
 
         public void SelectRandomBoss()
