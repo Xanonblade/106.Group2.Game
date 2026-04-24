@@ -359,7 +359,6 @@ namespace DIY_Boss_Rush_Game
                 {
                     gameState = GameState.GameOver;
 
-                    // Set up scores
                     lastFrameState = Keyboard.GetState();
 				}
                 // If boss is dead, increase level and move back to customize player state
@@ -628,7 +627,10 @@ namespace DIY_Boss_Rush_Game
 			// 3 letter limit for names on scoreboard so cut off the first letter if they go over
 			if (currName.Length > 3)
                 currName = currName.Substring(1, 3);
-		}
+
+            // Set up scores
+            ScoreManager.SaveScores();
+        }
 
 
         /// <summary>
