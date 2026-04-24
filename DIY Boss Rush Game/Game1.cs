@@ -1082,10 +1082,10 @@ namespace DIY_Boss_Rush_Game
             this.player.CritStat = (int)(this.player.CritStat * playerCritMultiplier);
 
             // Apply multiplier to boss
-            this.boss[0].HealthStat = (int)(this.boss[0].HealthStat * playerHealthMultiplier);
-            this.boss[0].DamageStat = (int)(this.boss[0].DamageStat * playerDamageMultiplier);
-            this.boss[0].SpeedStat = (int)(this.boss[0].SpeedStat * playerSpeedMultiplier);
-            this.boss[0].CritStat = (int)(this.boss[0].CritStat * playerCritMultiplier);
+            this.boss[0].HealthStat = (int)(this.boss[0].HealthStat * bossHealthMultiplier);
+            this.boss[0].DamageStat = (int)(this.boss[0].DamageStat * bossDamageMultiplier);
+            this.boss[0].SpeedStat = (int)(this.boss[0].SpeedStat * bossSpeedMultiplier);
+            this.boss[0].CritStat = (int)(this.boss[0].CritStat * bossCritMultiplier);
         }
 
         /// <summary>
