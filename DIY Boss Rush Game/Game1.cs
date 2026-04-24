@@ -158,7 +158,7 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
         }
 
         protected override void Initialize()
@@ -377,8 +377,6 @@ namespace DIY_Boss_Rush_Game
 
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
-                    
-					SkillTree.Instance.WipeTree();
 				}
             }
             else if (gameState == GameState.SkillTree)
