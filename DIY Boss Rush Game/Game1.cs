@@ -377,7 +377,9 @@ namespace DIY_Boss_Rush_Game
 
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
-				}
+
+                    ResetPlayerAndBoss();
+                }
             }
             else if (gameState == GameState.SkillTree)
             {
