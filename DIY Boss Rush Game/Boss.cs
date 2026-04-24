@@ -59,6 +59,9 @@ namespace DIY_Boss_Rush_Game
         // From 0-100
         private float critChance;
 
+        // Sprint speed: The speed of the boss when the player has the "Oiled up gears" skill
+        private float sprintSpeed;
+
         // Machine gun
         private bool currMachineGunning;
         private float timeBetweenBullets;
@@ -77,6 +80,13 @@ namespace DIY_Boss_Rush_Game
 
         // Damage multipliers for attacks, helps balance the boss's attacks without changing the boss's actual damage stat
         public float BodyMultiplier { get; private set; }
+
+        // Return current action
+
+        /// <summary>
+        /// Getter method for currentAction
+        /// </summary>
+        public Action CurrentAction { get { return currentAction; } }
 
         // Constructor for the boss
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
@@ -97,6 +107,9 @@ namespace DIY_Boss_Rush_Game
             isInfected = false;
             infectedTimer = 2f;
             waiting = false;
+
+            // Set sprint speed
+            sprintSpeed = speedStat * 1.1f;
         }
 
         public void SetInitialValues(float health, float damage, float speed, float crit)
@@ -124,6 +137,16 @@ namespace DIY_Boss_Rush_Game
         {
             base.Update(gameTime);
             this.gameTime = gameTime;
+
+            // Increase speed if the player has the sprint in the skill tree
+            if (Sprint)
+            {
+                this.SpeedStat = sprintSpeed;
+            }
+            else
+            {
+                this.SpeedStat = sprintSpeed * 11 / 10;
+            }
 
             if (isActionFinished)
             {
