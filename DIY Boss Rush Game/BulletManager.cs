@@ -110,7 +110,7 @@ namespace DIY_Boss_Rush_Game
             if (fromPlayer)
             {
                 //Bullet status effects
-                if (chance >= 90 && ShockShotUnlocked) //Hit chance for bullet to have status effect
+                if (chance >= 85 && ShockShotUnlocked) //Hit chance for bullet to have status effect
                 {
                     if (rng.Next(0, 2) == 0) //Coin flip between two effects
                     {

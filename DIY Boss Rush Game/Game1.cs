@@ -170,7 +170,7 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
         }
 
         protected override void Initialize()
@@ -270,7 +270,7 @@ namespace DIY_Boss_Rush_Game
             cornerNE = Content.Load<Texture2D>("cornerNEV0");
             cornerSW = Content.Load<Texture2D>("cornerSWV2");
             cornerSE = Content.Load<Texture2D>("cornerSEV0");
-            ground = Content.Load<Texture2D>("groundV1");
+            ground = Content.Load<Texture2D>("groundV3");
 
             //Load textures for battle UI
             uiBossMain = Content.Load<Texture2D>("uiBossMain");
