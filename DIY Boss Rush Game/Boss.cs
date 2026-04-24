@@ -355,8 +355,8 @@ namespace DIY_Boss_Rush_Game
                 case AttackType.MachineGunX2:
                     // Setup repeated bullet shooting handled elsewhere
                     currMachineGunning = true;
-                    bulletsLeftToShoot = attackType == AttackType.MachineGun ? 20 : 40;
-                    float attackDuration = 2f;
+                    bulletsLeftToShoot = attackType == AttackType.MachineGun ? 15 : 25;
+                    float attackDuration = 1.5f;
                     timeBetweenBullets = attackDuration / bulletsLeftToShoot;
                     //BulletOfMachineGun();
                     AddBullet(bulletSpeed, bulletRadius, Vector2.Normalize(playerPos - pos));

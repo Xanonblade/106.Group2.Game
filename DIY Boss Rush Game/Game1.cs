@@ -377,8 +377,6 @@ namespace DIY_Boss_Rush_Game
 
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
-                    
-					SkillTree.Instance.WipeTree();
 				}
             }
             else if (gameState == GameState.SkillTree)
@@ -398,8 +396,11 @@ namespace DIY_Boss_Rush_Game
 					ScoreManager.AddScore(currName);
                     ScoreManager.SaveScores();
 					currName = "";
-					
-                    // Move back to menu
+
+                    // Reset tree
+					SkillTree.Instance.WipeTree();
+
+					// Move back to menu
 					gameState = GameState.Menu;
 
 					// Reset score and level
