@@ -53,6 +53,11 @@ namespace DIY_Boss_Rush_Game
         private Vector2 startPos;
         private Vector2 playerPos;
         private bool hasAttackedWhileMove;
+        // Values used in action methods
+        private float bulletDamage;
+        private float speed;
+        // From 0-100
+        private float critChance;
 
         // Sprint speed: The speed of the boss when the player has the "Oiled up gears" skill
         private float sprintSpeed;
@@ -67,8 +72,13 @@ namespace DIY_Boss_Rush_Game
         private float infectedTimer;
         private bool waiting;
 
+        // Initial Stats
+        private float initialHealth;
+        private float initialDamage;
+        private float initialSpeed;
+        private float initialCrit;
+
         // Damage multipliers for attacks, helps balance the boss's attacks without changing the boss's actual damage stat
-        public float BulletMultiplier { get; private set; }
         public float BodyMultiplier { get; private set; }
 
         // Return current action
@@ -93,7 +103,6 @@ namespace DIY_Boss_Rush_Game
             random = new Random();
             pos = new Vector2(rect.X, rect.Y);
             Boss.texture = texture;
-            BulletMultiplier = 7;
             BodyMultiplier = 42;
             isInfected = false;
             infectedTimer = 2f;
@@ -101,6 +110,23 @@ namespace DIY_Boss_Rush_Game
 
             // Set sprint speed
             sprintSpeed = speedStat * 1.1f;
+        }
+
+        public void SetInitialValues(float health, float damage, float speed, float crit)
+        {
+            initialHealth = health;
+            initialDamage = damage;
+            initialSpeed = speed;
+            initialCrit = crit;
+
+            MaxHealth = (int)(initialHealth * HealthStat);
+            CurrHealth = MaxHealth;
+
+            bulletDamage = initialDamage * DamageStat;
+
+            this.speed = initialSpeed * SpeedStat;
+
+            critChance = initialCrit * CritStat;
         }
 
         /// <summary>
@@ -236,6 +262,8 @@ namespace DIY_Boss_Rush_Game
         /// </summary>
         private void DoAction()
         {
+            if (isActionFinished) return;
+
             if (waiting)
             {
                 Wait(2f);
@@ -276,7 +304,7 @@ namespace DIY_Boss_Rush_Game
             //float moveSpeed = 20f;
 
             // Move a small amount towards the move position based on the speedMult and SpeedStat
-            Vector2 movement = direction * speedMult * SpeedStat * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Vector2 movement = direction * speedMult * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             // Add the movement vector to the boss's position
             pos += movement;
 
@@ -400,9 +428,9 @@ namespace DIY_Boss_Rush_Game
 
             int crit = 1;
 
-            if (chance >= CritStat * 5) crit = 2;
+            if (chance >= critChance) crit = 2;
 
-            base.bulletManager.CreateBullet(bulletSpeed, BulletMultiplier * DamageStat * crit, BulletTexture, direction, 
+            base.bulletManager.CreateBullet(bulletSpeed, bulletDamage * crit, BulletTexture, direction, 
                 new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false);
         }
 
@@ -522,6 +550,8 @@ namespace DIY_Boss_Rush_Game
         public void StopAction()
         {
             isActionFinished = true;
+            currMachineGunning = false;
+            waiting = false;           
         }
     }
 }

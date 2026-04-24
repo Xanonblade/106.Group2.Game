@@ -29,7 +29,7 @@ namespace DIY_Boss_Rush_Game
         /// <summary>
         /// Getter for texture
         /// </summary>
-        public Texture2D Texture { get { return texture; } }
+        public Texture2D Texture { get { return texture; } set { texture = value; } }
 
         // Constructor
 
