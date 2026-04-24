@@ -148,7 +148,7 @@ namespace DIY_Boss_Rush_Game
         private float transitionDelay = 2f;
 
         // The number of points the player can allocate || BALANCE LATER
-        private int pointsToAllocate = 4;
+        private int pointsToAllocate = 0;
 
         private KeyboardState lastFrameState;
         private string currName = "";
@@ -387,6 +387,7 @@ namespace DIY_Boss_Rush_Game
                         isTransition = false;
 
                         currentLevel++;
+                        pointsToAllocate++;
 
                         if (currentLevel % 2 == 0)
                         {
