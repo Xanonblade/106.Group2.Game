@@ -144,7 +144,6 @@ namespace DIY_Boss_Rush_Game
 
         private KeyboardState lastFrameState;
         private string currName = "";
-        private bool saved = false;
 
         private Button nextStageButton; // Button to switch from skill tree to player customization screen
 
@@ -379,14 +378,8 @@ namespace DIY_Boss_Rush_Game
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
                     
-                    ResetPlayerAndBoss();
-                    
-                    // Reset healths
-                    player.CurrHealth = player.MaxHealth;
-                    boss[0].CurrHealth = boss[0].MaxHealth;
-
-
-                }
+					SkillTree.Instance.WipeTree();
+				}
             }
             else if (gameState == GameState.SkillTree)
             {
@@ -401,20 +394,24 @@ namespace DIY_Boss_Rush_Game
                 // Check if play again button was clicked
                 if (playAgain.SingleClick(previousMouseState))
                 {
-                    // Reset player and boss stats here
-                    ResetPlayerAndBoss();
-                    SkillTree.Instance.WipeTree();
+					// Save the player's name and score
+					ScoreManager.AddScore(currName);
+                    ScoreManager.SaveScores();
+					currName = "";
+					
+                    // Move back to menu
+					gameState = GameState.Menu;
 
-                    // Reset score and level
-                    currentLevel = 1;
+					// Reset score and level
+					currentLevel = 1;
                     ScoreManager.ResetCurentScore();
 
-                    // Move gameState back to the customize state
-                    gameState = GameState.CustomizePlayer;
-                }
+					// Reset player and boss stats to default for when player goes back to customize screen
+                    ResetPlayerAndBoss();
+				}
 
 				// Get player name for scoreboard
-                NameInput();
+				NameInput();
 			}
 
 			// Collect previous mouseState
@@ -599,9 +596,8 @@ namespace DIY_Boss_Rush_Game
                 _spriteBatch.DrawString(uiText, $"Final Score: {finalScore}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 300), Color.White);
                 _spriteBatch.DrawString(uiText, $"Final Level: {currentLevel}", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 350), Color.White);
 
-				// Draw prompt to enter name for scoreboard if not saved yet
-                if (!saved)
-					_spriteBatch.DrawString(uiText, $"Enter Name: {currName} and hit Enter to save score", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 400), Color.White);
+				// Draw prompt to enter name for scoreboard 
+			    _spriteBatch.DrawString(uiText, $"Enter Name: {currName} and click continue to save score", new Vector2(_graphics.PreferredBackBufferWidth / 2 - 100, 400), Color.White);
 			}
 
 			_spriteBatch.End();
@@ -612,20 +608,9 @@ namespace DIY_Boss_Rush_Game
         /// <summary>
         /// Gets the player's name in game over during update
         /// </summary>
-        private void NameInput()
+        private void NameInput() // possibly keyboard state needs to be updated
         {
             KeyboardState state = Keyboard.GetState();
-
-            // Enter
-            if (state.IsKeyDown(Keys.Enter) && currName.Length == 3)
-            {
-                // Save the player's name and score
-                ScoreManager.AddScore(currName);
-                // Move back to menu or scoreboard
-                gameState = GameState.Menu;
-
-                saved = true;
-			}
 
             // All letters
 			for (Keys key = Keys.A; key <= Keys.Z; key++)
