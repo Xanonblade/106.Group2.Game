@@ -128,7 +128,7 @@ namespace DIY_Boss_Rush_Game
             if(StatusEffect == BulletState.Neutral)
             {
                 if (isPlayers)
-                    spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Blue);
+                    spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), new Color(0,255,0));
                 else
                     spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.White);
             }
@@ -138,7 +138,7 @@ namespace DIY_Boss_Rush_Game
             }
             else
             {
-                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Green);
+                spriteBatch.Draw(texture, new Rectangle((int)(Pos.X - Radius), (int)(Pos.Y - Radius), texture.Width, texture.Height), Color.Purple);
             }
         }
     }
