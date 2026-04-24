@@ -96,6 +96,9 @@ namespace DIY_Boss_Rush_Game
         private SpriteFont uiText;
         private SpriteFont uiTextScore;
 
+        private List<Texture2D> bossGameSprites;
+        private List<Texture2D> bossCustomizeSprites;
+
         // Additional battle UI for sprint bar
         private Texture2D uiPlayerSprintBarFront;
         private Texture2D uiPlayerSprintBarBack;
@@ -108,6 +111,8 @@ namespace DIY_Boss_Rush_Game
         // Hold player and boss objects
         private Player player;
         private Boss[] boss;
+
+        private int bossArchetype;
 
         // Hold bullet manager
         private BulletManager bulletManager;
@@ -196,6 +201,8 @@ namespace DIY_Boss_Rush_Game
 
             SkillTree.Instance.ReadData();
 
+            
+
             base.Initialize();
         }
 
@@ -274,6 +281,18 @@ namespace DIY_Boss_Rush_Game
             uiPlayerSprintBarBack = Content.Load<Texture2D>("uiCustomizeColor");
             uiPlayerSprintBarFront = Content.Load<Texture2D>("uiCustomizeColor");
 
+            // Load boss sprites
+            bossGameSprites = new List<Texture2D> {
+                Content.Load<Texture2D>("bossREGame"),
+                Content.Load<Texture2D>("bossREGame2"),
+                Content.Load<Texture2D>("bossREGame3"),
+            };
+            bossCustomizeSprites = new List<Texture2D> {
+                Content.Load<Texture2D>("bossRECustomize"),
+                Content.Load<Texture2D>("bossRECustomize2"),
+                Content.Load<Texture2D>("bossRECustomize3"),
+            };
+
             // Read in arena file
             LoadArena("Content/ArenaV1.level");
 
@@ -306,6 +325,8 @@ namespace DIY_Boss_Rush_Game
 
             // Load the UI for the boss customization state
             LoadBossCustomizationUI();
+
+            SelectRandomBoss();
 
             // Load arrow button for the skill tree to advance to the next stage
             nextStageButton = new Button(new Rectangle(1800, 810, 99, 73), "", Content.Load<Texture2D>("uiCustomizeButton"));
@@ -369,16 +390,20 @@ namespace DIY_Boss_Rush_Game
 
                     if (currentLevel % 2 == 0)
                     {
-                        gameState = GameState.SkillTree;
+                        
                         SkillTree.Instance.AddPoint();
                     }
-                    else 
-                        gameState = GameState.CustomizePlayer;
+
+                    gameState = GameState.SkillTree;
 
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
 
+                    boss[0].StopAction();
+
                     ResetPlayerAndBoss();
+
+                    SelectRandomBoss();
                 }
             }
             else if (gameState == GameState.SkillTree)
@@ -1182,6 +1207,48 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1169, 305), Color.White);
             sb.DrawString(uiText, "Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
             sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1169, 831), Color.White);
+        }
+
+        public void SelectRandomBoss()
+        {
+            // Options: Heath, Damage, Speed, or Crit
+
+            Random random = new Random();
+
+            bossArchetype = random.Next(3);
+
+            float health = 50f;
+            float damage = 7f;
+            float speed = 1f;
+            float crit = 5f;
+
+            switch (bossArchetype)
+            {
+                // Health
+                case 0:
+                    health *= 3;
+                    damage *= 0.75f;
+                    speed *= 0.75f;
+                    break;
+                // Damage
+                case 1:
+                    health *= 0.85f;
+                    damage *= 2f;
+                    speed *= 1.1f;
+                    crit *= 2f;
+                    break;
+                // Speed
+                case 2:
+                    health *= 0.8f;
+                    damage *= 0.75f;
+                    speed *= 2f;
+                    break;
+            }
+
+            Boss.texture = bossGameSprites[bossArchetype];
+            bossCustomizationUI[0].Texture = bossCustomizeSprites[bossArchetype];
+
+            boss[0].SetInitialValues(health, damage, speed, crit);
         }
     }
 

@@ -15,7 +15,7 @@ namespace DIY_Boss_Rush_Game
     {
         public static Texture2D BulletTexture;
         public float CurrHealth { get; set; }
-        public int MaxHealth { get; private set; }
+        public int MaxHealth { get; set; }
         //private Weapon[] currWeapons;
 
         // Stats set by picker
