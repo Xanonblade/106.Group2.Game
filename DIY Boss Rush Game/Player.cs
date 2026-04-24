@@ -93,11 +93,11 @@ namespace DIY_Boss_Rush_Game
                 float damage = DamageStat * attackMultiplier * 3 / 4; // Reduce damage for multishot bullets
                 int offset = 15;
                 Vector2 perpendicular = Vector2.Rotate(dir, (float)Math.PI / 2) * offset;
-				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) + perpendicular, bulletRadius, true);
-				base.bulletManager.CreateBullet(bulletSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) - perpendicular, bulletRadius, true);
+				base.bulletManager.CreateBullet(currSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) + perpendicular, bulletRadius, true);
+				base.bulletManager.CreateBullet(currSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) - perpendicular, bulletRadius, true);
 			}
             else
-                base.bulletManager.CreateBullet(bulletSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, true);
+                base.bulletManager.CreateBullet(currSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, true);
         }
 
         /// <summary>
