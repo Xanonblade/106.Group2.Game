@@ -56,6 +56,7 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiTitleSprite; //Use once we have a title and drawn sprite
         private Texture2D uiBackSprite;
         private Texture2D uiReSpecSprite;
+        private Texture2D uiNextStageSprite;
         private Button buttonStart;
         private Button buttonScore;
         private Button buttonBack;
@@ -95,6 +96,7 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiStaminaBack;
         private SpriteFont uiText;
         private SpriteFont uiTextScore;
+
 
         // Additional battle UI for sprint bar
         private Texture2D uiPlayerSprintBarFront;
@@ -145,7 +147,7 @@ namespace DIY_Boss_Rush_Game
         private KeyboardState lastFrameState;
         private string currName = "";
 
-        private Button nextStageButton; // Button to switch from skill tree to player customization screen
+        private Button buttonNextStage; // Button to switch from skill tree to player customization screen
 
 		public Game1()
         {
@@ -211,6 +213,7 @@ namespace DIY_Boss_Rush_Game
             uiScoreSprite = Content.Load<Texture2D>("uiTitleScore");
             uiBackSprite = Content.Load<Texture2D>("uiTitleBack");
             uiReSpecSprite = Content.Load<Texture2D>("uiReSpecSprite");
+            uiNextStageSprite = Content.Load<Texture2D>("uiGameOverSprite");
             buttonStart = new Button(
                 new Rectangle(240,810,uiStartSprite.Width,uiStartSprite.Height),
                 "", uiStartSprite);
@@ -223,9 +226,12 @@ namespace DIY_Boss_Rush_Game
                 810,uiBackSprite.Width,uiBackSprite.Height),
                 "", uiBackSprite);
             buttonReSpec = new Button(
-                new Rectangle(_graphics.PreferredBackBufferWidth - 240 - uiReSpecSprite.Width,
+                new Rectangle(20,
                 810, uiReSpecSprite.Width, uiReSpecSprite.Height),
                 "", uiReSpecSprite);
+            // Load arrow button for the skill tree to advance to the next stage
+            buttonNextStage = new Button(
+                new Rectangle(1250, 880, uiNextStageSprite.Width, uiNextStageSprite.Height), "", uiNextStageSprite);
 
             // Create "continue" button
             customizeContinue = new Button(new Rectangle(50, 400, buttonSprite.Width / 4, buttonSprite.Height / 4), "HI", buttonSprite);
@@ -306,9 +312,6 @@ namespace DIY_Boss_Rush_Game
 
             // Load the UI for the boss customization state
             LoadBossCustomizationUI();
-
-            // Load arrow button for the skill tree to advance to the next stage
-            nextStageButton = new Button(new Rectangle(1800, 810, 99, 73), "", Content.Load<Texture2D>("uiCustomizeButton"));
         }
 
         protected override void Update(GameTime gameTime)
@@ -369,11 +372,11 @@ namespace DIY_Boss_Rush_Game
 
                     if (currentLevel % 2 == 0)
                     {
-                        gameState = GameState.SkillTree;
                         SkillTree.Instance.AddPoint();
                     }
-                    else 
-                        gameState = GameState.CustomizePlayer;
+
+                    //Go to skill tree next
+                    gameState = GameState.SkillTree;
 
                     // increase score for beating lvl
                     ScoreManager.AddCurrentScore(1000 * currentLevel);
@@ -386,7 +389,7 @@ namespace DIY_Boss_Rush_Game
                 SkillTree.Instance.Update(gameTime);
                 if (buttonReSpec.SingleClick(previousMouseState)) SkillTree.Instance.RespecTree();
 
-                if (nextStageButton.SingleClick(previousMouseState))
+                if (buttonNextStage.SingleClick(previousMouseState))
                     gameState = GameState.CustomizePlayer;
             }
             else if (gameState == GameState.GameOver)
@@ -534,9 +537,9 @@ namespace DIY_Boss_Rush_Game
             else if (gameState == GameState.SkillTree)
             {
                 SkillTree.Instance.Draw(GraphicsDevice, _spriteBatch);
-                _spriteBatch.Draw(uiReSpecSprite, buttonReSpec.Rect, Color.White);
+                _spriteBatch.Draw(uiReSpecSprite, new Vector2(20,980), null ,Color.White,0f,Vector2.Zero,.5f,SpriteEffects.None,0f);
 
-                _spriteBatch.Draw(nextStageButton.Texture, nextStageButton.Rect, null, Color.White, (float)(Math.PI / 2), new Vector2(-25, 50), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(buttonNextStage.Texture, buttonNextStage.Rect, Color.White);
 
             }
             else if (gameState == GameState.Game)
