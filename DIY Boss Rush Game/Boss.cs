@@ -54,6 +54,9 @@ namespace DIY_Boss_Rush_Game
         private Vector2 playerPos;
         private bool hasAttackedWhileMove;
 
+        // Sprint speed: The speed of the boss when the player has the "Oiled up gears" skill
+        private float sprintSpeed;
+
         // Machine gun
         private bool currMachineGunning;
         private float timeBetweenBullets;
@@ -88,6 +91,9 @@ namespace DIY_Boss_Rush_Game
             isInfected = false;
             infectedTimer = 2f;
             waiting = false;
+
+            // Set sprint speed
+            sprintSpeed = speedStat * 1.1f;
         }
 
         /// <summary>
@@ -98,6 +104,16 @@ namespace DIY_Boss_Rush_Game
         {
             base.Update(gameTime);
             this.gameTime = gameTime;
+
+            // Increase speed if the player has the sprint in the skill tree
+            if (Sprint)
+            {
+                this.SpeedStat = sprintSpeed;
+            }
+            else
+            {
+                this.SpeedStat = sprintSpeed * 11 / 10;
+            }
 
             if (isActionFinished)
             {
