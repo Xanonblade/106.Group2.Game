@@ -158,7 +158,7 @@ namespace DIY_Boss_Rush_Game
         private float transitionDelay = 2f;
 
         // The number of points the player can allocate || BALANCE LATER
-        private int pointsToAllocate = 100;
+        private int pointsToAllocate = 0;
 
         private KeyboardState lastFrameState;
         private string currName = "";
@@ -1106,7 +1106,7 @@ namespace DIY_Boss_Rush_Game
                         if (buttonArray[i].SingleClick(mouseState))
                             gameState = GameState.CustomizePlayer;
                         break;
-                    case 1:
+                    case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             // Cap the multiplier at 2x
@@ -1118,7 +1118,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 2:
+                    case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             // Cap the multiplier at .5x
@@ -1130,7 +1130,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 3:
+                    case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (bossDamageMultiplier != 2)
@@ -1141,7 +1141,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 4:
+                    case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (bossDamageMultiplier != .5f && pointsToAllocate != 0)
@@ -1152,7 +1152,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 5:
+                    case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (bossSpeedMultiplier != 2)
@@ -1163,7 +1163,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 6:
+                    case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (bossSpeedMultiplier != .5f && pointsToAllocate != 0)
@@ -1174,7 +1174,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 7:
+                    case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (bossCritMultiplier != 2)
@@ -1185,7 +1185,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 8:
+                    case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (bossCritMultiplier != .5f && pointsToAllocate != 0)
@@ -1262,14 +1262,14 @@ namespace DIY_Boss_Rush_Game
         {
             Texture2D buttonTexture = Content.Load<Texture2D>("uiCustomizeButton");
             AddButton(new Button(new Rectangle(45, 96, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 28, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 160, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 304, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 435, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 568, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 699, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 832, 99, 73), "", buttonTexture), bossCustomizationButtons);
-            AddButton(new Button(new Rectangle(883, 963, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(839, 119, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(1746, 119, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(839, 290, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(1746, 290, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(839, 450, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(1746, 450, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(839, 611, 99, 73), "", buttonTexture), bossCustomizationButtons);
+            AddButton(new Button(new Rectangle(1746, 611, 99, 73), "", buttonTexture), bossCustomizationButtons);
         }
 
         /// <summary>
@@ -1279,10 +1279,10 @@ namespace DIY_Boss_Rush_Game
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
             bossCustomizationUI.Add(new ImageUI(new Rectangle(180, 443, 527, 608), Content.Load<Texture2D>("bossRECustomize")));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 80, 368, 113), barTexture));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 354, 368, 113), barTexture));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 618, 368, 113), barTexture));
-            bossCustomizationUI.Add(new ImageUI(new Rectangle(1098, 882, 368, 113), barTexture));   
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1011, 119, 368, 113), barTexture));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1011, 290, 368, 113), barTexture));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1011, 450, 368, 113), barTexture));
+            bossCustomizationUI.Add(new ImageUI(new Rectangle(1011, 611, 368, 113), barTexture));   
             bossCustomizationUI.Add(new ImageUI(new Rectangle(766, 0, 10, 1080), barTexture));
         }
 
@@ -1311,10 +1311,10 @@ namespace DIY_Boss_Rush_Game
         {
             sb.DrawString(uiText, "To Player Customization", new Vector2(35, 36), Color.White);
             sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(219, 276), Color.White);
-            sb.DrawString(uiText, "Health Multiplier: " + bossHealthMultiplier, new Vector2(1169, 42), Color.White);
-            sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1169, 305), Color.White);
-            sb.DrawString(uiText, "Action Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1169, 567), Color.White);
-            sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1169, 831), Color.White);
+            sb.DrawString(uiText, "Health Multiplier: " + bossHealthMultiplier, new Vector2(1088, 83), Color.White);
+            sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1088, 251), Color.White);
+            sb.DrawString(uiText, "Action Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1088, 417), Color.White);
+            sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1088, 585), Color.White);
 
 
         }
