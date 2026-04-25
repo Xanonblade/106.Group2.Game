@@ -165,6 +165,10 @@ namespace DIY_Boss_Rush_Game
 
         private Button buttonNextStage; // Button to switch from skill tree to player customization screen
 
+        // Hold texture for the transition banners 
+        private Texture2D defeatBanner;
+        private Texture2D victoryBanner;
+
 		public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -348,6 +352,10 @@ namespace DIY_Boss_Rush_Game
 
             // Load the UI for the boss customization state
             LoadBossCustomizationUI();
+
+            // Load banners
+            defeatBanner = Content.Load<Texture2D>("bannerDefeat");
+            victoryBanner = Content.Load<Texture2D>("bannerVictory");
 
             SelectRandomBoss();
             
@@ -643,13 +651,13 @@ namespace DIY_Boss_Rush_Game
                     _spriteBatch.Draw(uiStaminaTop, new Vector2(0, 0), Color.White);
                 }
 
-                // Draw text if player died
+                // Draw banner if player died
                 if (player.IsDead)
-                    _spriteBatch.DrawString(uiText, "ERROR...Player broken...", new Vector2(960, 540), Color.Green);
+                    _spriteBatch.Draw(defeatBanner, new Rectangle(960 - (defeatBanner.Width / 2), 540 - (defeatBanner.Height / 2), defeatBanner.Width, defeatBanner.Height), Color.White);
 
                 // Draw text if boss died
                 if (boss[0].IsDead)
-                    _spriteBatch.DrawString(uiText, "Boss defeated...moving to upgrades...", new Vector2(960, 540), Color.Green);
+                    _spriteBatch.Draw(victoryBanner, new Rectangle(960 - (victoryBanner.Width / 2), 540 - (victoryBanner.Height / 2), victoryBanner.Width, victoryBanner.Height), Color.White);
 
                 //Draw battle UI
                 _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
