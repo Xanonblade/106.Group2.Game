@@ -1062,6 +1062,12 @@ namespace DIY_Boss_Rush_Game
             for (int i = 0; i < userInterface.Count; i++)
                 sb.Draw(userInterface[i].Texture, userInterface[i].Rectangle, Color.White);
 
+            if (isTransition)
+            {
+                Texture2D startBanner = Content.Load<Texture2D>("bannerGameStart");
+                sb.Draw(startBanner, new Rectangle(960 - (startBanner.Width / 2), 540 - (startBanner.Height / 2), startBanner.Width, startBanner.Height), Color.White);
+            }
+
         }
 
         /// <summary>
@@ -1274,12 +1280,6 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Crit Multiplier: " + (1 + (9 * ((playerCritMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(354, 831), Color.White);
             sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
             sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
-
-            // Draw transition text if transitioning
-            if (isTransition)
-            {
-                sb.DrawString(uiText, "Going to arena...", new Vector2(960, 540), Color.Green);
-            }
         }
 
         /// <summary>
