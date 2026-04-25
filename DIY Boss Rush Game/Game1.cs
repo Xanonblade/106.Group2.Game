@@ -928,7 +928,7 @@ namespace DIY_Boss_Rush_Game
                             ApplyMultipliers();
                         }
                         break;
-                    case 1:
+                    case 2:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             // Cap the multiplier at 2x
@@ -941,7 +941,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 2:
+                    case 1:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             // Cap the multiplier at .5x
@@ -953,7 +953,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 3:
+                    case 4:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (playerDamageMultiplier < 3.1 && pointsToAllocate != 0)
@@ -964,7 +964,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 4:
+                    case 3:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (playerDamageMultiplier > 1.1f)
@@ -975,7 +975,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 5:
+                    case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (playerSpeedMultiplier < 3.1 && pointsToAllocate != 0)
@@ -986,7 +986,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 6:
+                    case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (playerSpeedMultiplier > 1.1f)
@@ -997,7 +997,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 7:
+                    case 8:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (playerCritMultiplier < 3.1 && pointsToAllocate != 0)
@@ -1008,7 +1008,7 @@ namespace DIY_Boss_Rush_Game
                             }
                         }
                         break;
-                    case 8:
+                    case 7:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
                             if (playerCritMultiplier > 1.1f)
@@ -1051,11 +1051,7 @@ namespace DIY_Boss_Rush_Game
                 else if (i == 9)
                     sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y - (buttonRect.Height / 2), buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
                 else if (i % 2 == 1)
-                {
-                    //sb.Draw(buttonArray[i].Texture, buttonRect, Color.White);
                     sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width / 4, buttonRect.Y + buttonRect.Height * 5 / 4, buttonRect.Width, buttonRect.Height), null, Color.White, (float)(-Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
-                }
-
                 else if (i == 10)
                     sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X, buttonRect.Y + buttonRect.Height, buttonRect.Width, buttonRect.Height), null, Color.White, (float)(-Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
                 else
