@@ -1268,10 +1268,10 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "To Boss Customization", new Vector2(1563, 47), Color.White);
             sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(1176, 345), Color.White);
             sb.DrawString(uiText, "Continue", new Vector2(1699, 831), Color.White);
-            sb.DrawString(uiText, "Health Multiplier: " + playerHealthMultiplier, new Vector2(354, 42), Color.White);
-            sb.DrawString(uiText, "Damage Multiplier: " + playerDamageMultiplier, new Vector2(354, 305), Color.White);
-            sb.DrawString(uiText, "Speed Multiplier: " + playerSpeedMultiplier, new Vector2(354, 567), Color.White);
-            sb.DrawString(uiText, "Crit Multiplier: " + playerCritMultiplier, new Vector2(354, 831), Color.White);
+            sb.DrawString(uiText, "Health Multiplier: " + (1 + ( 9 * ((playerHealthMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(354, 42), Color.White);
+            sb.DrawString(uiText, "Damage Multiplier: " + (1 + (9 * ((playerDamageMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(354, 305), Color.White);
+            sb.DrawString(uiText, "Speed Multiplier: " + (1 + (9 * ((playerSpeedMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(354, 567), Color.White);
+            sb.DrawString(uiText, "Crit Multiplier: " + (1 + (9 * ((playerCritMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(354, 831), Color.White);
             sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
             sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
 
