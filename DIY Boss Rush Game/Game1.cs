@@ -1026,7 +1026,7 @@ namespace DIY_Boss_Rush_Game
                             if (playerSpeedMultiplier < 2.3 && pointsToAllocate != 0)
                             {
                                 playerSpeedMultiplier += .1f;
-                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier - 1) / 2.4f));
+                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier - 1) / 2.07f));
                                 pointsToAllocate--;
                             }
                         }
@@ -1037,7 +1037,7 @@ namespace DIY_Boss_Rush_Game
                             if (playerSpeedMultiplier > 1.05f)
                             {
                                 playerSpeedMultiplier -= .1f;
-                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier - 1) / 2.4f));
+                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier - 1) / 2.07f));
                                 pointsToAllocate++;
                             }
                         }
