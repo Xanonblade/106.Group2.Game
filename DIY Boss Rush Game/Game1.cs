@@ -63,6 +63,7 @@ namespace DIY_Boss_Rush_Game
         private Texture2D uiBackSprite;
         private Texture2D uiReSpecSprite;
         private Texture2D uiNextStageSprite;
+        private Texture2D uiGoToSkillSprite;
         private Button buttonStart;
         private Button buttonScore;
         private Button buttonBack;
@@ -237,6 +238,7 @@ namespace DIY_Boss_Rush_Game
             uiBackSprite = Content.Load<Texture2D>("uiTitleBack");
             uiReSpecSprite = Content.Load<Texture2D>("uiReSpecSprite");
             uiNextStageSprite = Content.Load<Texture2D>("uiGameOverSprite");
+            uiGoToSkillSprite = Content.Load<Texture2D>("uiGoToSkillTree");
             buttonStart = new Button(
                 new Rectangle(240,810,uiStartSprite.Width,uiStartSprite.Height),
                 "", uiStartSprite);
@@ -252,7 +254,7 @@ namespace DIY_Boss_Rush_Game
                 new Rectangle(20,
                 810, uiReSpecSprite.Width, uiReSpecSprite.Height),
                 "", uiReSpecSprite);
-            // Load arrow button for the skill tree to advance to the next stage
+            // Load button for the skill tree to advance to the next stage
             buttonNextStage = new Button(
                 new Rectangle(1250, 880, uiNextStageSprite.Width, uiNextStageSprite.Height), "", uiNextStageSprite);
 
@@ -596,14 +598,14 @@ namespace DIY_Boss_Rush_Game
                 // Helper method to draw all the buttons of the customization state
                 DrawCustomizationButtons(_spriteBatch, playerCustomizationButtons, false);
 
-                // Helper method to draw all the rectangles and images for the customization state
-                DrawCustomizationUI(_spriteBatch, playerCustomizationUI);
-
                 // Helper method to draw all the text for the player customization state
                 DrawPlayerCustomizationText(_spriteBatch);
 
-                //Draw info bubble and overlay
+                //Draw info bubble
                 _spriteBatch.Draw(uiInfoBubble, buttonInfo.Rect, Color.White);
+
+                // Helper method to draw all the rectangles and images for the customization state
+                DrawCustomizationUI(_spriteBatch, playerCustomizationUI);
 
                 //Check whether overlay should be showing
                 if (overlayShowing)
@@ -1237,7 +1239,7 @@ namespace DIY_Boss_Rush_Game
             AddButton(new Button(new Rectangle(907, 587, 99, 73), "", buttonTexture), playerCustomizationButtons);
             AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", buttonTexture), playerCustomizationButtons);
             AddButton(new Button(new Rectangle(1164, 158, 99, 73), "", buttonTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(151, 763, (int)(uiReSpecSprite.Width * 1.5), (int)(uiReSpecSprite.Height * 1.5)), "", uiReSpecSprite), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(151, 763, (int)(uiGoToSkillSprite.Width * 1.5), (int)(uiGoToSkillSprite.Height * 1.5)), "", uiGoToSkillSprite), playerCustomizationButtons);
         }
 
         /// <summary>
