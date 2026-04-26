@@ -1326,6 +1326,18 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Crit Chance Multiplier: " + (1 + (9 * ((playerCritMultiplier - 1) / 2.1f))).ToString("F2") + "x", new Vector2(269, 530), Color.White);
             sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
             sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
+
+            int playerHealth = (int)(100 * playerHealthMultiplier);
+            int playerDamage = (int)(10 * playerDamageMultiplier);
+            float playerSpeed = 1 * playerSpeedMultiplier;
+            float playerCrit = 5 * playerCritMultiplier;
+
+            sb.DrawString(uiTextScore, "Stats:", new Vector2(200, 700), Color.White);
+
+            sb.DrawString(uiText, "Health: " + playerHealth, new Vector2(200, 800), Color.White);
+            sb.DrawString(uiText, "Damage: " + playerDamage, new Vector2(200, 950), Color.White);
+            sb.DrawString(uiText, "Speed: " + playerSpeed.ToString("F2"), new Vector2(650, 800), Color.White);
+            sb.DrawString(uiText, "Crit Chance: " + playerCrit.ToString("F2") + "%", new Vector2(650, 950), Color.White);
         }
 
         /// <summary>
