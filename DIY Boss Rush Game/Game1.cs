@@ -90,6 +90,8 @@ namespace DIY_Boss_Rush_Game
 
         //Textures for battle UI
         private Texture2D uiBossMain;
+        private Texture2D uiBossMain2;
+        private Texture2D uiBossMain3;
         private Texture2D uiBossTop;
         private Texture2D uiBossNub;
         private Texture2D uiBossBar;
@@ -292,6 +294,8 @@ namespace DIY_Boss_Rush_Game
 
             //Load textures for battle UI
             uiBossMain = Content.Load<Texture2D>("uiBossMain");
+            uiBossMain2 = Content.Load<Texture2D>("uiBossMain2");
+            uiBossMain3 = Content.Load<Texture2D>("uiBossMain3");
             uiBossTop = Content.Load<Texture2D>("uiBossTop");
             uiBossNub = Content.Load<Texture2D>("uiBossHealthNub");
             uiBossBar = Content.Load<Texture2D>("uiBossBar");
@@ -666,7 +670,19 @@ namespace DIY_Boss_Rush_Game
 
                 //Draw battle UI
                 _spriteBatch.Draw(uiPlayerMain, new Vector2(0, 0), Color.White);
+
+                if (bossArchetype == 0)
+                {
                 _spriteBatch.Draw(uiBossMain, new Vector2(0, 0), Color.White);
+                }
+                else if (bossArchetype == 1)
+                {
+                    _spriteBatch.Draw(uiBossMain2, new Vector2(0, 0), Color.White);
+                }
+                else
+                {
+                    _spriteBatch.Draw(uiBossMain3, new Vector2(0, 0), Color.White);
+                }
                 _spriteBatch.Draw(uiPlayerBar, new Vector2(0), new Rectangle(0, 0, (int)(143 + 285 * (float)player.CurrHealth / (float)player.MaxHealth), 1080), Color.White);
                 _spriteBatch.Draw(uiPlayerNub, new Vector2(0), new Rectangle(0 + (int)(285 - 285 * (float)player.CurrHealth / (float)player.MaxHealth), 0, 1920, 1080), Color.White);
                 _spriteBatch.Draw(uiBossBar, new Vector2(1492 + (285 - (285 * (float)boss[0].CurrHealth / (float)boss[0].MaxHealth)), 0),
