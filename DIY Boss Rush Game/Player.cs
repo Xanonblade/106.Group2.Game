@@ -16,7 +16,7 @@ namespace DIY_Boss_Rush_Game
         private readonly float speedMultiplier = 1; // Helps scale movement
         private readonly float attackMultiplier = 1; // Helps scale attack
         private readonly float attackSpeedDelay = 0.5f; // Helps set attack speed
-        private readonly float critMultiplier = 10; // Helps scale crits to be percentage based
+        private readonly float critMultiplier = 4; // Helps scale crits to be percentage based
         private float timeSinceAttacked = 0.0f;
         private Random rng;
         private KeyboardState previousKeyboardState; // Holds previousKeyboardState for a single click function
@@ -28,8 +28,8 @@ namespace DIY_Boss_Rush_Game
         private int maxStamina;
         private int currStamina;
 
-        //Status effects
-        public bool IsInfected { get; set; }
+		//Status effects
+		public bool IsInfected { get; set; }
         private float infectedTimer;
 
         // Holds the amount of time for a dash
@@ -80,12 +80,14 @@ namespace DIY_Boss_Rush_Game
             // Calculate damage and speed with crit chance
             float currSpeed = bulletSpeed;
             float currDamage = DamageStat * attackMultiplier;
-            // Crit stat is between 0.5 and 2
-            if (rng.Next(100) < CritStat * critMultiplier) // If random number is less than crit stat, it's a crit
+            bool isCrit = false;
+			// Crit stat is between 0.5 and 2
+			if (rng.Next(100) < CritStat * critMultiplier) // If random number is less than crit stat, it's a crit
             {
                 currSpeed *= 1.5f; // Increase bullet speed for crits
                 currDamage *= 2; // Double damage for crits
-            }
+                isCrit = true;
+			}
 
             // Shoot two if multishot
             if (base.Multishot)
@@ -93,11 +95,11 @@ namespace DIY_Boss_Rush_Game
                 float damage = DamageStat * attackMultiplier * 3 / 4; // Reduce damage for multishot bullets
                 int offset = 15;
                 Vector2 perpendicular = Vector2.Rotate(dir, (float)Math.PI / 2) * offset;
-				base.bulletManager.CreateBullet(currSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) + perpendicular, bulletRadius, true);
-				base.bulletManager.CreateBullet(currSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) - perpendicular, bulletRadius, true);
+				base.bulletManager.CreateBullet(currSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) + perpendicular, bulletRadius, true, isCrit);
+				base.bulletManager.CreateBullet(currSpeed, damage, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2) - perpendicular, bulletRadius, true, isCrit);
 			}
             else
-                base.bulletManager.CreateBullet(currSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, true);
+                base.bulletManager.CreateBullet(currSpeed, DamageStat * attackMultiplier, Character.BulletTexture, dir, new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, true, isCrit);
         }
 
         /// <summary>
@@ -108,7 +110,7 @@ namespace DIY_Boss_Rush_Game
         {
             base.Update(gameTime); // Does nothing currently can add in character if makes sense
 
-            KeyboardState currState = Keyboard.GetState();
+			KeyboardState currState = Keyboard.GetState();
 
             // Check if the stamina ever hits zero, speed temporarily decreases
             if (currStamina < 0 || IsSlowed)
@@ -266,7 +268,6 @@ namespace DIY_Boss_Rush_Game
         /// <param name="statusEffect"></param>
         public override void CollideWithBullet(float damage, BulletState statusEffect)
         {
-
             //Status effects from bullets
             switch (statusEffect)
             {
@@ -278,16 +279,19 @@ namespace DIY_Boss_Rush_Game
                     //Damage over time
                     IsInfected = true;
                     break;
-                    //Ignores neutral state because it's meant to do nothing then
-            }
+			}
 
             //Damage effect
             base.CollideWithBullet(damage, statusEffect);
         }
 
+        /// <summary>
+        /// Draws with tint
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), CurrTint);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Enum for status effect of bullet
-enum BulletState { Neutral, Shock, Virus}
+enum BulletState { Neutral, Shock, Virus, Crit}
 
 namespace DIY_Boss_Rush_Game
 {
@@ -28,7 +28,7 @@ namespace DIY_Boss_Rush_Game
         private int bounces;
 
         private readonly int percentChangeBossBounce = 25;
-        public BulletState StatusEffect { get; private set; }
+        public BulletState StatusEffect { get; set; }
 
         /// <summary>
         /// Sets every field

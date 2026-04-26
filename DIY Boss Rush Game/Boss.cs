@@ -192,7 +192,7 @@ namespace DIY_Boss_Rush_Game
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
+            sb.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), CurrTint);
         }
 
         /// <summary>
@@ -435,17 +435,27 @@ namespace DIY_Boss_Rush_Game
                 isActionFinished = true;
         }
 
-        private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
+		/// <summary>
+		/// Adds a bullet to the bullet manager with the given speed, radius, and direction. Also handles crits for the bullet.
+		/// </summary>
+		/// <param name="bulletSpeed"></param>
+		/// <param name="bulletRadius"></param>
+		/// <param name="direction"></param>
+		private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
         {
-            // Check if the bullet crits
-            int chance = random.Next(100);
+			// Check if the bullet crits
+			float currSpeed = bulletSpeed;
+			float currDamage = bulletDamage;
+			bool isCrit = false;
+			int chance = random.Next(100);
+            if (chance >= critChance){
+				currSpeed *= 1.5f; // Increase bullet speed for crits
+				currDamage *= 2; // Double damage for crits
+				isCrit = true;
+			}
 
-            int crit = 1;
-
-            if (chance >= critChance) crit = 2;
-
-            base.bulletManager.CreateBullet(bulletSpeed, bulletDamage * crit, BulletTexture, direction, 
-                new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false);
+			base.bulletManager.CreateBullet(currSpeed, currDamage, BulletTexture, direction, 
+                new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false, isCrit);
         }
 
         /// <summary>

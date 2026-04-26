@@ -100,7 +100,7 @@ namespace DIY_Boss_Rush_Game
         /// <param name="pos"></param>
         /// <param name="radius"></param>
         /// <param name="fromPlayer"></param>
-        public void CreateBullet(float speed, float damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius, bool fromPlayer)
+        public void CreateBullet(float speed, float damage, Texture2D attackTex, Vector2 unitDir, Vector2 pos, float radius, bool fromPlayer, bool isCrit)
         {
             //Start newBullet as null before factoring in possible status effects
             Bullet newBullet = null!;
@@ -123,12 +123,16 @@ namespace DIY_Boss_Rush_Game
                     else //Just make it a neutral bullet again
                     {
                         newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
-                    }
+                        if (isCrit)
+                            newBullet.StatusEffect = BulletState.Crit;
+					}
                 }
                 else //Bullet is just normal
                 {
                     newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
-                }
+					if (isCrit)
+						newBullet.StatusEffect = BulletState.Crit;
+				}
 
                 playerBullets.Add(newBullet);
             }
@@ -148,12 +152,16 @@ namespace DIY_Boss_Rush_Game
                     else //Just make it a neutral bullet again
                     {
                         newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
-                    }
+						if (isCrit)
+							newBullet.StatusEffect = BulletState.Crit;
+					}
                 }
                 else //Bullet is just normal
                 {
                     newBullet = new Bullet(speed, damage, attackTex, unitDir, pos, radius, BulletState.Neutral);
-                }
+					if (isCrit)
+						newBullet.StatusEffect = BulletState.Crit;
+				}
                 enemyBullets.Add(newBullet);
             }
         }
