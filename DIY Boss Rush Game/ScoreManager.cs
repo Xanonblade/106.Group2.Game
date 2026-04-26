@@ -102,8 +102,13 @@ namespace DIY_Boss_Rush_Game
         /// <param name="name">Player's name</param>
         public static void AddScore(string name)
         {
-            if (Instance.scores.ContainsKey(name) && Instance.scores[name] < Instance.currentScore)
-                Instance.scores[name] = Instance.CurrentScore;
+            if (Instance.scores.ContainsKey(name))
+            {
+                if (Instance.scores[name] < Instance.currentScore)
+                {
+                    Instance.scores[name] = Instance.CurrentScore;
+                }
+            }
             else
                 Instance.scores.Add(name, Instance.currentScore);
         }
