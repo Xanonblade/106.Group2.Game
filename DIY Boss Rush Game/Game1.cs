@@ -1329,38 +1329,39 @@ namespace DIY_Boss_Rush_Game
 
             bossArchetype = random.Next(3);
 
-            float health = 50f;
-            float damage = 7f;
-            float speed = 1f;
-            float crit = 5f;
+            float health = 1; // = 50f;
+            float damage = 1; // = 7f;
+            float speed = 1; // = 1f;
+            float crit = 1; // = 5f;
 
             switch (bossArchetype)
             {
                 // Health
                 case 0:
-                    health *= 2f;
-                    damage *= 0.75f;
-                    speed *= 0.6f;
+                    health = 2f;
+                    speed = 0.7f;
+                    damage = 1.5f;
+                    crit = 2f;
                     break;
                 // Damage
                 case 1:
-                    health *= 0.85f;
-                    damage *= 2f;
-                    speed *= 1.1f;
-                    crit *= 2f;
+                    health = 0.85f;
+                    damage = 4f;
+                    crit = 4f;
                     break;
                 // Speed
                 case 2:
-                    health *= 0.8f;
-                    damage *= 0.75f;
-                    speed *= 2f;
+                    health = 0.8f;
+                    damage = 0.75f;
+                    crit = 0.25f;
+                    speed = 2f;
                     break;
             }
 
             Boss.texture = bossGameSprites[bossArchetype];
             bossCustomizationUI[0].Texture = bossCustomizeSprites[bossArchetype];
 
-            boss[0].SetInitialValues(health, damage, speed, crit);
+            boss[0].SetArchitypeMultipliers(health, damage, speed, crit);
         }
     }
 
