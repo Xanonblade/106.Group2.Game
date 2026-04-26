@@ -76,10 +76,10 @@ namespace DIY_Boss_Rush_Game
         public float BodyMultiplier { get; private set; }
 
         // Save pre-multiplier stats for scaling with level
-        private float roundStartHealth = 50;
-        private float roundStartDamage = 7;
-        private float roundStartSpeed = 1;
-        private float roundStartCrit = 5;
+        private float roundStartHealth = 30; // 50
+		private float roundStartDamage = 4; //7
+        private float roundStartSpeed = 0.85f; // 1
+        private float roundStartCrit = 2; // 5
 
 		/// <summary>
 		/// Getter method for currentAction
@@ -137,15 +137,15 @@ namespace DIY_Boss_Rush_Game
             int level = Game1.currentLevel;
 
             //MaxHealth += 10 * level;
-            roundStartHealth += roundStartHealth/4 * level;
+            roundStartHealth += roundStartHealth / 10 * level;
             
             //bulletDamage += 0.5f * level;
-			roundStartDamage += roundStartDamage / 4 * level;
+			roundStartDamage += roundStartDamage / 10 * level;
 
 			//speed += 0.1f * level;
-			roundStartSpeed += roundStartSpeed / 6 * level;
+			roundStartSpeed += roundStartSpeed / 10 * level;
 
-			roundStartCrit += roundStartCrit / 6 * level;
+			roundStartCrit += roundStartCrit / 10 * level;
         }
 
         /// <summary>
@@ -425,8 +425,8 @@ namespace DIY_Boss_Rush_Game
                 case AttackType.MachineGunX2:
                     // Setup repeated bullet shooting handled elsewhere
                     currMachineGunning = true;
-                    bulletsLeftToShoot = attackType == AttackType.MachineGun ? 15 : 25;
-                    float attackDuration = 1.5f;
+                    bulletsLeftToShoot = attackType == AttackType.MachineGun ? 15 : 20;
+                    float attackDuration = 2f;
                     timeBetweenBullets = attackDuration / bulletsLeftToShoot;
                     //BulletOfMachineGun();
                     AddBullet(bulletSpeed, bulletRadius, Vector2.Normalize(playerPos - pos));
