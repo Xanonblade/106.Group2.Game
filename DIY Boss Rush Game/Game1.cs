@@ -190,7 +190,7 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
         }
 
         protected override void Initialize()
