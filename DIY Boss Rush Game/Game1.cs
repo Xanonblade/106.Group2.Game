@@ -59,7 +59,7 @@ namespace DIY_Boss_Rush_Game
         //Elements for title screen and scoreboard
         private Texture2D uiStartSprite;
         private Texture2D uiScoreSprite;
-        private Texture2D uiTitleSprite; //Use once we have a title and drawn sprite
+        private Texture2D uiTitleSprite;
         private Texture2D uiBackSprite;
         private Texture2D uiReSpecSprite;
         private Texture2D uiNextStageSprite;
@@ -178,7 +178,7 @@ namespace DIY_Boss_Rush_Game
         private Texture2D smallShieldTexture;
         private Texture2D largeShieldTexture;
 
-
+        private Random rng;
 		public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -190,13 +190,14 @@ namespace DIY_Boss_Rush_Game
             _graphics.PreferredBackBufferWidth = 1920;
 
             // Set full screen to true
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
         }
 
         protected override void Initialize()
         {
             // Menu is default state
             gameState = GameState.Menu;
+            rng = new Random();
 
             // Initialize score manager
             scoreManager = ScoreManager.Instance;
@@ -245,6 +246,25 @@ namespace DIY_Boss_Rush_Game
             buttonSprite = Content.Load<Texture2D>("tempButton");
 
             //Load title screen and scoreboard elements
+            switch (rng.Next(5))
+            {
+                case 0:
+                    uiTitleSprite = Content.Load<Texture2D>("logo1");
+                    break;
+                case 1:
+                    uiTitleSprite = Content.Load<Texture2D>("logo2");
+                    break;
+                case 2:
+                    uiTitleSprite = Content.Load<Texture2D>("logo3");
+                    break;
+                case 3:
+                    uiTitleSprite = Content.Load<Texture2D>("logo4");
+                    break;
+                case 4:
+                    uiTitleSprite = Content.Load<Texture2D>("logo5");
+                    break;
+            }
+
             uiStartSprite = Content.Load<Texture2D>("uiTitleStart");
             uiScoreSprite = Content.Load<Texture2D>("uiTitleScore");
             uiBackSprite = Content.Load<Texture2D>("uiTitleBack");
@@ -463,9 +483,18 @@ namespace DIY_Boss_Rush_Game
                         {
                             SkillTree.Instance.AddPoint();
                         }
+                        
+                        if (SkillTree.Instance.GetUnlocked().Count < 7)
+                        {
+                            //Go to skill tree next
+                            gameState = GameState.SkillTree;
+                        }
+                        else
+                        {
+                            gameState = GameState.CustomizePlayer;
+                        }
 
-                        //Go to skill tree next
-                        gameState = GameState.SkillTree;
+
 
                         // increase score for beating lvl
                         ScoreManager.AddCurrentScore(1000 * currentLevel);
@@ -542,13 +571,12 @@ namespace DIY_Boss_Rush_Game
             // Finite State Machine for Draw Method
             if (gameState == GameState.Menu)
             {
+                //Draw title art
+                _spriteBatch.Draw(uiTitleSprite, new Rectangle(0,-100,1920,1080), Color.White);
+
                 // Draw title page buttons
                 _spriteBatch.Draw(uiStartSprite, buttonStart.Rect, Color.White);
                 _spriteBatch.Draw(uiScoreSprite, buttonScore.Rect, Color.White);
-
-                //Logo texture - for now, just spritefont
-                _spriteBatch.DrawString(uiText, "<Title here>",new Vector2(850, 240),
-                    Color.CornflowerBlue);
             }
             else if (gameState == GameState.Scoreboard)
             {
