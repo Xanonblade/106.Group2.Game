@@ -170,6 +170,13 @@ namespace DIY_Boss_Rush_Game
         private Texture2D defeatBanner;
         private Texture2D victoryBanner;
 
+        // Holo shield
+        private List<HoloShield> smallShields;
+        private List<HoloShield> largeShields;
+        private Texture2D smallShieldTexture;
+        private Texture2D largeShieldTexture;
+
+
 		public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -221,6 +228,9 @@ namespace DIY_Boss_Rush_Game
             overlayShowing = false;
 
             SkillTree.Instance.ReadData();
+
+            smallShields = new List<HoloShield>();
+            largeShields = new List<HoloShield>();
 
             base.Initialize();
         }
@@ -361,6 +371,13 @@ namespace DIY_Boss_Rush_Game
 
             SelectRandomBoss();
             
+
+            // Load shield textures
+            smallShieldTexture = Content.Load<Texture2D>("holeShieldS");
+            largeShieldTexture= Content.Load<Texture2D>("holoShieldL");
+            SetupShields();
+
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -453,6 +470,7 @@ namespace DIY_Boss_Rush_Game
 
                         SelectRandomBoss();
                         boss[0].IncrementBossStats();
+                        SetupShields();
                     }
                     else
                         transitionDelay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -464,6 +482,9 @@ namespace DIY_Boss_Rush_Game
                     player.Update(gameTime);
                     boss[0].Update(gameTime);
                     bulletManager.UpdateAllBullets(gameTime);
+
+                    foreach (HoloShield holoShield in smallShields) holoShield.Update();
+                    foreach (HoloShield holoShield in largeShields) holoShield.Update();
                 }
             }
             else if (gameState == GameState.SkillTree)
@@ -646,6 +667,9 @@ namespace DIY_Boss_Rush_Game
                 boss[0].Draw(_spriteBatch);
 
                 bulletManager.DrawAllBulllets(_spriteBatch);
+
+                foreach (HoloShield holoShield in smallShields) holoShield.Draw(_spriteBatch);
+                foreach (HoloShield holoShield in largeShields) holoShield.Draw(_spriteBatch);
 
                 // Draw stamina bar if has the skill
                 if (player.Sprint)
@@ -1360,6 +1384,81 @@ namespace DIY_Boss_Rush_Game
             bossCustomizationUI[0].Texture = bossCustomizeSprites[bossArchetype];
 
             boss[0].SetInitialValues(health, damage, speed, crit);
+        }        
+
+        public void SetupShields()
+        {
+            smallShields.Clear();
+            largeShields.Clear();
+
+            Random random = new Random();
+
+            int numOfShields = random.Next(1, 3);
+            for (int i = 0; i < numOfShields; i++)
+            {
+                Point pos = GetRandomPosInBounds(smallShieldTexture, smallShields, largeShields);
+                smallShields.Add(new HoloShield(smallShieldTexture,
+                    new Rectangle(pos.X, pos.Y, smallShieldTexture.Width, smallShieldTexture.Height)));
+            }
+
+            numOfShields = random.Next(0, 2);
+            for (int i = 0; i < numOfShields; i++)
+            {
+                Point pos = GetRandomPosInBounds(largeShieldTexture, smallShields, largeShields);
+                largeShields.Add(new HoloShield(largeShieldTexture,
+                    new Rectangle(pos.X, pos.Y, largeShieldTexture.Width, largeShieldTexture.Height)));
+            }
+        }
+
+        public Point GetRandomPosInBounds(Texture2D texture, List<HoloShield> smallShields, List<HoloShield> largeShields)
+        {
+            Random random = new Random();
+
+            int width = 1920;
+            int height = 1024;
+            int buffer = 64 + Math.Max(texture.Width, texture.Height);
+
+            Point pos;
+            bool overlapping;
+            int maxAttempts = 50;
+            int attempts = 0;
+
+            do
+            {
+                overlapping = false;
+                pos = new Point(random.Next(buffer, width - buffer),
+                        random.Next(buffer, height - buffer));
+
+                Rectangle newShieldRect = new Rectangle(pos.X, pos.Y, texture.Width, texture.Height);
+
+                // Check collision with all small shields
+                foreach (HoloShield shield in smallShields)
+                {
+                    if (newShieldRect.Intersects(shield.Rect))
+                    {
+                        overlapping = true;
+                        break;
+                    }
+                }
+
+                // Check collision with all large shields
+                if (!overlapping)
+                {
+                    foreach (HoloShield shield in largeShields)
+                    {
+                        if (newShieldRect.Intersects(shield.Rect))
+                        {
+                            overlapping = true;
+                            break;
+                        }
+                    }
+                }
+
+                attempts++;
+
+            } while (overlapping && attempts < maxAttempts);
+
+            return pos;
         }
     }
 
