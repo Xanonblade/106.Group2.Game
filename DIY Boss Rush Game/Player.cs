@@ -184,7 +184,7 @@ namespace DIY_Boss_Rush_Game
             // Sprint
             if (Sprint && currStamina > 0 && currState.IsKeyDown(Keys.LeftShift) )
             {
-                pos += movement / 2;
+                pos += movement / 1.2f;
                 currStamina -= 4;
             }
 

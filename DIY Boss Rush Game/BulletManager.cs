@@ -286,5 +286,32 @@ namespace DIY_Boss_Rush_Game
             playerBullets.Clear();
             enemyBullets.Clear();
         }
+
+        /// <summary>
+        /// Destroys all bullets colldiing with a holo shield
+        /// </summary>
+        /// <param name="shield">Shield to check collisions with</param>
+        public void CheckCollisionWithShield(HoloShield shield)
+        {
+            // Check if any of the player bullets are colliding with a shield
+            for (int i = playerBullets.Count - 1; i >= 0; i--)
+            {
+                Bullet bullet = playerBullets[i];
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, new Vector2(shield.Rect.X, shield.Rect.Y), shield.Texture))
+                {
+                    RemoveBullet(bullet);
+                }
+            }
+
+            // Check if any of the boss bullets are colliding with a shield
+            for (int i = enemyBullets.Count - 1; i >= 0; i--)
+            {
+                Bullet bullet = enemyBullets[i];
+                if (CheckCircleRectCollision(bullet.Pos, bullet.Radius, new Vector2(shield.Rect.X, shield.Rect.Y), shield.Texture))
+                {
+                    RemoveBullet(bullet);
+                }
+            }
+        }
     }
 }
