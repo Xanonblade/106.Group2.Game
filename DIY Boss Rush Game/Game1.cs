@@ -1023,10 +1023,10 @@ namespace DIY_Boss_Rush_Game
                     case 6:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            if (playerSpeedMultiplier < 3.1 && pointsToAllocate != 0)
+                            if (playerSpeedMultiplier < 2.3 && pointsToAllocate != 0)
                             {
-                                playerSpeedMultiplier += .15f;
-                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier-1) / 3.1f));
+                                playerSpeedMultiplier += .1f;
+                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier - 1) / 2.4f));
                                 pointsToAllocate--;
                             }
                         }
@@ -1034,10 +1034,10 @@ namespace DIY_Boss_Rush_Game
                     case 5:
                         if (buttonArray[i].SingleClick(mouseState))
                         {
-                            if (playerSpeedMultiplier > 1.1f)
+                            if (playerSpeedMultiplier > 1.05f)
                             {
-                                playerSpeedMultiplier -= .15f;
-                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier-1) / 3.1f));
+                                playerSpeedMultiplier -= .1f;
+                                userInterface[3].Width = (int)(1000 * ((playerSpeedMultiplier - 1) / 2.4f));
                                 pointsToAllocate++;
                             }
                         }
@@ -1338,7 +1338,7 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Continue", new Vector2(1699, 831), Color.White);
             sb.DrawString(uiText, "Health Multiplier: " + (1 + ( 9 * ((playerHealthMultiplier - 1) / 2.1f))).ToString("F2") +"x", new Vector2(269, 42), Color.White);
             sb.DrawString(uiText, "Damage Multiplier: " + (1 + (9 * ((playerDamageMultiplier - 1) / 2.1f))).ToString("F2") + "x", new Vector2(269, 206), Color.White);
-            sb.DrawString(uiText, "Speed Multiplier: " + (1 + (9 * ((playerSpeedMultiplier - 1) / 2.1f))).ToString("F2") + "x", new Vector2(269, 368), Color.White);
+            sb.DrawString(uiText, "Speed Multiplier: " + (1 + (9 * ((playerSpeedMultiplier - 1) / 1.4f))).ToString("F2") + "x", new Vector2(269, 368), Color.White);
             sb.DrawString(uiText, "Crit Chance Multiplier: " + (1 + (9 * ((playerCritMultiplier - 1) / 2.1f))).ToString("F2") + "x", new Vector2(269, 530), Color.White);
             sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
             sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
@@ -1369,7 +1369,19 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Action Speed Multiplier: " + (1 - (.9 * (1 - bossSpeedMultiplier) / .63f)).ToString("F2") + "x", new Vector2(1088, 417), Color.White);
             sb.DrawString(uiText, "Crit Chance Multiplier: " + (1 - (.9 * (1 - bossCritMultiplier) / .63f)).ToString("F2") + "x", new Vector2(1088, 585), Color.White);
 
-            
+            int bossHealth = (int)(100000 * bossHealthMultiplier) + currentLevel * 10000;
+            int bossDamage = (int)(10 * bossDamageMultiplier) + currentLevel * 1;
+            float bossSpeed = 1 * bossSpeedMultiplier + (float)(currentLevel * .25);
+            float bossCrit = 5 * bossCritMultiplier + (float) (currentLevel * .25);
+
+            sb.DrawString(uiTextScore, "Stats:", new Vector2(1000, 750), Color.White);
+
+            sb.DrawString(uiText, "Health: " + bossHealth, new Vector2(1000, 850), Color.White);
+            sb.DrawString(uiText, "Damage: " + bossDamage, new Vector2(1000, 1000), Color.White);
+            sb.DrawString(uiText, "Speed: " + bossSpeed.ToString("F2"), new Vector2(1450, 850), Color.White);
+            sb.DrawString(uiText, "Crit Chance: " + bossCrit.ToString("F2") + "%", new Vector2(1450, 1000), Color.White);
+
+
         }
 
         public void SelectRandomBoss()
