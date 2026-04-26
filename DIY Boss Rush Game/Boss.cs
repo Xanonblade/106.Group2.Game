@@ -72,21 +72,19 @@ namespace DIY_Boss_Rush_Game
         private float infectedTimer;
         private bool waiting;
 
-        // Initial Stats
-        private float initialHealth;
-        private float initialDamage;
-        private float initialSpeed;
-        private float initialCrit;
-
         // Damage multipliers for attacks, helps balance the boss's attacks without changing the boss's actual damage stat
         public float BodyMultiplier { get; private set; }
 
-        // Return current action
+        // Save pre-multiplier stats for scaling with level
+        private float roundStartHealth = 30; // 50
+		private float roundStartDamage = 4; //7
+        private float roundStartSpeed = 0.85f; // 1
+        private float roundStartCrit = 2; // 5
 
-        /// <summary>
-        /// Getter method for currentAction
-        /// </summary>
-        public Action CurrentAction { get { return currentAction; } }
+		/// <summary>
+		/// Getter method for currentAction
+		/// </summary>
+		public Action CurrentAction { get { return currentAction; } }
 
         // Constructor for the boss
         public Boss(Rectangle rect, Texture2D texture, int healthStat, int damageStat, int speedStat, int critStat) : 
@@ -112,35 +110,42 @@ namespace DIY_Boss_Rush_Game
             sprintSpeed = speedStat * 1.1f;
         }
 
-        public void SetInitialValues(float health, float damage, float speed, float crit)
+		/// <summary>
+		/// At the start of a boss, the health, damage, etc. need to be calculated using past health * architype multiplier * player chosen stat multiplier. This method sets the initial values for the boss's stats and calculates the starting health, damage, etc. based on those initial values and the player's chosen stat multipliers. This is done to make sure that the boss's stats scale properly with the player's stats and the chosen architype multipliers, while also allowing for easier balancing by adjusting the initial values and multipliers separately.
+		/// </summary>
+		/// <param name="health"></param>
+		/// <param name="damage"></param>
+		/// <param name="speed"></param>
+		/// <param name="crit"></param>
+		public void SetArchitypeMultipliers(float healthMult, float damageMult, float speedMult, float critMult)
         {
-            initialHealth = health;
-            initialDamage = damage;
-            initialSpeed = speed;
-            initialCrit = crit;
-
-            MaxHealth = (int)(initialHealth * HealthStat);
+            MaxHealth = (int)(roundStartHealth * healthMult * HealthStat);
             CurrHealth = MaxHealth;
 
-            bulletDamage = initialDamage * DamageStat;
+			bulletDamage = roundStartDamage * damageMult * DamageStat;
 
-            this.speed = initialSpeed * SpeedStat;
+            this.speed = roundStartSpeed * speedMult * SpeedStat;
 
-            critChance = initialCrit * CritStat;
+            critChance = roundStartCrit * critMult * CritStat;
         }
 
+        /// <summary>
+        /// Multiply stats by a fair multiplier
+        /// </summary>
         public void IncrementBossStats()
         {
             int level = Game1.currentLevel;
 
-            MaxHealth += 10 * level;
-            CurrHealth = MaxHealth;
+            //MaxHealth += 10 * level;
+            roundStartHealth += roundStartHealth / 10 * level;
+            
+            //bulletDamage += 0.5f * level;
+			roundStartDamage += roundStartDamage / 10 * level;
 
-            bulletDamage += 0.5f * level;
+			//speed += 0.1f * level;
+			roundStartSpeed += roundStartSpeed / 10 * level;
 
-            speed += 0.1f * level;
-
-            critChance += 2f * level;
+			roundStartCrit += roundStartCrit / 10 * level;
         }
 
         /// <summary>
@@ -192,7 +197,7 @@ namespace DIY_Boss_Rush_Game
 
         public override void Draw(SpriteBatch sb)
         {
-            sb.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), Color.White);
+            sb.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, texture.Width, texture.Height), CurrTint);
         }
 
         /// <summary>
@@ -420,8 +425,8 @@ namespace DIY_Boss_Rush_Game
                 case AttackType.MachineGunX2:
                     // Setup repeated bullet shooting handled elsewhere
                     currMachineGunning = true;
-                    bulletsLeftToShoot = attackType == AttackType.MachineGun ? 15 : 25;
-                    float attackDuration = 1.5f;
+                    bulletsLeftToShoot = attackType == AttackType.MachineGun ? 15 : 20;
+                    float attackDuration = 2f;
                     timeBetweenBullets = attackDuration / bulletsLeftToShoot;
                     //BulletOfMachineGun();
                     AddBullet(bulletSpeed, bulletRadius, Vector2.Normalize(playerPos - pos));
@@ -435,17 +440,27 @@ namespace DIY_Boss_Rush_Game
                 isActionFinished = true;
         }
 
-        private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
+		/// <summary>
+		/// Adds a bullet to the bullet manager with the given speed, radius, and direction. Also handles crits for the bullet.
+		/// </summary>
+		/// <param name="bulletSpeed"></param>
+		/// <param name="bulletRadius"></param>
+		/// <param name="direction"></param>
+		private void AddBullet(float bulletSpeed, int bulletRadius, Vector2 direction)
         {
-            // Check if the bullet crits
-            int chance = random.Next(100);
+			// Check if the bullet crits
+			float currSpeed = bulletSpeed;
+			float currDamage = bulletDamage;
+			bool isCrit = false;
+			int chance = random.Next(100);
+            if (chance <= critChance){
+				currSpeed *= 1.5f; // Increase bullet speed for crits
+				currDamage *= 2; // Double damage for crits
+				isCrit = true;
+			}
 
-            int crit = 1;
-
-            if (chance >= critChance) crit = 2;
-
-            base.bulletManager.CreateBullet(bulletSpeed, bulletDamage * crit, BulletTexture, direction, 
-                new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false);
+			base.bulletManager.CreateBullet(currSpeed, currDamage, BulletTexture, direction, 
+                new Vector2(pos.X + texture.Width / 2, pos.Y + texture.Height / 2), bulletRadius, false, isCrit);
         }
 
         /// <summary>

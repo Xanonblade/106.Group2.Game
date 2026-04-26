@@ -33,14 +33,17 @@ namespace DIY_Boss_Rush_Game
 
         public BulletManager bulletManager { get; set; }
 
-        /// <summary>
-        /// Sets defaults mostly based on what player chooses in the picker
-        /// </summary>
-        /// <param name="healthStat"></param>
-        /// <param name="damageStat"></param>
-        /// <param name="speedStat"></param>
-        /// <param name="critStat"></param>
-        public Character(float healthStat, float damageStat, float speedStat, float critStat)
+		public Color CurrTint { get; private set; } = Color.White;
+		private float tintTimer = 0.1f;
+
+		/// <summary>
+		/// Sets defaults mostly based on what player chooses in the picker
+		/// </summary>
+		/// <param name="healthStat"></param>
+		/// <param name="damageStat"></param>
+		/// <param name="speedStat"></param>
+		/// <param name="critStat"></param>
+		public Character(float healthStat, float damageStat, float speedStat, float critStat)
         {
             this.HealthStat = healthStat;
             this.DamageStat = damageStat;
@@ -61,8 +64,25 @@ namespace DIY_Boss_Rush_Game
         /// <param name="statusEffect">Takes in a status effect from the bullet when colliding</param>
         public virtual void CollideWithBullet(float damage, BulletState statusEffect)
         {
-            //Damage
-            CurrHealth -= damage;
+			//Status effects from bullets
+			switch (statusEffect)
+			{
+				case BulletState.Shock:
+					CurrTint = Color.Yellow;
+					break;
+				case BulletState.Virus:
+					CurrTint = Color.MediumPurple;
+					break;
+				case BulletState.Crit:
+					CurrTint = Color.Red;
+					break;
+				case BulletState.Neutral:
+					CurrTint = Color.LightSalmon;
+					break;
+			}
+
+			//Damage
+			CurrHealth -= damage;
             if (CurrHealth < 0)
                 CurrHealth = 0;
         }
@@ -73,8 +93,18 @@ namespace DIY_Boss_Rush_Game
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime)
         {
-            // This will be overridden in player and boss, but we can put some shared code here if needed
-        }
+			// This will be overridden in player and boss, but we can put some shared code here if needed
+			// Tints
+			if (CurrTint != Color.White)
+			{
+				tintTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+				if (tintTimer <= 0)
+				{
+					CurrTint = Color.White;
+					tintTimer = 0.1f;
+				}
+			}
+		}
 
         /// <summary>
         /// Override if necessary, but this will be the default draw method for characters. Player and boss can add to this with an override and a base call
@@ -82,8 +112,8 @@ namespace DIY_Boss_Rush_Game
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            
-        }
+			// Should have had a draw here but oh well, this will be overridden in player and boss, but we can put some shared code here if needed
+		}
 
-    }
+	}
 }
