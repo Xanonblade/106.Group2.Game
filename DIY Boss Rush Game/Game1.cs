@@ -1059,7 +1059,7 @@ namespace DIY_Boss_Rush_Game
                 else if (i == 0 && isBoss)
                     sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X, buttonRect.Y + buttonRect.Height, buttonRect.Width, buttonRect.Height), null, Color.White, (float)(-Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
                 else if (i == 11)
-                    sb.Draw(buttonArray[i].Texture, new Vector2(buttonArray[i].Rect.X, buttonArray[i].Rect.Y), null, Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+                    sb.Draw(buttonArray[i].Texture, buttonArray[i].Rect, Color.White);
                 else if (i == 9)
                     sb.Draw(buttonArray[i].Texture, new Rectangle(buttonRect.X + buttonRect.Width, buttonRect.Y - (buttonRect.Height / 2), buttonRect.Width, buttonRect.Height), null, Color.White, (float)(Math.PI / 2), new Vector2(0, 0), SpriteEffects.None, 0f);
                 else if (i % 2 == 1)
@@ -1239,7 +1239,7 @@ namespace DIY_Boss_Rush_Game
             AddButton(new Button(new Rectangle(907, 587, 99, 73), "", buttonTexture), playerCustomizationButtons);
             AddButton(new Button(new Rectangle(1723, 158, 99, 73), "", buttonTexture), playerCustomizationButtons);
             AddButton(new Button(new Rectangle(1164, 158, 99, 73), "", buttonTexture), playerCustomizationButtons);
-            AddButton(new Button(new Rectangle(151, 763, (int)(uiGoToSkillSprite.Width * 1.5), (int)(uiGoToSkillSprite.Height * 1.5)), "", uiGoToSkillSprite), playerCustomizationButtons);
+            AddButton(new Button(new Rectangle(1145, 880, (int)(uiGoToSkillSprite.Width), (int)(uiGoToSkillSprite.Height)), "", uiGoToSkillSprite), playerCustomizationButtons);
         }
 
         /// <summary>
@@ -1249,7 +1249,7 @@ namespace DIY_Boss_Rush_Game
         {
             Texture2D barTexture = Content.Load<Texture2D>("uiCustomizeColor");
             Texture2D playerDisplayTexture = Content.Load<Texture2D>("playerRECustomize");
-            playerCustomizationUI.Add(new ImageUI(new Rectangle(1145, 430, playerDisplayTexture.Width * 2 / 3, playerDisplayTexture.Height * 2 / 3), playerDisplayTexture));
+            playerCustomizationUI.Add(new ImageUI(new Rectangle(1345, 280, playerDisplayTexture.Width * 2 / 3, playerDisplayTexture.Height * 2 / 3), playerDisplayTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(170, 107, 0, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(170, 270, 0, 90), barTexture));
             playerCustomizationUI.Add(new ImageUI(new Rectangle(170, 431, 0, 90), barTexture));
@@ -1297,10 +1297,10 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "To Boss Customization", new Vector2(1563, 47), Color.White);
             sb.DrawString(uiText, "Points Left: " + pointsToAllocate, new Vector2(1176, 345), Color.White);
             sb.DrawString(uiText, "Continue", new Vector2(1699, 831), Color.White);
-            sb.DrawString(uiText, "Health Multiplier: " + (1 + ( 9 * ((playerHealthMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(269, 42), Color.White);
-            sb.DrawString(uiText, "Damage Multiplier: " + (1 + (9 * ((playerDamageMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(269, 206), Color.White);
-            sb.DrawString(uiText, "Speed Multiplier: " + (1 + (9 * ((playerSpeedMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(269, 368), Color.White);
-            sb.DrawString(uiText, "Crit Multiplier: " + (1 + (9 * ((playerCritMultiplier - 1) / 2.1f))).ToString("F2"), new Vector2(269, 530), Color.White);
+            sb.DrawString(uiText, "Health Multiplier: " + (1 + ( 9 * ((playerHealthMultiplier - 1) / 2.1f))).ToString("F2") +"x", new Vector2(269, 42), Color.White);
+            sb.DrawString(uiText, "Damage Multiplier: " + (1 + (9 * ((playerDamageMultiplier - 1) / 2.1f))).ToString("F2") + "x", new Vector2(269, 206), Color.White);
+            sb.DrawString(uiText, "Speed Multiplier: " + (1 + (9 * ((playerSpeedMultiplier - 1) / 2.1f))).ToString("F2") + "x", new Vector2(269, 368), Color.White);
+            sb.DrawString(uiText, "Crit Chance Multiplier: " + (1 + (9 * ((playerCritMultiplier - 1) / 2.1f))).ToString("F2") + "x", new Vector2(269, 530), Color.White);
             sb.DrawString(uiText, "Back to Menu", new Vector2(1140, 50), Color.White);
             sb.DrawString(uiText, "Level: " + currentLevel, new Vector2(1176, 300), Color.White);
         }
@@ -1316,7 +1316,7 @@ namespace DIY_Boss_Rush_Game
             sb.DrawString(uiText, "Health Multiplier: " + bossHealthMultiplier, new Vector2(1088, 83), Color.White);
             sb.DrawString(uiText, "Damage Multiplier: " + bossDamageMultiplier, new Vector2(1088, 251), Color.White);
             sb.DrawString(uiText, "Action Speed Multiplier: " + bossSpeedMultiplier, new Vector2(1088, 417), Color.White);
-            sb.DrawString(uiText, "Crit Multiplier: " + bossCritMultiplier, new Vector2(1088, 585), Color.White);
+            sb.DrawString(uiText, "Crit Chance Multiplier: " + bossCritMultiplier, new Vector2(1088, 585), Color.White);
 
 
         }
@@ -1339,13 +1339,13 @@ namespace DIY_Boss_Rush_Game
                 // Health
                 case 0:
                     health *= 2f;
-                    damage *= 0.75f;
+                    damage *= 1.5f;
                     speed *= 0.6f;
                     break;
                 // Damage
                 case 1:
                     health *= 0.85f;
-                    damage *= 2f;
+                    damage *= 3f;
                     speed *= 1.1f;
                     crit *= 2f;
                     break;
